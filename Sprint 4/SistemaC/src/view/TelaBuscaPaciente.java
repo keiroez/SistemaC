@@ -9,15 +9,10 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.text.MaskFormatter;
-
-import app.App;
-import model.Funcionario;
-import model.Paciente;
 
 public class TelaBuscaPaciente extends Tela {
 
@@ -25,25 +20,13 @@ public class TelaBuscaPaciente extends Tela {
 	private JLabel cpf;
 	private JTextField campoCpf;
 	private JButton pesquisar;
-	private MaskFormatter m1;
-	private JTable tabela;
-	private JScrollPane barraRolagem, scroll;
 	private JTextArea campoTextArea;
-	
+	private JScrollPane scroll;
+	private MaskFormatter m1;
 	
 	public TelaBuscaPaciente() {
 
 		setTitle("Busca de Paciente");
-		
-		String [] colunas = {"Nome", "CPF", "Telefone"};
-		Object [][] dados = new Object[App.pacientes.size()][3];
-		int i=0;
-		for(Paciente pac:App.pacientes){
-			dados[i][0]=pac.getNome();
-			dados[i][1]=pac.getCpf();
-			dados[i][2]=pac.getTelefone();
-			i++;
-		}
 		
 		try {
 			m1 = new MaskFormatter("###.###.###-##");
@@ -62,22 +45,15 @@ public class TelaBuscaPaciente extends Tela {
 		Container c = new Container();
 		c.setLayout(new GridLayout(1, 2));
 		c.setSize(400, 20);
-		c.setLocation(10, 10);
+		c.setLocation(100, 50);
 		c.add(cpf);
 		c.add(campoCpf);
-		
-		tabela = new JTable(dados, colunas);
-		this.barraRolagem = new JScrollPane(barraRolagem);
-		barraRolagem.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		barraRolagem.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		barraRolagem = new JScrollPane(tabela);
-		barraRolagem.setBounds(10, 40, 575, 300);
-		add(barraRolagem);
 
 		add(c);
-		pesquisar.setBounds(450, 10, 100, 20);
+		pesquisar.setBounds(250, 300, 100, 20);
 		add(pesquisar);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
 		
 		
 		this.campoTextArea = new JTextArea();

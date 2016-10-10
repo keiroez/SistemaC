@@ -4,10 +4,12 @@ package control;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.JOptionPane;
 
 import app.App;
+import model.Agenda;
 import model.Funcionario;
 import model.Paciente;
 import model.Prontuario;
@@ -97,25 +99,25 @@ public class Controller implements ActionListener{
 				else{
 					boolean cpfCad = false, loginCad = false, rgCad = false;
 					
-					for(int i = 0; i < App.funciomarios.size(); i++){
-						if(App.funciomarios.get(i).getCpf().equals(tFuncionario.getCampoCpf().getText())){
+					for(int i = 0; i < App.funcionarios.size(); i++){
+						if(App.funcionarios.get(i).getCpf().equals(tFuncionario.getCampoCpf().getText())){
 							JOptionPane.showMessageDialog(null, "Este CPF já está cadastrado no sistema");
 							cpfCad = true;
 						}
 						
-						if(App.funciomarios.get(i).getLogin().equals(tFuncionario.getCampoLogin().getText())){
+						if(App.funcionarios.get(i).getLogin().equals(tFuncionario.getCampoLogin().getText())){
 							JOptionPane.showMessageDialog(null, "Login indisponível");
 							loginCad = true;
 						}
 						
-						if(App.funciomarios.get(i).getRg().equals(tFuncionario.getCampoRg().getText())){
+						if(App.funcionarios.get(i).getRg().equals(tFuncionario.getCampoRg().getText())){
 							JOptionPane.showMessageDialog(null, "Este RG já está cadastrado no sistema");
 							rgCad = true;
 						}
 					}
 
 					if(!cpfCad && !loginCad && !rgCad){
-						App.funciomarios.add(new Funcionario(tFuncionario.getCampoNome().getText(), tFuncionario.getCampoRg().getText(), tFuncionario.getCampoCpf().getText(), tFuncionario.getCampoTelefone().getText(), tFuncionario.getCampoLogin().getText(), tFuncionario.getCampoSenha().getText()));
+						App.funcionarios.add(new Funcionario(tFuncionario.getCampoNome().getText(), tFuncionario.getCampoRg().getText(), tFuncionario.getCampoCpf().getText(), tFuncionario.getCampoTelefone().getText(), tFuncionario.getCampoLogin().getText(), tFuncionario.getCampoSenha().getText()));
 						JOptionPane.showMessageDialog(null, "Cadastro efetuado com sucesso");
 					}
 				}
@@ -171,6 +173,28 @@ public class Controller implements ActionListener{
 				tBPaciente.getScroll().setVisible(true);
 			}
 		}
+		
+		
+		if(tAgendaIsAtivo){
+			if(e.getSource() == tAgendamento.getAgendar()){
+				
+				
+				if(!tAgendamento.getCampoCpf().getText().equals("") && !tAgendamento.getCampoNome().getText().equals("") && !tAgendamento.getCampoHorario().getText().equals("") && !tAgendamento.getCampoData().getText().equals("")){
+								
+					App.agendamento.add(new Agenda(tAgendamento.getCampoData().getText(), tAgendamento.getCampoNome().getText(), tAgendamento.getCampoCpf().getText(), tAgendamento.getCampoHorario().getText()));
+					JOptionPane.showMessageDialog(null, "Consulta agendada com sucesso");
+
+					
+				}
+				
+				else{
+					JOptionPane.showMessageDialog(null, "Campo não preenchido");
+				}
+				
+				
+			}
+		}
+		
 		
 		if(e.getSource() == tMenu.getSairButton()){
 			System.exit(0);

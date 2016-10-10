@@ -20,7 +20,7 @@ public class TelaAgendamento extends Tela {
 	public TelaAgendamento() {
 		
 		
-setTitle("Ageendamento de consulta");
+		setTitle("Ageendamento de consulta");
 		
 		try {
 			m1 = new MaskFormatter("###.###.###-##");
@@ -40,6 +40,8 @@ setTitle("Ageendamento de consulta");
 		campoCpf = new JFormattedTextField(m1);
 		campoData = new JFormattedTextField(m2);
 		campoHorario = new JFormattedTextField(m3);
+		
+		
 		
 		agendar = new JButton("Agendar");
 
@@ -111,6 +113,24 @@ setTitle("Ageendamento de consulta");
 	}
 	public void setAgendar(JButton agendar) {
 		this.agendar = agendar;
+	}
+
+
+
+
+
+
+	public JTextField getCampoHorario() {
+		return campoHorario;
+	}
+
+
+
+
+
+
+	public void setCampoHorario(JTextField campoHorario) {
+		this.campoHorario = campoHorario;
 	}
 	
 	
