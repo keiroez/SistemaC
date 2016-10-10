@@ -30,8 +30,6 @@ public class Controller implements ActionListener{
 	private TelaMenu tMenu;
 	private boolean tfIsAtivo, tpIsAtivo, tbpIsAtivo, tbfIsAtivo, tAgendaIsAtivo;
 		
-
-	
 	
 	public Controller(TelaMenu tMenu) {
 		this.tMenu = tMenu;
@@ -166,11 +164,9 @@ public class Controller implements ActionListener{
 				
 				for(int i = 0; i < App.pacientes.size(); i++){
 					if(tBPaciente.getCampoCpf().getText().equals(App.pacientes.get(i))){
-						tBPaciente.getCampoTextArea().append(App.pacientes.get(i).getNome());
-						
 					}
 				}
-				tBPaciente.getScroll().setVisible(true);
+//				tBPaciente.getScroll().setVisible(true);
 			}
 		}
 		
