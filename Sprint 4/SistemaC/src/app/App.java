@@ -1,6 +1,5 @@
 package app;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
 import control.Controller;
@@ -9,7 +8,7 @@ import model.Funcionario;
 import model.Paciente;
 import view.TelaMenu;
 
-public class App {
+public class App{
 	
 	public static ArrayList<Paciente> pacientes = new ArrayList<Paciente>();
 	public static ArrayList<Funcionario> funcionarios = new ArrayList<Funcionario>();

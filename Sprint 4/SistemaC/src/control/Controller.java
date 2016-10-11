@@ -4,7 +4,7 @@ package control;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
+
 
 import javax.swing.JOptionPane;
 
@@ -64,14 +64,14 @@ public class Controller implements ActionListener{
 		if(e.getSource() == tMenu.getBuscaPacButton()){
 			
 			tBPaciente = new TelaBuscaPaciente();
-			tBPaciente.getPesquisar().addActionListener(this);
+			//tBPaciente.getPesquisar().addActionListener(this);
 			tbpIsAtivo = true;			
 		}
 		
 		if(e.getSource() == tMenu.getBuscaFuncButton()){
 			
 			tBFuncionario = new TelaBuscaFuncionario();
-			tBFuncionario.getPesquisar().addActionListener(this);
+			//tBFuncionario.getPesquisar().addActionListener(this);
 			tbfIsAtivo = true;			
 		}
 		
@@ -166,7 +166,7 @@ public class Controller implements ActionListener{
 					if(tBPaciente.getCampoCpf().getText().equals(App.pacientes.get(i))){
 					}
 				}
-//				tBPaciente.getScroll().setVisible(true);
+
 			}
 		}
 		
@@ -174,12 +174,27 @@ public class Controller implements ActionListener{
 		if(tAgendaIsAtivo){
 			if(e.getSource() == tAgendamento.getAgendar()){
 				
-				
-				if(!tAgendamento.getCampoCpf().getText().equals("") && !tAgendamento.getCampoNome().getText().equals("") && !tAgendamento.getCampoHorario().getText().equals("") && !tAgendamento.getCampoData().getText().equals("")){
-								
-					App.agendamento.add(new Agenda(tAgendamento.getCampoData().getText(), tAgendamento.getCampoNome().getText(), tAgendamento.getCampoCpf().getText(), tAgendamento.getCampoHorario().getText()));
-					JOptionPane.showMessageDialog(null, "Consulta agendada com sucesso");
-
+				if(!tAgendamento.campoVazio()){								
+					
+					if(tAgendamento.verificarCadastro()){
+						
+						if(tAgendamento.horarioDisponivel()){
+							
+							App.agendamento.add(new Agenda(tAgendamento.getCampoData().getText(), tAgendamento.getCampoNome().getText(), tAgendamento.getCampoCpf().getText(), tAgendamento.getCampoHorario().getText()));
+							JOptionPane.showMessageDialog(null, "Consulta agendada com sucesso");
+						}
+						
+						else{
+							JOptionPane.showMessageDialog(null, "Horário indisponível");
+						}
+						
+						
+					}
+					
+					else{
+						JOptionPane.showMessageDialog(null, "Paciente não cadastrado");
+					}
+					
 					
 				}
 				

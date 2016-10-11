@@ -10,6 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
+import app.App;
+
 public class TelaAgendamento extends Tela {
 
 	private JLabel nome, cpf, data, horario;
@@ -67,6 +69,43 @@ public class TelaAgendamento extends Tela {
 	
 	}
 	
+	
+public boolean verificarCadastro(){
+		
+		for(int i = 0; i < App.pacientes.size(); i++){
+		
+			if(campoCpf.getText().equals(App.pacientes.get(i).getCpf())){
+				return true;
+			}
+		}
+				
+		return false;
+	}
+	
+	
+	public boolean horarioDisponivel(){
+		
+		for(int i = 0; i < App.agendamento.size(); i++){
+			
+			if(campoData.getText().equals(App.agendamento.get(i).getDataConsulta()) && campoHorario.getText().equals(App.agendamento.get(i).getHorario())){
+				return false;
+			}
+		}		
+		
+		return true;
+	}
+	
+	
+	public boolean campoVazio(){
+		
+		if(!campoNome.getText().equals("") && !campoCpf.getText().equals("  .   .   -  ") && !campoData.getText().equals("  /  /    ") && !campoHorario.getText().equals("  :  ")){
+			return false;
+		}
+		
+		else{
+			return true;
+		}
+	}
 	
 	
 	

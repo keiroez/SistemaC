@@ -47,23 +47,23 @@ public class TelaBuscaPaciente extends Tela {
 		}
 		
 
-		cpf = new JLabel("CPF: ");
-		campoCpf = new JFormattedTextField(m1);
+		//cpf = new JLabel("CPF: ");
+		//campoCpf = new JFormattedTextField(m1);
 
-		pesquisar = new JButton("Pesquisar");
+		//pesquisar = new JButton("Pesquisar");
 
 		Container c = new Container();
 		c.setLayout(new GridLayout(1, 2));
 		c.setSize(400, 20);
 		c.setLocation(10, 10);
-		c.add(cpf);
-		c.add(campoCpf);
+		//c.add(cpf);
+		//c.add(campoCpf);
 	
 		add(barraRolagem);
 
 		add(c);
-		pesquisar.setBounds(450, 10, 100, 20);
-		add(pesquisar);
+		//pesquisar.setBounds(450, 10, 100, 20);
+		//add(pesquisar);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 		Container c2 = new Container();
