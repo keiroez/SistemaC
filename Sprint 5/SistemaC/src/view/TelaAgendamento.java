@@ -2,7 +2,9 @@ package view;
 
 import java.awt.Container;
 import java.awt.GridLayout;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -14,19 +16,20 @@ import javax.swing.JMenuItem;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
+import com.toedter.calendar.JDateChooser;
+
 import app.App;
-import model.Calendario;
+
 
 public class TelaAgendamento extends Tela {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel nome, cpf, data, horario;
-	private JTextField campoNome, campoCpf, campoData, campoHorario;
+	private JTextField campoNome, campoCpf;
 	private JButton agendar;
-	private MaskFormatter m1, m2, m3;
-	private Calendario calendario;
-	private JMenu menu;
+	private MaskFormatter m1;
 	private JComboBox ItensHorario;
+	private JDateChooser dataCalendario;
 	
 	public TelaAgendamento() {
 		
@@ -35,8 +38,6 @@ public class TelaAgendamento extends Tela {
 		
 		try {
 			m1 = new MaskFormatter("###.###.###-##");
-			m2 =  new MaskFormatter("##/##/####");
-			m3 = new MaskFormatter("##:##");
 		} catch (ParseException e) {
 			
 			e.printStackTrace();
@@ -66,20 +67,24 @@ public class TelaAgendamento extends Tela {
 
 		campoNome = new JTextField(20);
 		campoCpf = new JFormattedTextField(m1);
-		calendario = new Calendario();
+		
+		dataCalendario = new JDateChooser();
+		
 		
 		
 		
 		agendar = new JButton("Agendar");
 
 		Container c = new Container();
-		c.setLayout(new GridLayout(2, 2));
-		c.setSize(400, 40);
+		c.setLayout(new GridLayout(3, 2));
+		c.setSize(400, 60);
 		c.setLocation(100, 50);
 		c.add(nome);
 		c.add(campoNome);
 		c.add(cpf);
 		c.add(campoCpf);
+		c.add(data);
+		c.add(dataCalendario);
 		
 
 		
@@ -89,9 +94,7 @@ public class TelaAgendamento extends Tela {
 		ItensHorario.setBounds(300, 110, 70, 20);
 		add(ItensHorario);
 		data.setBounds(100, 50, 100, 100);
-		calendario.setBounds(300, 80, 220, 240);
-		add(calendario);
-		add(data);
+		
 		agendar.setBounds(250, 340, 100, 20);
 		add(agendar);
 		horario.setBounds(100, 70, 100, 100);
@@ -118,9 +121,11 @@ public class TelaAgendamento extends Tela {
 	
 	public boolean horarioDisponivel(){
 		
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		
 		for(int i = 0; i < App.agendamento.size(); i++){
 			
-			if(campoData.getText().equals(App.agendamento.get(i).getDataConsulta()) && campoHorario.getText().equals(App.agendamento.get(i).getHorario())){
+			if(df.format(dataCalendario.getDate()).equals(App.agendamento.get(i).getDataConsulta()) && ItensHorario.getSelectedItem().toString().equals(App.agendamento.get(i).getHorario())){
 				return false;
 			}
 		}		
@@ -131,7 +136,7 @@ public class TelaAgendamento extends Tela {
 	
 	public boolean campoVazio(){
 		
-		if(!campoNome.getText().equals("") && !campoCpf.getText().equals("  .   .   -  ") && !campoData.getText().equals("  /  /    ") && !campoHorario.getText().equals("  :  ")){
+		if(!campoNome.getText().equals("") && !campoCpf.getText().equals("  .   .   -  ") && !dataCalendario.getDate().toString().equals("") && !ItensHorario.getSelectedItem().toString().equals("")){
 			return false;
 		}
 		
@@ -174,12 +179,6 @@ public class TelaAgendamento extends Tela {
 	public void setCampoCpf(JTextField campoCpf) {
 		this.campoCpf = campoCpf;
 	}
-	public JTextField getCampoData() {
-		return campoData;
-	}
-	public void setCampoData(JTextField campoData) {
-		this.campoData = campoData;
-	}
 	public JButton getAgendar() {
 		return agendar;
 	}
@@ -187,46 +186,35 @@ public class TelaAgendamento extends Tela {
 		this.agendar = agendar;
 	}
 
-
-
-
-
-
-	public JTextField getCampoHorario() {
-		return campoHorario;
-	}
-
-
-
-
-
-
-	public void setCampoHorario(JTextField campoHorario) {
-		this.campoHorario = campoHorario;
-	}
-
-
 	public JLabel getHorario() {
 		return horario;
 	}
-
 
 	public void setHorario(JLabel horario) {
 		this.horario = horario;
 	}
 
 
-	public Calendario getCalendario() {
-		return calendario;
+	public JDateChooser getDataCalendario() {
+		return dataCalendario;
 	}
 
 
-	public void setCalendario(Calendario calendario) {
-		this.calendario = calendario;
+	public void setDataCalendario(JDateChooser dataCalendario) {
+		this.dataCalendario = dataCalendario;
 	}
+
+
+	public JComboBox getItensHorario() {
+		return ItensHorario;
+	}
+
+
+	public void setItensHorario(JComboBox itensHorario) {
+		ItensHorario = itensHorario;
+	}
+
 	
-	
-	
-	
+
 	
 }

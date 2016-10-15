@@ -6,14 +6,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JOptionPane;
 
 import app.App;
 import model.Agenda;
-import model.Funcionario;
-import model.Paciente;
 import model.Prontuario;
 import view.TelaAgendamento;
 import view.TelaBuscaFuncionario;
@@ -22,7 +24,7 @@ import view.TelaCadastroFuncionario;
 import view.TelaCadastroPaciente;
 import view.TelaMenu;
 
-public class Controller implements ActionListener, MouseListener{
+public class Controller implements ActionListener{
 
 	private TelaCadastroPaciente tPaciente;
 	private TelaCadastroFuncionario tFuncionario;
@@ -82,8 +84,7 @@ public class Controller implements ActionListener, MouseListener{
 			tAgendamento = new TelaAgendamento();
 			tAgendamento.getAgendar().addActionListener(this);
 			tAgendaIsAtivo = true;
-			tAgendamento.getCalendario().getOk().addActionListener(this);
-			tAgendamento.getCalendario().getCampoData().addMouseListener(this);
+			
 		}
 		
 		
@@ -113,22 +114,11 @@ public class Controller implements ActionListener, MouseListener{
 					if(tBPaciente.getCampoCpf().getText().equals(App.pacientes.get(i))){
 					}
 				}
-
 			}
 		}
 		
 		
 		if(tAgendaIsAtivo){
-			
-			if(e.getSource() == tAgendamento.getCalendario().getOk()){
-				SimpleDateFormat formato = new SimpleDateFormat("ddMMyyyy"); //DEFINE FORMATO DE DATA  
-			    String data = formato.format(tAgendamento.getCalendario().getCalendario().getDate());
-			    tAgendamento.getCalendario().setCampoData(data);
-
-				tAgendamento.getCalendario().getOk().setVisible(false);
-				tAgendamento.getCalendario().getCalendario().setVisible(false);
-			}	
-			
 			
 			if(e.getSource() == tAgendamento.getAgendar()){
 				
@@ -138,8 +128,15 @@ public class Controller implements ActionListener, MouseListener{
 						
 						if(tAgendamento.horarioDisponivel()){
 							
-							App.agendamento.add(new Agenda(tAgendamento.getCampoData().getText(), tAgendamento.getCampoNome().getText(), tAgendamento.getCampoCpf().getText(), tAgendamento.getCampoHorario().getText()));
+							DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+							
+							App.agendamento.add(new Agenda(df.format(tAgendamento.getDataCalendario().getDate()), tAgendamento.getCampoNome().getText(), tAgendamento.getCampoCpf().getText(), tAgendamento.getItensHorario().getSelectedItem().toString()));
 							JOptionPane.showMessageDialog(null, "Consulta agendada com sucesso");
+							
+							
+							
+							System.out.println(tAgendamento.getItensHorario().getSelectedItem().toString());
+							System.out.println(df.format(tAgendamento.getDataCalendario().getDate()));
 						}
 						
 						else{
@@ -171,40 +168,5 @@ public class Controller implements ActionListener, MouseListener{
 		
 	}
 
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		tAgendamento.getCalendario().getOk().setVisible(true);
-		tAgendamento.getCalendario().getCalendario().setVisible(true);
-		
-	}
-
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }
