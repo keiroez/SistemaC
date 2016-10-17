@@ -13,6 +13,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 
 import app.App;
@@ -36,8 +37,8 @@ public class TelaBuscaPaciente extends Tela {
 
 		setTitle("Busca de Paciente");
 		
-		preencherTabela();
-		
+		preencherCabecalhoTabela();
+
 		try {
 			m1 = new MaskFormatter("###.###.###-##");
 			
@@ -46,48 +47,65 @@ public class TelaBuscaPaciente extends Tela {
 			e.printStackTrace();
 		}
 		
+		
+		cpf = new JLabel("CPF: ");
+		campoCpf = new JFormattedTextField(m1);
 
-		//cpf = new JLabel("CPF: ");
-		//campoCpf = new JFormattedTextField(m1);
-
-		//pesquisar = new JButton("Pesquisar");
+		pesquisar = new JButton("Pesquisar");
 
 		Container c = new Container();
 		c.setLayout(new GridLayout(1, 2));
 		c.setSize(400, 20);
 		c.setLocation(10, 10);
-		//c.add(cpf);
-		//c.add(campoCpf);
-	
+		c.add(cpf);
+		c.add(campoCpf);
+		
+		
 		add(barraRolagem);
+		
 
 		add(c);
-		//pesquisar.setBounds(450, 10, 100, 20);
-		//add(pesquisar);
+		pesquisar.setBounds(450, 10, 100, 20);
+		add(pesquisar);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-
-		Container c2 = new Container();
-		c2.setLayout(new GridLayout(7, 2));
-		c2.setSize(500, 800);
-		c2.setLocation(50, 120);
-		add(c2);
-		
 		setVisible(true);
 
 	}
 	
-	public void preencherTabela(){
-		this.dados = new Object[App.pacientes.size()][3];
-		int i=0;
-		for(Paciente pac:App.pacientes){
-			dados[i][0]=pac.getNome();
-			dados[i][1]=pac.getCpf();
-			dados[i][2]=pac.getTelefone();
-			i++;
+	
+	public boolean pacienteBuscado(){
+		
+		DefaultTableModel df = (DefaultTableModel) tabela.getModel();
+		
+		for(int j = 0; j< tabela.getModel().getRowCount(); j++){
+			if(tabela.getValueAt(j, 1).equals(campoCpf.getText())){
+				return true;
+			}
 		}
 		
-		tabela = new JTable(dados, colunas);
-		this.barraRolagem = new JScrollPane(barraRolagem);
+		return false;
+		
+	}
+	
+	public void preencherCabecalhoTabela(){
+		
+		
+		tabela = new JTable();
+		tabela.setModel(new javax.swing.table.DefaultTableModel(
+	            new Object [][] {
+
+	            },
+	            new String [] {
+	                "Nome", "CPF", "Telefone"
+	            }
+	    ));
+		
+		DefaultTableModel df = (DefaultTableModel) tabela.getModel();
+		
+		
+		
+	
+		barraRolagem = new JScrollPane(barraRolagem);
 		barraRolagem.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		barraRolagem.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		barraRolagem = new JScrollPane(tabela);

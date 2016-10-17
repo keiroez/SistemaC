@@ -5,19 +5,24 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.List;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
 
 import app.App;
 import model.Funcionario;
+
+
 
 public class TelaBuscaFuncionario extends Tela {
 	
@@ -29,53 +34,95 @@ public class TelaBuscaFuncionario extends Tela {
 	private JTable tabela;
 	private JScrollPane barraRolagem;
 	private Object [][] dados;
-	String [] colunas = {"Nome", "CPF", "Telefone"};
+	private MaskFormatter m1;
 
 	public TelaBuscaFuncionario() {
 		
-		preencherTabela();
-		
 		setTitle("Busca de Funcionário");
+		
+		preencherCabecalhoTabela();
 
-		//cpf = new JLabel("CPF: ");
-		//campoCpf = new JTextField(20);
+		try {
+			m1 = new MaskFormatter("###.###.###-##");
+			
+		} catch (ParseException e) {
+			
+			e.printStackTrace();
+		}
+		
+		
+		cpf = new JLabel("CPF: ");
+		campoCpf = new JFormattedTextField(m1);
 
-		//pesquisar = new JButton("Pesquisar");
+		pesquisar = new JButton("Pesquisar");
 
 		Container c = new Container();
 		c.setLayout(new GridLayout(1, 2));
 		c.setSize(400, 20);
 		c.setLocation(10, 10);
-		//c.add(cpf);
-		//c.add(campoCpf);
+		c.add(cpf);
+		c.add(campoCpf);
 		
 		
 		add(barraRolagem);
 		
 
 		add(c);
-		//pesquisar.setBounds(450, 10, 100, 20);
-		//add(pesquisar);
+		pesquisar.setBounds(450, 10, 100, 20);
+		add(pesquisar);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}
 	
-	public void preencherTabela(){
-		this.dados = new Object[App.funcionarios.size()][3];
-		int i=0;
-		for(Funcionario func:App.funcionarios){
-			dados[i][0]=func.getNome();
-			dados[i][1]=func.getCpf();
-			dados[i][2]=func.getTelefone();
-			i++;
+	
+	public boolean funcionarioBuscado(){
+		
+		DefaultTableModel df = (DefaultTableModel) tabela.getModel();
+		
+		for(int j = 0; j< tabela.getModel().getRowCount(); j++){
+			if(tabela.getValueAt(j, 1).equals(campoCpf.getText())){
+				return true;
+			}
 		}
 		
-		tabela = new JTable(dados, colunas);
-		this.barraRolagem = new JScrollPane(barraRolagem);
+		return false;
+		
+	}
+	
+	
+	public void preencherCabecalhoTabela(){
+		
+	
+		tabela = new JTable();
+		tabela.setModel(new javax.swing.table.DefaultTableModel(
+	            new Object [][] {
+
+	            },
+	            new String [] {
+	                "Nome", "CPF", "Telefone"
+	            }
+	    ));
+		
+		DefaultTableModel df = (DefaultTableModel) tabela.getModel();
+		
+		
+		
+	
+		barraRolagem = new JScrollPane(barraRolagem);
 		barraRolagem.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		barraRolagem.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		barraRolagem = new JScrollPane(tabela);
 		barraRolagem.setBounds(10, 40, 575, 300);
+	}
+	
+	
+	public void exibirFuncionarios(){
+		
+		
+		
+		
+		
+		
 	}
 	
 
@@ -127,14 +174,6 @@ public class TelaBuscaFuncionario extends Tela {
 		this.dados = dados;
 	}
 
-	public String[] getColunas() {
-		return colunas;
-	}
-
-	public void setColunas(String[] colunas) {
-		this.colunas = colunas;
-	}
-	
 	
 
 }

@@ -4,15 +4,12 @@ package control;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.text.DateFormat;
-import java.text.FieldPosition;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+
 
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 import app.App;
 import model.Agenda;
@@ -68,14 +65,14 @@ public class Controller implements ActionListener{
 		if(e.getSource() == tMenu.getBuscaPacButton()){
 			
 			tBPaciente = new TelaBuscaPaciente();
-			//tBPaciente.getPesquisar().addActionListener(this);
+			tBPaciente.getPesquisar().addActionListener(this);
 			tbpIsAtivo = true;			
 		}
 		
 		if(e.getSource() == tMenu.getBuscaFuncButton()){
 			
 			tBFuncionario = new TelaBuscaFuncionario();
-			//tBFuncionario.getPesquisar().addActionListener(this);
+			tBFuncionario.getPesquisar().addActionListener(this);
 			tbfIsAtivo = true;			
 		}
 		
@@ -111,7 +108,37 @@ public class Controller implements ActionListener{
 			if(e.getSource() == tBPaciente.getPesquisar()){
 				
 				for(int i = 0; i < App.pacientes.size(); i++){
-					if(tBPaciente.getCampoCpf().getText().equals(App.pacientes.get(i))){
+					if(tBPaciente.getCampoCpf().getText().equals(App.pacientes.get(i).getCpf())){
+						
+						
+						if(tBPaciente.pacienteBuscado()){
+							
+						}
+						else{
+							String [] dados = new String[]{App.pacientes.get(i).getNome(), App.pacientes.get(i).getCpf(), App.pacientes.get(i).getTelefone()};
+							DefaultTableModel df = (DefaultTableModel) tBPaciente.getTabela().getModel();
+							df.addRow(dados);
+						}						
+					}
+				}
+			}
+		}
+		
+		if(tbfIsAtivo){
+			if(e.getSource() == tBFuncionario.getPesquisar()){
+				
+				for(int i = 0; i < App.funcionarios.size(); i++){
+					if(tBFuncionario.getCampoCpf().getText().equals(App.funcionarios.get(i).getCpf())){
+						
+						
+						if(tBFuncionario.funcionarioBuscado()){
+							
+						}
+						else{
+							String [] dados = new String[]{App.funcionarios.get(i).getNome(), App.funcionarios.get(i).getCpf(), App.funcionarios.get(i).getTelefone()};
+							DefaultTableModel df = (DefaultTableModel) tBFuncionario.getTabela().getModel();
+							df.addRow(dados);
+						}						
 					}
 				}
 			}
