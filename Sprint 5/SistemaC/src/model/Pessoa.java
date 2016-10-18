@@ -1,22 +1,17 @@
 package model;
 
 public abstract class Pessoa {
-	
-	
-	
+
 	private String nome, rg, cpf, telefone;
 
 	public Pessoa(String nome, String rg, String cpf, String telefone) {
-	
+
 		this.nome = nome;
 		this.rg = rg;
 		this.cpf = cpf;
 		this.telefone = telefone;
 	}
 
-	
-	
-	
 	public String getNome() {
 		return nome;
 	}
@@ -48,12 +43,5 @@ public abstract class Pessoa {
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
-	
-	
-	
-	
-	
-	
-	
 
 }

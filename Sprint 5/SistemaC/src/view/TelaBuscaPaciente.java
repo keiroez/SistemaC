@@ -10,48 +10,40 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
-
-import app.App;
-import model.Funcionario;
-import model.Paciente;
 
 public class TelaBuscaPaciente extends Tela {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel cpf;
 	private JTextField campoCpf;
-	private JButton pesquisar;
+	private JButton pesquisar, remover, abrir;
 	private MaskFormatter m1;
 	private JTable tabela;
 	private JScrollPane barraRolagem;
-	private Object [][] dados;
-	String [] colunas = {"Nome", "CPF", "Telefone"};
-	
-	
+
 	public TelaBuscaPaciente() {
 
 		setTitle("Busca de Paciente");
-		
+
 		preencherCabecalhoTabela();
 
 		try {
 			m1 = new MaskFormatter("###.###.###-##");
-			
+
 		} catch (ParseException e) {
-			
+
 			e.printStackTrace();
 		}
-		
-		
+
 		cpf = new JLabel("CPF: ");
 		campoCpf = new JFormattedTextField(m1);
 
 		pesquisar = new JButton("Pesquisar");
+		remover = new JButton("Remover");
+		abrir = new JButton("Abrir");
 
 		Container c = new Container();
 		c.setLayout(new GridLayout(1, 2));
@@ -59,57 +51,45 @@ public class TelaBuscaPaciente extends Tela {
 		c.setLocation(10, 10);
 		c.add(cpf);
 		c.add(campoCpf);
-		
-		
+
 		add(barraRolagem);
-		
 
 		add(c);
 		pesquisar.setBounds(450, 10, 100, 20);
 		add(pesquisar);
+		remover.setBounds(170, 330, 100, 20);
+		add(remover);
+		abrir.setBounds(300, 330, 100, 20);
+		add(abrir);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);
 
 	}
-	
-	
-	public boolean pacienteBuscado(){
-		
-		DefaultTableModel df = (DefaultTableModel) tabela.getModel();
-		
-		for(int j = 0; j< tabela.getModel().getRowCount(); j++){
-			if(tabela.getValueAt(j, 1).equals(campoCpf.getText())){
+
+	public boolean pacienteBuscado() {
+
+		for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
+			if (tabela.getValueAt(j, 1).equals(campoCpf.getText())) {
 				return true;
 			}
 		}
-		
-		return false;
-		
-	}
-	
-	public void preencherCabecalhoTabela(){
-		
-		
-		tabela = new JTable();
-		tabela.setModel(new javax.swing.table.DefaultTableModel(
-	            new Object [][] {
 
-	            },
-	            new String [] {
-	                "Nome", "CPF", "Telefone"
-	            }
-	    ));
-		
-		DefaultTableModel df = (DefaultTableModel) tabela.getModel();
-		
-		
-		
-	
+		return false;
+
+	}
+
+	public void preencherCabecalhoTabela() {
+
+		tabela = new JTable();
+		tabela.setModel(new javax.swing.table.DefaultTableModel(new Object[][] {
+
+		}, new String[] { "Nome", "CPF", "Telefone" }));
+
 		barraRolagem = new JScrollPane(barraRolagem);
 		barraRolagem.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		barraRolagem.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		barraRolagem = new JScrollPane(tabela);
-		barraRolagem.setBounds(10, 40, 575, 300);
+		barraRolagem.setBounds(10, 40, 575, 280);
 	}
 
 	public JLabel getCpf() {
@@ -160,20 +140,20 @@ public class TelaBuscaPaciente extends Tela {
 		this.barraRolagem = barraRolagem;
 	}
 
-	public Object[][] getDados() {
-		return dados;
+	public JButton getRemover() {
+		return remover;
 	}
 
-	public void setDados(Object[][] dados) {
-		this.dados = dados;
+	public void setRemover(JButton remover) {
+		this.remover = remover;
 	}
 
-	public String[] getColunas() {
-		return colunas;
+	public JButton getAbrir() {
+		return abrir;
 	}
 
-	public void setColunas(String[] colunas) {
-		this.colunas = colunas;
+	public void setAbrir(JButton abrir) {
+		this.abrir = abrir;
 	}
 
 }

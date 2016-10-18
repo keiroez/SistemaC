@@ -5,14 +5,11 @@ import java.awt.GridLayout;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
@@ -28,7 +25,7 @@ public class TelaAgendamento extends Tela {
 	private JTextField campoNome, campoCpf;
 	private JButton agendar;
 	private MaskFormatter m1;
-	private JComboBox ItensHorario;
+	private JComboBox<Object> ItensHorario;
 	private JDateChooser dataCalendario;
 	
 	public TelaAgendamento() {
@@ -205,12 +202,12 @@ public class TelaAgendamento extends Tela {
 	}
 
 
-	public JComboBox getItensHorario() {
+	public JComboBox<Object> getItensHorario() {
 		return ItensHorario;
 	}
 
 
-	public void setItensHorario(JComboBox itensHorario) {
+	public void setItensHorario(JComboBox<Object> itensHorario) {
 		ItensHorario = itensHorario;
 	}
 

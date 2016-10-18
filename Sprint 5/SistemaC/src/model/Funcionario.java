@@ -1,23 +1,15 @@
 package model;
 
-import javax.swing.JOptionPane;
+public class Funcionario extends Pessoa {
 
-import app.App;
-
-public class Funcionario extends Pessoa{
-
-	
 	private String login, senha;
-	
+
 	public Funcionario(String nome, String rg, String cpf, String telefone, String login, String senha) {
 		super(nome, rg, cpf, telefone);
 		this.login = login;
 		this.senha = senha;
 	}
-	
-	
-	
-	
+
 	public String getLogin() {
 		return login;
 	}
@@ -33,8 +25,5 @@ public class Funcionario extends Pessoa{
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	
-	
-	
 
 }

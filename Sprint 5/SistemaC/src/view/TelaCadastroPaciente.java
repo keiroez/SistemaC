@@ -16,26 +16,25 @@ import model.Paciente;
 import model.Prontuario;
 
 public class TelaCadastroPaciente extends Tela {
-	
+
 	private static final long serialVersionUID = 1L;
 	private JLabel nome, rg, cpf, telefone;
 	private JTextField campoNome, campoCpf, campoRg, campoTelefone;
 	private JButton cadastrar;
 	private MaskFormatter m1, m2;
-	
-	
+
 	public TelaCadastroPaciente() {
 
 		setTitle("Cadastro de Paciente");
-		
+
 		try {
 			m1 = new MaskFormatter("###.###.###-##");
-			m2 =  new MaskFormatter("(###) ##### - ####");
+			m2 = new MaskFormatter("(###) ##### - ####");
 		} catch (ParseException e) {
-			
+
 			e.printStackTrace();
 		}
-		
+
 		nome = new JLabel("Nome: ");
 		rg = new JLabel("RG: ");
 		cpf = new JLabel("CPF: ");
@@ -66,44 +65,39 @@ public class TelaCadastroPaciente extends Tela {
 		add(cadastrar);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);
-		
 
 	}
 
-	
-	public void cadastrarPaciente(String nome, String rg, String cpf, String telefone, Prontuario prontuario){
-		
-		
-		if(cpf.equals("") || nome.equals("") || rg.equals("") || telefone.equals("")){
-			
+	public void cadastrarPaciente(String nome, String rg, String cpf, String telefone, Prontuario prontuario) {
+
+		if (cpf.equals("") || nome.equals("") || rg.equals("") || telefone.equals("")) {
+
 			JOptionPane.showMessageDialog(null, "Campo não preenchido");
 		}
-		
-		else{
-			
+
+		else {
+
 			boolean cpfIsCadastrado = false, rgIsCadastrado = false;
-			
-			for(int i = 0; i < App.pacientes.size(); i++){
-				if(App.pacientes.get(i).getCpf().equals(cpf)){
+
+			for (int i = 0; i < App.pacientes.size(); i++) {
+				if (App.pacientes.get(i).getCpf().equals(cpf)) {
 					JOptionPane.showMessageDialog(null, "CPF já cadastrado");
 					cpfIsCadastrado = true;
 				}
-				
-				if(App.pacientes.get(i).getRg().equals(rg)){
+
+				if (App.pacientes.get(i).getRg().equals(rg)) {
 					JOptionPane.showMessageDialog(null, "RG já cadastrado");
 					rgIsCadastrado = true;
 				}
 			}
-			
-			if(!cpfIsCadastrado && !rgIsCadastrado){
+
+			if (!cpfIsCadastrado && !rgIsCadastrado) {
 				App.pacientes.add(new Paciente(nome, rg, cpf, telefone, prontuario));
 				JOptionPane.showMessageDialog(null, "Cadastro efetuado com sucesso");
-			}			
-		}		
+			}
+		}
 	}
-	
-	
-	
+
 	public JLabel getNome() {
 		return nome;
 	}

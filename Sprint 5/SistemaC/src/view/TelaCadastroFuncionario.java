@@ -14,8 +14,6 @@ import javax.swing.text.MaskFormatter;
 
 import app.App;
 import model.Funcionario;
-import model.Paciente;
-import model.Prontuario;
 
 public class TelaCadastroFuncionario extends Tela {
 
@@ -26,19 +24,19 @@ public class TelaCadastroFuncionario extends Tela {
 	private JButton cadastrar;
 	private JPasswordField campoSenha;
 	private MaskFormatter m1, m2;
-	
+
 	public TelaCadastroFuncionario() {
 
 		setTitle("Cadastro de Funcionário");
 
 		try {
 			m1 = new MaskFormatter("###.###.###-##");
-			m2 =  new MaskFormatter("(###) ##### - ####");
+			m2 = new MaskFormatter("(###) ##### - ####");
 		} catch (ParseException e) {
-			
+
 			e.printStackTrace();
 		}
-		
+
 		nome = new JLabel("Nome: ");
 		rg = new JLabel("RG: ");
 		cpf = new JLabel("CPF: ");
@@ -80,46 +78,42 @@ public class TelaCadastroFuncionario extends Tela {
 		setVisible(true);
 
 	}
-	
 
-	
-	public void cadastrarFuncionario(String nome, String rg, String cpf, String telefone, String login, String senha){
-		
-		if(cpf.equals("") || nome.equals("") || rg.equals("") || telefone.equals("") || login.equals("") || senha.equals("")){
-			
+	public void cadastrarFuncionario(String nome, String rg, String cpf, String telefone, String login, String senha) {
+
+		if (cpf.equals("") || nome.equals("") || rg.equals("") || telefone.equals("") || login.equals("")
+				|| senha.equals("")) {
+
 			JOptionPane.showMessageDialog(null, "Campo não preenchido");
 		}
-		
-		else{
+
+		else {
 			boolean cpfCad = false, loginCad = false, rgCad = false;
-			
-			for(int i = 0; i < App.funcionarios.size(); i++){
-				if(App.funcionarios.get(i).getCpf().equals(cpf)){
+
+			for (int i = 0; i < App.funcionarios.size(); i++) {
+				if (App.funcionarios.get(i).getCpf().equals(cpf)) {
 					JOptionPane.showMessageDialog(null, "Este CPF já está cadastrado no sistema");
 					cpfCad = true;
 				}
-				
-				if(App.funcionarios.get(i).getLogin().equals(login)){
+
+				if (App.funcionarios.get(i).getLogin().equals(login)) {
 					JOptionPane.showMessageDialog(null, "Login indisponível");
 					loginCad = true;
 				}
-				
-				if(App.funcionarios.get(i).getRg().equals(rg)){
+
+				if (App.funcionarios.get(i).getRg().equals(rg)) {
 					JOptionPane.showMessageDialog(null, "Este RG já está cadastrado no sistema");
 					rgCad = true;
 				}
 			}
 
-			if(!cpfCad && !loginCad && !rgCad){
+			if (!cpfCad && !loginCad && !rgCad) {
 				App.funcionarios.add(new Funcionario(nome, rg, cpf, telefone, login, senha));
 				JOptionPane.showMessageDialog(null, "Cadastro efetuado com sucesso");
 			}
 		}
-		
-	}
 
-	
-	
+	}
 
 	public JLabel getNome() {
 		return nome;
@@ -224,7 +218,5 @@ public class TelaCadastroFuncionario extends Tela {
 	public void setCampoSenha(JPasswordField campoSenha) {
 		this.campoSenha = campoSenha;
 	}
-
-	
 
 }
