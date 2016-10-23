@@ -2,9 +2,12 @@ package view;
 
 import java.awt.Container;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.ParseException;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -13,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
 import app.App;
+import model.Dados;
 import model.Endereco;
 import model.Funcionario;
 
@@ -21,11 +25,12 @@ public class TelaCadastroFuncionario extends Tela {
 	private static final long serialVersionUID = 1L;
 
 	private JLabel nome, rg, cpf, telefone, login, senha, estado, cidade, rua, bairro, numero;
-	private JTextField campoNome, campoCpf, campoRg, campoTelefone, campoLogin, campoEstado, campoCidade, campoRua, campoBairro, campoNumero;
+	private JTextField campoNome, campoCpf, campoRg, campoTelefone, campoLogin, campoRua, campoBairro, campoNumero;
 	private JButton cadastrar;
 	private JPasswordField campoSenha;
 	private MaskFormatter m1, m2;
-
+	private JComboBox<String> campoEstado;
+	private JComboBox<String> campoCidade;
 	public TelaCadastroFuncionario() {
 
 		setTitle("Cadastro de Funcionário");
@@ -56,11 +61,27 @@ public class TelaCadastroFuncionario extends Tela {
 		campoTelefone = new JFormattedTextField(m2);
 		campoLogin = new JTextField(20);
 		campoSenha = new JPasswordField(20);
-		campoEstado = new JTextField(20);
-		campoCidade = new JTextField(20);
+		campoEstado = new JComboBox<>();
+		campoCidade = new JComboBox<>();
 		campoRua = new JTextField(20);
 		campoBairro = new JTextField(20);
 		campoNumero = new JTextField(20);
+		
+		
+		campoEstado.addItem("...");
+
+		for (String e : Dados.estados) {
+			campoEstado.addItem(e);
+		}
+		
+		campoEstado.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				addCidades(campoEstado.getSelectedIndex());
+			}
+		});
+		
+		
 		
 		cadastrar = new JButton("Cadastrar");
 
@@ -99,11 +120,25 @@ public class TelaCadastroFuncionario extends Tela {
 		setVisible(true);
 
 	}
+	
+	
+	public void addCidades(int indice) {
+
+		campoCidade.removeAllItems();
+
+		if (indice != 0) {
+			campoCidade.addItem("...");
+			for (String cidad : Dados.cidades[indice-1]) {
+				campoCidade.addItem(cidad);
+			}
+		}
+
+	}
 
 	public void cadastrarFuncionario(String nome, String rg, String cpf, String telefone, String login, String senha) {
 
 		if (cpf.equals("") || nome.equals("") || rg.equals("") || telefone.equals("") || login.equals("")
-				|| senha.equals("") || campoEstado.getText().equals("") || campoCidade.getText().equals("") || campoRua.getText().equals("") || campoBairro.getText().equals("") || campoNumero.getText().equals("")) {
+				|| senha.equals("") || campoEstado.getSelectedItem().toString().equals("") || campoCidade.getSelectedItem().toString().equals("") || campoRua.getText().equals("") || campoBairro.getText().equals("") || campoNumero.getText().equals("")) {
 
 			JOptionPane.showMessageDialog(null, "Campo não preenchido");
 		}
@@ -129,7 +164,7 @@ public class TelaCadastroFuncionario extends Tela {
 			}
 
 			if (!cpfCad && !loginCad && !rgCad) {
-				App.funcionarios.add(new Funcionario(nome, rg, cpf, telefone, login, senha, new Endereco(campoEstado.getText(), campoCidade.getText(), campoRua.getText(), campoBairro.getText(), Integer.parseInt(campoNumero.getText()))));
+				App.funcionarios.add(new Funcionario(nome, rg, cpf, telefone, login, senha, new Endereco(campoEstado.getSelectedItem().toString(), campoCidade.getSelectedItem().toString(), campoRua.getText(), campoBairro.getText(), Integer.parseInt(campoNumero.getText()))));
 				JOptionPane.showMessageDialog(null, "Cadastro efetuado com sucesso");
 			}
 		}
@@ -240,4 +275,56 @@ public class TelaCadastroFuncionario extends Tela {
 		this.campoSenha = campoSenha;
 	}
 
+
+	public JTextField getCampoRua() {
+		return campoRua;
+	}
+
+
+	public void setCampoRua(JTextField campoRua) {
+		this.campoRua = campoRua;
+	}
+
+
+	public JTextField getCampoBairro() {
+		return campoBairro;
+	}
+
+
+	public void setCampoBairro(JTextField campoBairro) {
+		this.campoBairro = campoBairro;
+	}
+
+
+	public JTextField getCampoNumero() {
+		return campoNumero;
+	}
+
+
+	public void setCampoNumero(JTextField campoNumero) {
+		this.campoNumero = campoNumero;
+	}
+
+
+	public JComboBox<String> getCampoEstado() {
+		return campoEstado;
+	}
+
+
+	public void setCampoEstado(JComboBox<String> campoEstado) {
+		this.campoEstado = campoEstado;
+	}
+
+
+	public JComboBox<String> getCampoCidade() {
+		return campoCidade;
+	}
+
+
+	public void setCampoCidade(JComboBox<String> campoCidade) {
+		this.campoCidade = campoCidade;
+	}
+	
+	
+	
 }

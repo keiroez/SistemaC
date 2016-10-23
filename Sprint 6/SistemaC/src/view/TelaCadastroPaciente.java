@@ -2,9 +2,12 @@ package view;
 
 import java.awt.Container;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.ParseException;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -12,6 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
 import app.App;
+import model.Dados;
 import model.Endereco;
 import model.Paciente;
 import model.Prontuario;
@@ -20,9 +24,11 @@ public class TelaCadastroPaciente extends Tela {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel nome, rg, cpf, telefone, estado, cidade, rua, bairro, numero;
-	private JTextField campoNome, campoCpf, campoRg, campoTelefone, campoEstado, campoCidade, campoRua, campoBairro, campoNumero;
+	private JTextField campoNome, campoCpf, campoRg, campoTelefone, campoRua, campoBairro, campoNumero;
 	private JButton cadastrar;
 	private MaskFormatter m1, m2;
+	private JComboBox<String> campoEstado;
+	private JComboBox<String> campoCidade;
 
 	public TelaCadastroPaciente() {
 
@@ -42,7 +48,7 @@ public class TelaCadastroPaciente extends Tela {
 		telefone = new JLabel("Telefone: ");
 		estado = new JLabel("Estado: ");
 		cidade = new JLabel("Cidade: ");
-		rua  = new JLabel("Rua: ");
+		rua = new JLabel("Rua: ");
 		bairro = new JLabel("Bairro: ");
 		numero = new JLabel("Número: ");
 
@@ -50,13 +56,24 @@ public class TelaCadastroPaciente extends Tela {
 		campoRg = new JTextField(20);
 		campoCpf = new JFormattedTextField(m1);
 		campoTelefone = new JFormattedTextField(m2);
-		campoEstado = new JTextField(20);
-		campoCidade = new JTextField(20);
+		campoEstado = new JComboBox<>();
+		campoCidade = new JComboBox<>();
 		campoRua = new JTextField(20);
 		campoBairro = new JTextField(20);
 		campoNumero = new JTextField(20);
 		
+		campoEstado.addItem("...");
+
+		for (String e : Dados.estados) {
+			campoEstado.addItem(e);
+		}
 		
+		campoEstado.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				addCidades(campoEstado.getSelectedIndex());
+			}
+		});
 		
 		cadastrar = new JButton("Cadastrar");
 
@@ -89,10 +106,28 @@ public class TelaCadastroPaciente extends Tela {
 		setVisible(true);
 
 	}
+	
+	
+	public void addCidades(int indice) {
+
+		campoCidade.removeAllItems();
+
+		if (indice != 0) {
+			campoCidade.addItem("...");
+			for (String cidad : Dados.cidades[indice-1]) {
+				campoCidade.addItem(cidad);
+			}
+		}
+
+	}
+	
+	
 
 	public void cadastrarPaciente(String nome, String rg, String cpf, String telefone, Prontuario prontuario) {
 
-		if (cpf.equals("") || nome.equals("") || rg.equals("") || telefone.equals("") || campoEstado.getText().equals("") || campoCidade.getText().equals("") || campoRua.getText().equals("") || campoBairro.getText().equals("") || campoNumero.getText().equals("")) {
+		if (cpf.equals("") || nome.equals("") || rg.equals("") || telefone.equals("")
+				|| campoEstado.getSelectedItem().toString().equals("...") || campoCidade.getSelectedItem().toString().equals("...") || campoRua.getText().equals("")
+				|| campoBairro.getText().equals("") || campoNumero.getText().equals("")) {
 
 			JOptionPane.showMessageDialog(null, "Campo não preenchido");
 		}
@@ -114,7 +149,9 @@ public class TelaCadastroPaciente extends Tela {
 			}
 
 			if (!cpfIsCadastrado && !rgIsCadastrado) {
-				App.pacientes.add(new Paciente(nome, rg, cpf, telefone, prontuario, new Endereco(campoEstado.getText(), campoCidade.getText(), campoRua.getText(), campoBairro.getText(), Integer.parseInt(campoNumero.getText()))));
+				App.pacientes.add(new Paciente(nome, rg, cpf, telefone, prontuario,
+						new Endereco(campoEstado.getSelectedItem().toString(), campoCidade.getSelectedItem().toString(), campoRua.getText(),
+								campoBairro.getText(), Integer.parseInt(campoNumero.getText()))));
 				JOptionPane.showMessageDialog(null, "Cadastro efetuado com sucesso");
 			}
 		}
