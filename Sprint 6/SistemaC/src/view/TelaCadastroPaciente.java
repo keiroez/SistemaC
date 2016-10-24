@@ -9,6 +9,7 @@ import java.text.ParseException;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -20,7 +21,7 @@ import model.Endereco;
 import model.Paciente;
 import model.Prontuario;
 
-public class TelaCadastroPaciente extends Tela {
+public class TelaCadastroPaciente extends TelaInternal {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel nome, rg, cpf, telefone, estado, cidade, rua, bairro, numero;
@@ -31,6 +32,7 @@ public class TelaCadastroPaciente extends Tela {
 	private JComboBox<String> campoCidade;
 
 	public TelaCadastroPaciente() {
+		super("Paciente");
 
 		setTitle("Cadastro de Paciente");
 
@@ -100,10 +102,9 @@ public class TelaCadastroPaciente extends Tela {
 		c.add(numero);
 		c.add(campoNumero);
 		add(c);
-		cadastrar.setBounds(250, 300, 100, 20);
+		cadastrar.setBounds(250, 250, 100, 20);
 		add(cadastrar);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setVisible(true);
 
 	}
 	

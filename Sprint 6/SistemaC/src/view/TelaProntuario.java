@@ -13,7 +13,7 @@ import javax.swing.border.EtchedBorder;
 
 import model.Paciente;
 
-public class TelaProntuario extends Tela {
+public class TelaProntuario extends TelaInternal {
 
 	private static final long serialVersionUID = 1L;
 	private JTextArea campoTextArea;
@@ -23,7 +23,7 @@ public class TelaProntuario extends Tela {
 
 	public TelaProntuario() {
 
-		setTitle("Prontuario");
+		super("Prontuario");
 
 		this.campoLabel = new JLabel("Preencha o prontuário abaixo:");
 		this.campoTextArea = new JTextArea();

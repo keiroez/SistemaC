@@ -7,14 +7,10 @@ public abstract class Tela extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	public Tela() {
-
-		setSize(600, 400);
+		setSize(800, 600);
 		setLocationRelativeTo(null);
-		setLayout(null);
-
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 	}
 
 }

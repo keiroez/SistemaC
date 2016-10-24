@@ -9,6 +9,7 @@ import java.text.ParseException;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -20,7 +21,7 @@ import model.Dados;
 import model.Endereco;
 import model.Funcionario;
 
-public class TelaCadastroFuncionario extends Tela {
+public class TelaCadastroFuncionario extends TelaInternal{
 
 	private static final long serialVersionUID = 1L;
 
@@ -32,6 +33,7 @@ public class TelaCadastroFuncionario extends Tela {
 	private JComboBox<String> campoEstado;
 	private JComboBox<String> campoCidade;
 	public TelaCadastroFuncionario() {
+		super("Funcionario");
 
 		setTitle("Cadastro de Funcionário");
 
@@ -113,12 +115,8 @@ public class TelaCadastroFuncionario extends Tela {
 		c.add(campoSenha);
 
 		add(c);
-		cadastrar.setBounds(250, 300, 100, 20);
+		cadastrar.setBounds(250, 250, 100, 20);
 		add(cadastrar);
-
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setVisible(true);
-
 	}
 	
 	

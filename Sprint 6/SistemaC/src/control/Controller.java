@@ -6,6 +6,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import javax.swing.JOptionPane;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.table.DefaultTableModel;
 
 import app.App;
@@ -16,6 +18,7 @@ import view.TelaBuscaFuncionario;
 import view.TelaBuscaPaciente;
 import view.TelaCadastroFuncionario;
 import view.TelaCadastroPaciente;
+import view.TelaMenu;
 import view.TelaMenu;
 import view.TelaProntuario;
 
@@ -32,56 +35,56 @@ public class Controller implements ActionListener {
 	public Controller(TelaMenu tMenu) {
 		this.tMenu = tMenu;
 
-		this.tMenu.getCadFuncButton().addActionListener(this);
-		this.tMenu.getCadPacButton().addActionListener(this);
-		this.tMenu.getBuscaPacButton().addActionListener(this);
-		this.tMenu.getBuscaFuncButton().addActionListener(this);
-		this.tMenu.getAgendaButton().addActionListener(this);
-		this.tMenu.getSairButton().addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
-		if (e.getSource() == tMenu.getCadFuncButton()) {
-
-			tFuncionario = new TelaCadastroFuncionario();
-			tFuncionario.getCadastrar().addActionListener(this);
-			tfIsAtivo = true;
-		}
-
-		if (e.getSource() == tMenu.getCadPacButton()) {
-
+		
+		if(e.getSource()==tMenu.getJmCadCliente()){
 			tPaciente = new TelaCadastroPaciente();
+			tPaciente.setVisible(true);
 			tPaciente.getCadastrar().addActionListener(this);
+			tMenu.jdPane.add(tPaciente);
 			tpIsAtivo = true;
 		}
-
-		if (e.getSource() == tMenu.getBuscaPacButton()) {
-
+		
+		if(e.getSource()==tMenu.getJmCadFuncionario()){
+			tFuncionario = new TelaCadastroFuncionario();
+			tFuncionario.setVisible(true);
+			tFuncionario.getCadastrar().addActionListener(this);
+			tMenu.jdPane.add(tFuncionario);
+			tfIsAtivo = true;
+		}
+		
+		if(e.getSource()==tMenu.getJmBuscPaciente()){
 			tBPaciente = new TelaBuscaPaciente();
+			tBPaciente.setVisible(true);
 			tBPaciente.getPesquisar().addActionListener(this);
 			tBPaciente.getRemover().addActionListener(this);
 			tBPaciente.getAbrir().addActionListener(this);
+			tMenu.jdPane.add(tBPaciente);
 			tbpIsAtivo = true;
 		}
-
-		if (e.getSource() == tMenu.getBuscaFuncButton()) {
-
+		
+		if(e.getSource()==tMenu.getJmBuscFuncionario()){
 			tBFuncionario = new TelaBuscaFuncionario();
+			tBFuncionario.setVisible(true);
 			tBFuncionario.getPesquisar().addActionListener(this);
+			tMenu.jdPane.add(tBFuncionario);
 			tbfIsAtivo = true;
 		}
-
-		if (e.getSource() == tMenu.getAgendaButton()) {
-
+		
+		if(e.getSource()==tMenu.getJmAgendarConsulta()){
 			tAgendamento = new TelaAgendamento();
+			tAgendamento.setVisible(true);
 			tAgendamento.getAgendar().addActionListener(this);
 			tAgendamento.getBuscaP().addActionListener(this);
 			tAgendamento.getBuscaF().addActionListener(this);
+			tMenu.jdPane.add(tAgendamento);
 			tAgendaIsAtivo = true;
-
 		}
+		
+	
 
 		if (tfIsAtivo) {
 
@@ -161,7 +164,13 @@ public class Controller implements ActionListener {
 		if (tAgendaIsAtivo) {
 			
 			if (e.getSource() == tAgendamento.getBuscaP()) {
+				
 				tBPaciente = new TelaBuscaPaciente();
+				tBPaciente.setVisible(true);
+				tBPaciente.getPesquisar().addActionListener(this);
+				tMenu.jdPane.add(tBPaciente);
+				tAgendamento.setVisible(false);
+				
 				tBPaciente.getAbrir().setText("Selecionar");
 				tBPaciente.getAbrir().setBounds(250, 330, 100, 20);
 				tBPaciente.getRemover().setVisible(false);
@@ -171,6 +180,7 @@ public class Controller implements ActionListener {
 					public void actionPerformed(ActionEvent e) {
 						tAgendamento.getCampoNomePaciente().setText((String) tBPaciente.getTabela().getValueAt(0, 0));
 						tAgendamento.setCpfPaciente((String) tBPaciente.getTabela().getValueAt(0, 1));
+						tAgendamento.setVisible(true);
 						tBPaciente.dispose();
 						
 					}
@@ -211,14 +221,19 @@ public class Controller implements ActionListener {
 			if (e.getSource() == tAgendamento.getBuscaF()){
 				
 				tBFuncionario = new TelaBuscaFuncionario();
+				tBFuncionario.setVisible(true);
+				tBFuncionario.getPesquisar().addActionListener(this);
+				tMenu.jdPane.add(tBFuncionario);
+				tAgendamento.setVisible(false);
+				
 				tBFuncionario.getRemover().setText("Selecionar");
 				tBFuncionario.getRemover().addActionListener(new ActionListener() {
 					
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						tAgendamento.getCampoNomeFuncionario().setText((String) tBFuncionario.getTabela().getValueAt(0, 0));
+						tAgendamento.setVisible(true);
 						tBFuncionario.dispose();
-						
 					}
 				});
 				
@@ -282,10 +297,94 @@ public class Controller implements ActionListener {
 			}
 		}
 
-		if (e.getSource() == tMenu.getSairButton()) {
-			System.exit(0);
-		}
+	}
 
+	public TelaCadastroPaciente gettPaciente() {
+		return tPaciente;
+	}
+
+	public void settPaciente(TelaCadastroPaciente tPaciente) {
+		this.tPaciente = tPaciente;
+	}
+
+	public TelaCadastroFuncionario gettFuncionario() {
+		return tFuncionario;
+	}
+
+	public void settFuncionario(TelaCadastroFuncionario tFuncionario) {
+		this.tFuncionario = tFuncionario;
+	}
+
+	public TelaBuscaPaciente gettBPaciente() {
+		return tBPaciente;
+	}
+
+	public void settBPaciente(TelaBuscaPaciente tBPaciente) {
+		this.tBPaciente = tBPaciente;
+	}
+
+	public TelaAgendamento gettAgendamento() {
+		return tAgendamento;
+	}
+
+	public void settAgendamento(TelaAgendamento tAgendamento) {
+		this.tAgendamento = tAgendamento;
+	}
+
+	public TelaBuscaFuncionario gettBFuncionario() {
+		return tBFuncionario;
+	}
+
+	public void settBFuncionario(TelaBuscaFuncionario tBFuncionario) {
+		this.tBFuncionario = tBFuncionario;
+	}
+
+	public TelaMenu gettMenu() {
+		return tMenu;
+	}
+
+	public void settMenu(TelaMenu tMenu) {
+		this.tMenu = tMenu;
+	}
+
+	public boolean isTfIsAtivo() {
+		return tfIsAtivo;
+	}
+
+	public void setTfIsAtivo(boolean tfIsAtivo) {
+		this.tfIsAtivo = tfIsAtivo;
+	}
+
+	public boolean isTpIsAtivo() {
+		return tpIsAtivo;
+	}
+
+	public void setTpIsAtivo(boolean tpIsAtivo) {
+		this.tpIsAtivo = tpIsAtivo;
+	}
+
+	public boolean isTbpIsAtivo() {
+		return tbpIsAtivo;
+	}
+
+	public void setTbpIsAtivo(boolean tbpIsAtivo) {
+		this.tbpIsAtivo = tbpIsAtivo;
+	}
+
+	public boolean isTbfIsAtivo() {
+		return tbfIsAtivo;
+	}
+
+	public void setTbfIsAtivo(boolean tbfIsAtivo) {
+		this.tbfIsAtivo = tbfIsAtivo;
+	}
+
+	public boolean istAgendaIsAtivo() {
+		return tAgendaIsAtivo;
+	}
+
+	public void settAgendaIsAtivo(boolean tAgendaIsAtivo) {
+		this.tAgendaIsAtivo = tAgendaIsAtivo;
 	}
 
 }

@@ -8,6 +8,7 @@ import model.Funcionario;
 import model.Paciente;
 
 import view.TelaMenu;
+import view.TelaMenu;
 
 public class App {
 
@@ -17,8 +18,5 @@ public class App {
 
 	public static void main(String[] args) {
 		TelaMenu tm = new TelaMenu();
-		new Thread(tm).start();
-		new Controller(tm);
-
 	}
 }

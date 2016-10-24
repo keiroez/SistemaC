@@ -1,197 +1,150 @@
 package view;
 
-import java.awt.Color;
-import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import java.awt.GridLayout;
+import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
+import control.Controller;
 
-public class TelaMenu extends Tela implements Runnable {
-
-	private static final long serialVersionUID = 1L;
-	private JButton CadPacButton, CadFuncButton, agendaButton, buscaPacButton, buscaFuncButton, sairButton;
-	private JLabel logo;
-	private String direcao;
-	private int posX, posY;
-
+public class TelaMenu extends Tela{
+	private JMenuBar jmPrincipal = new JMenuBar();
+	private JMenu jmCadastro = new JMenu("Cadastros");
+	private JMenu jmBusca = new JMenu("Busca");
+	private JMenu jmAgenda = new JMenu("Agenda");
+	private JMenuItem jmCadCliente = new JMenuItem("Cadastrar Paciente");
+	private JMenuItem jmCadFuncionario = new JMenuItem("Cadastrar Funcionário");
+	private JMenuItem jmBuscPaciente = new JMenuItem("Buscar Paciente");
+	private JMenuItem jmBuscFuncionario = new JMenuItem("Buscar Funcionário");
+	private JMenuItem jmAgendarConsulta = new JMenuItem("Agendar consulta");
+	private JMenuItem jmConsultarAgendamento = new JMenuItem("Consultar Agendamentos");
+	public JDesktopPane jdPane = new JDesktopPane();
+	private Controller controle = new Controller(this);
+	
+	
 	public TelaMenu() {
-
-		direcao = "direita";
-		logo = new JLabel(new ImageIcon("resource/logo.png"));
-		logo.setBounds(0, 100, 153, 94);
-		add(logo);
-
-		getContentPane().setBackground(Color.BLACK);
-		this.CadPacButton = new JButton("Cadastrar paciente");
-		this.CadFuncButton = new JButton("Cadastrar Funcionario");
-		this.agendaButton = new JButton("Agenda");
-		this.buscaPacButton = new JButton("Buscar Paciente");
-		this.buscaFuncButton = new JButton("Buscar Funcionario");
-		this.sairButton = new JButton("Sair");
-
-		Container c = new Container();
-		c.setLayout(new GridLayout(7, 2, 20, 30));
-		c.setSize(200, 400);
-		c.setLocation(400, 20);
-		c.add(CadPacButton);
-		c.add(CadFuncButton);
-		c.add(agendaButton);
-		c.add(buscaPacButton);
-		c.add(buscaFuncButton);
-		c.add(sairButton);
-		add(c);
-
-		this.setVisible(true);
+		getContentPane().add(jdPane);
+		
+		jmPrincipal.add(jmCadastro);
+		jmPrincipal.add(jmBusca);
+		jmPrincipal.add(jmAgenda);
+		
+		jmCadastro.add(jmCadCliente);
+		jmCadastro.add(jmCadFuncionario);
+		jmBusca.add(jmBuscPaciente);
+		jmBusca.add(jmBuscFuncionario);
+		jmAgenda.add(jmAgendarConsulta);
+		jmAgenda.add(jmConsultarAgendamento);
+		
+		setJMenuBar(jmPrincipal);
+		
+		jmCadCliente.addActionListener(controle);
+		jmCadFuncionario.addActionListener(controle);
+		jmBuscPaciente.addActionListener(controle);
+		jmBuscFuncionario.addActionListener(controle);
+		jmAgendarConsulta.addActionListener(controle);
+		jmConsultarAgendamento.addActionListener(controle);
+		setVisible(true);
 	}
 
-	@Override
-	public void run() {
-
-		try {
-			while (true) {
-
-				Thread.sleep(15);
-				logo.setLocation(posX, posY);
-				atualizarDirecao();
-				logo.setLocation(posX, posY);
-
-				if (direcao.equals("direita")) {
-					posX++;
-				}
-				if (direcao.equals("esquerda")) {
-					posX--;
-				}
-
-				if (direcao.equals("cima")) {
-					posY--;
-				}
-
-				if (direcao.equals("baixo")) {
-					posY++;
-				}
-
-				logo.setLocation(posX, posY);
-				atualizarDirecao();
-				logo.setLocation(posX, posY);
-			}
-		}
-
-		catch (InterruptedException e) {
-
-			e.printStackTrace();
-		}
-
+	public JMenuBar getJmPrincipal() {
+		return jmPrincipal;
 	}
 
-	public void atualizarDirecao() {
-
-		if (direcao.equals("direita")) {
-			if (posX >= 240) {
-				direcao = "baixo";
-			}
-		}
-
-		if (direcao.equals("baixo")) {
-			if (posY >= 280) {
-				direcao = "esquerda";
-			}
-		}
-
-		if (direcao.equals("esquerda")) {
-			if (posX <= 0) {
-				direcao = "cima";
-			}
-		}
-
-		if (direcao.equals("cima")) {
-			if (posY <= 0) {
-				direcao = "direita";
-			}
-		}
-
+	public void setJmPrincipal(JMenuBar jmPrincipal) {
+		this.jmPrincipal = jmPrincipal;
 	}
 
-	public JButton getCadPacButton() {
-		return CadPacButton;
+	public JMenu getJmCadastro() {
+		return jmCadastro;
 	}
 
-	public void setCadPacButton(JButton cadPacButton) {
-		CadPacButton = cadPacButton;
+	public void setJmCadastro(JMenu jmCadastro) {
+		this.jmCadastro = jmCadastro;
 	}
 
-	public JButton getCadFuncButton() {
-		return CadFuncButton;
+	public JMenuItem getJmCadCliente() {
+		return jmCadCliente;
 	}
 
-	public void setCadFuncButton(JButton cadFuncButton) {
-		CadFuncButton = cadFuncButton;
+	public void setJmCadCliente(JMenuItem jmCadCliente) {
+		this.jmCadCliente = jmCadCliente;
 	}
 
-	public JButton getAgendaButton() {
-		return agendaButton;
+	public JMenuItem getJmCadFuncionario() {
+		return jmCadFuncionario;
 	}
 
-	public void setAgendaButton(JButton agendaButton) {
-		this.agendaButton = agendaButton;
+	public void setJmCadFuncionario(JMenuItem jmCadFuncionario) {
+		this.jmCadFuncionario = jmCadFuncionario;
 	}
 
-	public JButton getBuscaPacButton() {
-		return buscaPacButton;
+	public JDesktopPane getJdPane() {
+		return jdPane;
 	}
 
-	public void setBuscaPacButton(JButton buscaPacButton) {
-		this.buscaPacButton = buscaPacButton;
+	public void setJdPane(JDesktopPane jdPane) {
+		this.jdPane = jdPane;
 	}
 
-	public JButton getBuscaFuncButton() {
-		return buscaFuncButton;
+	public JMenu getJmBusca() {
+		return jmBusca;
 	}
 
-	public void setBuscaFuncButton(JButton buscaFuncButton) {
-		this.buscaFuncButton = buscaFuncButton;
+	public void setJmBusca(JMenu jmBusca) {
+		this.jmBusca = jmBusca;
 	}
 
-	public JButton getSairButton() {
-		return sairButton;
+	public JMenuItem getJmBuscPaciente() {
+		return jmBuscPaciente;
 	}
 
-	public void setSairButton(JButton sairButton) {
-		this.sairButton = sairButton;
+	public void setJmBuscPaciente(JMenuItem jmBuscPaciente) {
+		this.jmBuscPaciente = jmBuscPaciente;
 	}
 
-	public JLabel getLogo() {
-		return logo;
+	public JMenuItem getJmBuscFuncionario() {
+		return jmBuscFuncionario;
 	}
 
-	public void setLogo(JLabel logo) {
-		this.logo = logo;
+	public void setJmBuscFuncionario(JMenuItem jmBuscFuncionario) {
+		this.jmBuscFuncionario = jmBuscFuncionario;
 	}
 
-	public String getDirecao() {
-		return direcao;
+	public Controller getControle() {
+		return controle;
 	}
 
-	public void setDirecao(String direcao) {
-		this.direcao = direcao;
+	public void setControle(Controller controle) {
+		this.controle = controle;
 	}
 
-	public int getPosX() {
-		return posX;
+	public JMenu getJmAgenda() {
+		return jmAgenda;
 	}
 
-	public void setPosX(int posX) {
-		this.posX = posX;
+	public void setJmAgenda(JMenu jmAgenda) {
+		this.jmAgenda = jmAgenda;
 	}
 
-	public int getPosY() {
-		return posY;
+	public JMenuItem getJmAgendarConsulta() {
+		return jmAgendarConsulta;
 	}
 
-	public void setPosY(int posY) {
-		this.posY = posY;
+	public void setJmAgendarConsulta(JMenuItem jmAgendarConsulta) {
+		this.jmAgendarConsulta = jmAgendarConsulta;
 	}
 
+	public JMenuItem getJmConsultarAgendamento() {
+		return jmConsultarAgendamento;
+	}
+
+	public void setJmConsultarAgendamento(JMenuItem jmConsultarAgendamento) {
+		this.jmConsultarAgendamento = jmConsultarAgendamento;
+	}
 }

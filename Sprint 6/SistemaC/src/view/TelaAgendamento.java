@@ -22,7 +22,7 @@ import app.App;
 import model.Paciente;
 
 
-public class TelaAgendamento extends Tela {
+public class TelaAgendamento extends TelaInternal {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel nomePaciente, nomeFuncionario, data, horario;
@@ -35,9 +35,7 @@ public class TelaAgendamento extends Tela {
 	private String cpfPaciente, cpfFuncionario;
 	
 	public TelaAgendamento() {
-		
-		
-		setTitle("Ageendamento de consulta");
+		super("Agendamento de consulta");
 		
 	
 		
@@ -104,7 +102,6 @@ public class TelaAgendamento extends Tela {
 		buscaF.setBounds(500, 70, 20, 20);
 		add(buscaF);
 		
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);
 	
 	}

@@ -18,7 +18,7 @@ import javax.swing.text.MaskFormatter;
 
 import app.App;
 
-public class TelaBuscaFuncionario extends Tela {
+public class TelaBuscaFuncionario extends TelaInternal {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel cpf;
@@ -29,8 +29,7 @@ public class TelaBuscaFuncionario extends Tela {
 	private MaskFormatter m1;
 
 	public TelaBuscaFuncionario() {
-
-		setTitle("Busca de Funcionário");
+		super("Busca Funcionario");
 
 		preencherCabecalhoTabela();
 

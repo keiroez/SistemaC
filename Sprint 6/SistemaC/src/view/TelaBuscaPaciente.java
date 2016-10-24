@@ -19,7 +19,7 @@ import javax.swing.text.MaskFormatter;
 import app.App;
 import model.Paciente;
 
-public class TelaBuscaPaciente extends Tela {
+public class TelaBuscaPaciente extends TelaInternal {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel cpf;
@@ -30,8 +30,7 @@ public class TelaBuscaPaciente extends Tela {
 	private JScrollPane barraRolagem;
 
 	public TelaBuscaPaciente() {
-
-		setTitle("Busca de Paciente");
+		super("Busca Paciente");
 
 		preencherCabecalhoTabela();
 
