@@ -82,6 +82,7 @@ public class Controller implements ActionListener {
 			tAgendamento.getBuscaF().addActionListener(this);
 			tMenu.jdPane.add(tAgendamento);
 			tAgendaIsAtivo = true;
+			new Thread(tAgendamento).start();
 		}
 		
 	

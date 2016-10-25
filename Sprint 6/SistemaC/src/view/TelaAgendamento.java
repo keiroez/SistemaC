@@ -22,7 +22,7 @@ import app.App;
 import model.Paciente;
 
 
-public class TelaAgendamento extends TelaInternal {
+public class TelaAgendamento extends TelaInternal implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel nomePaciente, nomeFuncionario, data, horario;
@@ -37,7 +37,7 @@ public class TelaAgendamento extends TelaInternal {
 	public TelaAgendamento() {
 		super("Agendamento de consulta");
 		
-	
+		
 		
 		ItensHorario = new JComboBox<>();
 		
@@ -52,7 +52,6 @@ public class TelaAgendamento extends TelaInternal {
 				if(i==15 && j == 0){
 					ItensHorario.addItem(""+i+":"+""+j+"0");
 				}
-				
 			}
 		}
 		
@@ -103,7 +102,8 @@ public class TelaAgendamento extends TelaInternal {
 		add(buscaF);
 		
 		setVisible(true);
-	
+		
+		
 	}
 	
 	
@@ -287,6 +287,18 @@ public class TelaAgendamento extends TelaInternal {
 
 	public void setItensHorario(JComboBox<Object> itensHorario) {
 		ItensHorario = itensHorario;
+	}
+
+
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		while(true){
+			if(dataCalendario.getDate()!=null);
+				//System.out.println(df.format(dataCalendario.getDate()));
+		}
 	}
 
 	
