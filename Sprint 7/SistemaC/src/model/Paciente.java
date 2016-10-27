@@ -1,22 +1,28 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Paciente extends Pessoa {
 
-	private Prontuario protuario;
+	private ArrayList<Prontuario> protuario;
 
-	public Paciente(String nome, String rg, String cpf, String telefone, Prontuario prontuario, Endereco endereco) {
+	public Paciente(String nome, String rg, String cpf, String telefone, Endereco endereco) {
 		super(nome, rg, cpf, telefone, endereco);
-
-		this.protuario = prontuario;
+		
+		this.protuario = new ArrayList<>();
 
 	}
 
-	public Prontuario getProtuario() {
+	public ArrayList<Prontuario> getProtuario() {
 		return protuario;
 	}
 
-	public void setProtuario(Prontuario protuario) {
+	public void setProtuario(ArrayList<Prontuario> protuario) {
 		this.protuario = protuario;
 	}
+	
+	
+
+	
 
 }

@@ -70,25 +70,20 @@ public class TelaBuscaPaciente extends TelaInternal {
 
 	}
 
-	public boolean pacienteBuscado() {
-
-		for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
-			
-			for(Paciente p: App.pacientes){
-				if (tabela.getValueAt(j, 1).equals(p.getCpf())) {
-					return true;
-				}
-			}
-			
-		}
-
-		return false;
-
-	}
-
 	public void preencherCabecalhoTabela() {
 
-		tabela = new JTable();
+		tabela = new JTable(){
+			
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+			
+			
+		};
+		
 		tabela.setModel(new javax.swing.table.DefaultTableModel(new Object[][] {
 
 		}, new String[] { "Nome", "CPF", "Telefone" }));
@@ -100,100 +95,7 @@ public class TelaBuscaPaciente extends TelaInternal {
 		barraRolagem.setBounds(10, 40, 575, 280);
 	}
 	
-	public boolean pacienteIsCadastrado(){
-		
-		for (int i = 0; i < App.pacientes.size(); i++) {
-			if (campoCpf.getText().equals(App.pacientes.get(i).getCpf())) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
 	
-	public void pesquisarPaciente(){
-		
-		if(!campoCpf.getText().equals("   .   .   -  ")){
-			
-			if(pacienteIsCadastrado()){
-				for (int i = 0; i < App.pacientes.size(); i++) {
-					if (campoCpf.getText().equals(App.pacientes.get(i).getCpf())) {
-
-						if (pacienteBuscado()){
-							JOptionPane.showMessageDialog(null, "Busca já foi realizada");
-						} else {
-							
-							for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
-								DefaultTableModel df = (DefaultTableModel) tabela.getModel();
-								df.removeRow(j);
-							}
-							
-							String[] dados = new String[] { App.pacientes.get(i).getNome(),
-							App.pacientes.get(i).getCpf(), App.pacientes.get(i).getTelefone() };
-							DefaultTableModel df = (DefaultTableModel) tabela.getModel();
-							df.addRow(dados);
-							campoCpf.setText("");
-							break;
-						}					
-					}			
-				}
-			}else{
-				for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
-					DefaultTableModel df = (DefaultTableModel) tabela.getModel();
-					df.removeRow(j);
-				}				
-				JOptionPane.showMessageDialog(null, "Paciente não encontrado");	
-				campoCpf.setText("");			
-			}			
-		}
-			
-		else{
-			for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
-				DefaultTableModel df = (DefaultTableModel) tabela.getModel();
-				df.removeRow(j);
-			}
-			
-			JOptionPane.showMessageDialog(null, "Campo cpf não preenchido");
-		}
-		
-	}
-	
-	public boolean pacienteSelecionado(){
-		for(int i = 0; i < tabela.getRowCount(); i++){
-			if(tabela.isRowSelected(i)){
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	public void removerPaciente(){
-		
-		if(pacienteSelecionado()){
-			
-			for (int i = 0; i < App.pacientes.size(); i++) {
-				if (App.pacientes.get(i).getCpf().equals(tabela.getValueAt(0, 1))) {
-					String nome = App.pacientes.get(i).getNome();
-					App.pacientes.remove(i);
-					DefaultTableModel df = (DefaultTableModel) tabela.getModel();
-					df.removeRow(tabela.getSelectedRow());
-					JOptionPane.showMessageDialog(null, "Paciente "+nome+" removido com sucesso");
-					break;
-				}
-			}
-			
-			
-		}
-		else{
-			JOptionPane.showMessageDialog(null, "Nenhum paciente selecionado");
-		}
-		
-		
-	}
-
-
-
 	public JLabel getCpf() {
 		return cpf;
 	}

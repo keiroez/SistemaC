@@ -11,7 +11,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 
-import model.Paciente;
 
 public class TelaProntuario extends TelaInternal {
 
@@ -60,12 +59,7 @@ public class TelaProntuario extends TelaInternal {
 		setVisible(true);
 	}
 
-	public void preencherProntuario(Paciente p) {
-
-		campoTextArea.setText(p.getProtuario().getHistorico());
-
-	}
-
+	
 	public JButton getSalvarButton() {
 		return salvarButton;
 	}

@@ -2,27 +2,23 @@ package view;
 
 import java.awt.Container;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.text.MaskFormatter;
-import javax.xml.crypto.dsig.CanonicalizationMethod;
 
 import com.toedter.calendar.JDateChooser;
 
 import app.App;
-import model.Paciente;
+import model.Disponibilidade;
 
 
-public class TelaAgendamento extends TelaInternal implements Runnable {
+
+public class TelaAgendamento extends TelaInternal implements Runnable{
 
 	private static final long serialVersionUID = 1L;
 	private JLabel nomePaciente, nomeFuncionario, data, horario;
@@ -34,26 +30,13 @@ public class TelaAgendamento extends TelaInternal implements Runnable {
 	private JButton buscaP, buscaF;
 	private String cpfPaciente, cpfFuncionario;
 	
+	
+	
 	public TelaAgendamento() {
 		super("Agendamento de consulta");
 		
 		
-		
 		ItensHorario = new JComboBox<>();
-		
-				
-		for(int i = 9; i <= 15; i++){
-			for(int j = 0; j<60; j+=20){
-				
-				if(i<15) {
-					if(j==0) ItensHorario.addItem(""+i+":"+""+j+"0");
-					else ItensHorario.addItem(""+i+":"+""+j);
-				}
-				if(i==15 && j == 0){
-					ItensHorario.addItem(""+i+":"+""+j+"0");
-				}
-			}
-		}
 		
 		nomePaciente = new JLabel("Paciente: ");
 		nomeFuncionario = new JLabel("Funcionário: ");
@@ -102,37 +85,6 @@ public class TelaAgendamento extends TelaInternal implements Runnable {
 		add(buscaF);
 		
 		setVisible(true);
-		
-		
-	}
-	
-	
-		
-	public boolean horarioDisponivel(){
-		
-		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-		
-		for(int i = 0; i < App.agendamento.size(); i++){
-			
-			if(df.format(dataCalendario.getDate()).equals(App.agendamento.get(i).getDataConsulta()) && ItensHorario.getSelectedItem().toString().equals(App.agendamento.get(i).getHorario())){
-				return false;
-			}
-		}		
-		
-		return true;
-	}
-	
-	
-	public void editarProntuario(String texto){
-		
-		
-		for(Paciente p: App.pacientes){
-			
-			if(p.getCpf().equals(cpfPaciente)){
-				p.getProtuario().setHistorico(p.getProtuario().getHistorico()+""+texto);
-			}
-			
-		}
 		
 		
 	}
@@ -290,17 +242,82 @@ public class TelaAgendamento extends TelaInternal implements Runnable {
 	}
 
 
+		
+	public boolean dataTemHorarioAgendado(String data){
+				
+		for(Disponibilidade d: App.disp){
+			if(d.getData().equals(data)){
+				return true;
+			}
+		}
+		
+		return false;
+		
+		
+	}
+	
+	public void carregarComboBox(String data){
+		
+		if(dataTemHorarioAgendado(data)){
+			
+			ItensHorario.removeAllItems();
+			for(Disponibilidade d: App.disp){
+				for(int i = 0; i < d.getHorarios().size(); i++){
+					ItensHorario.addItem(d.getHorarios().get(i));
+				}
+			}
+			
+					
+		}
+		
+		else{
+			
+			App.disp.add(new Disponibilidade(data));
+					
+			for(Disponibilidade d: App.disp){
+				if(d.getData().equals(data)){
+					ItensHorario.removeAllItems();
+					for(int i = 0; i < d.getHorarios().size(); i++){
+						
+						ItensHorario.addItem(d.getHorarios().get(i));
+					}
+				}
+			}	
+		}		
+	}
+	
+	public void removerItemComboBox(String data, String item){
+		
+		for(Disponibilidade d: App.disp){
+			if(data.equals(d.getData())){
+				for(int i = 0; i < d.getHorarios().size(); i++){
+					if(d.getHorarios().get(i).equals(item)){
+						d.getHorarios().remove(i);
+					}
+				}
+			}
+		}		
+	}
+
+
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		boolean rodando = true;
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-		while(true){
-			if(dataCalendario.getDate()!=null);
-				//System.out.println(df.format(dataCalendario.getDate()));
+		
+		while(rodando){
+			if(dataCalendario.getDate()!= null){
+				carregarComboBox(df.format(dataCalendario.getDate()));
+				rodando = false;					
+			}				
 		}
+		
 	}
 
+	public void limparCampoData(){
+		dataCalendario.setDate(null);
+	}
 	
 
 	

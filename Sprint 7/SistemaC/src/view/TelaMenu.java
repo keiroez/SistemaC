@@ -1,18 +1,19 @@
 package view;
 
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 import javax.swing.JDesktopPane;
-import javax.swing.JFrame;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import control.Controller;
+import model.Funcionario;
 
 public class TelaMenu extends Tela{
+
+	private static final long serialVersionUID = 1L;
 	private JMenuBar jmPrincipal = new JMenuBar();
 	private JMenu jmCadastro = new JMenu("Cadastros");
 	private JMenu jmBusca = new JMenu("Busca");
@@ -24,10 +25,11 @@ public class TelaMenu extends Tela{
 	private JMenuItem jmAgendarConsulta = new JMenuItem("Agendar consulta");
 	private JMenuItem jmConsultarAgendamento = new JMenuItem("Consultar Agendamentos");
 	public JDesktopPane jdPane = new JDesktopPane();
-	private Controller controle = new Controller(this);
+	private Controller controle;
 	
 	
-	public TelaMenu() {
+	public TelaMenu(Funcionario f) {
+		controle = new Controller(this, f);
 		getContentPane().add(jdPane);
 		
 		jmPrincipal.add(jmCadastro);
@@ -49,6 +51,8 @@ public class TelaMenu extends Tela{
 		jmBuscFuncionario.addActionListener(controle);
 		jmAgendarConsulta.addActionListener(controle);
 		jmConsultarAgendamento.addActionListener(controle);
+		
+		
 		setVisible(true);
 	}
 

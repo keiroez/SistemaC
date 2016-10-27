@@ -9,17 +9,15 @@ import java.text.ParseException;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
-import app.App;
+
 import model.Dados;
-import model.Endereco;
-import model.Funcionario;
+
 
 public class TelaCadastroFuncionario extends TelaInternal{
 
@@ -133,41 +131,7 @@ public class TelaCadastroFuncionario extends TelaInternal{
 
 	}
 
-	public void cadastrarFuncionario(String nome, String rg, String cpf, String telefone, String login, String senha) {
-
-		if (cpf.equals("") || nome.equals("") || rg.equals("") || telefone.equals("") || login.equals("")
-				|| senha.equals("") || campoEstado.getSelectedItem().toString().equals("") || campoCidade.getSelectedItem().toString().equals("") || campoRua.getText().equals("") || campoBairro.getText().equals("") || campoNumero.getText().equals("")) {
-
-			JOptionPane.showMessageDialog(null, "Campo não preenchido");
-		}
-
-		else {
-			boolean cpfCad = false, loginCad = false, rgCad = false;
-
-			for (int i = 0; i < App.funcionarios.size(); i++) {
-				if (App.funcionarios.get(i).getCpf().equals(cpf)) {
-					JOptionPane.showMessageDialog(null, "Este CPF já está cadastrado no sistema");
-					cpfCad = true;
-				}
-
-				if (App.funcionarios.get(i).getLogin().equals(login)) {
-					JOptionPane.showMessageDialog(null, "Login indisponível");
-					loginCad = true;
-				}
-
-				if (App.funcionarios.get(i).getRg().equals(rg)) {
-					JOptionPane.showMessageDialog(null, "Este RG já está cadastrado no sistema");
-					rgCad = true;
-				}
-			}
-
-			if (!cpfCad && !loginCad && !rgCad) {
-				App.funcionarios.add(new Funcionario(nome, rg, cpf, telefone, login, senha, new Endereco(campoEstado.getSelectedItem().toString(), campoCidade.getSelectedItem().toString(), campoRua.getText(), campoBairro.getText(), Integer.parseInt(campoNumero.getText()))));
-				JOptionPane.showMessageDialog(null, "Cadastro efetuado com sucesso");
-			}
-		}
-
-	}
+	
 
 	public JLabel getNome() {
 		return nome;

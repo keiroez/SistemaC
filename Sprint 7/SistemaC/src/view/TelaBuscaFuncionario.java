@@ -66,21 +66,21 @@ public class TelaBuscaFuncionario extends TelaInternal {
 		setVisible(true);
 	}
 
-	public boolean funcionarioBuscado() {
-
-		for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
-			if (tabela.getValueAt(j, 1).equals(campoCpf.getText())) {
-				return true;
-			}
-		}
-
-		return false;
-
-	}
+	
 
 	public void preencherCabecalhoTabela() {
 
-		tabela = new JTable();
+		tabela = new JTable(){
+			
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+			
+			
+		};
 		tabela.setModel(new javax.swing.table.DefaultTableModel(new Object[][] {
 
 		}, new String[] { "Nome", "CPF", "Telefone" }));
@@ -93,93 +93,6 @@ public class TelaBuscaFuncionario extends TelaInternal {
 	}
 	
 	
-	public boolean funcionarioIsCadastrado(){
-		
-		for (int i = 0; i < App.funcionarios.size(); i++) {
-			if (campoCpf.getText().equals(App.funcionarios.get(i).getCpf())) {
-				return true;
-			}
-		}		
-		return false;
-	}
-	
-	public void pesquisarFuncionario(){
-		
-		if(!campoCpf.getText().equals("   .   .   -  ")){
-			
-			if(funcionarioIsCadastrado()){
-				for (int i = 0; i < App.funcionarios.size(); i++) {
-					if (campoCpf.getText().equals(App.funcionarios.get(i).getCpf())) {
-
-						if (funcionarioBuscado()){
-							JOptionPane.showMessageDialog(null, "Busca já foi realizada");
-						} else {
-							
-							for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
-								DefaultTableModel df = (DefaultTableModel) tabela.getModel();
-								df.removeRow(j);
-							}
-							
-							String[] dados = new String[] { App.funcionarios.get(i).getNome(),
-							App.funcionarios.get(i).getCpf(), App.funcionarios.get(i).getTelefone() };
-							DefaultTableModel df = (DefaultTableModel) tabela.getModel();
-							df.addRow(dados);
-							campoCpf.setText("");
-							break;
-						}					
-					}			
-				}
-			}else{
-				for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
-					DefaultTableModel df = (DefaultTableModel) tabela.getModel();
-					df.removeRow(j);
-				}				
-				JOptionPane.showMessageDialog(null, "Funcionario não encontrado");	
-				campoCpf.setText("");			
-			}			
-		}
-			
-		else{
-			for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
-				DefaultTableModel df = (DefaultTableModel) tabela.getModel();
-				df.removeRow(j);
-			}
-			
-			JOptionPane.showMessageDialog(null, "Campo cpf não preenchido");
-		}
-		
-	}
-	
-	
-	public boolean funcionarioSelecionado(){
-		for(int i = 0; i < tabela.getRowCount(); i++){
-			if(tabela.isRowSelected(i)){
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	
-	public void removerFuncionario(){
-		
-		if(funcionarioSelecionado()){
-			
-			for (int i = 0; i < App.funcionarios.size(); i++) {
-				if (App.funcionarios.get(i).getCpf().equals(tabela.getValueAt(0, 1))) {
-					App.funcionarios.remove(i);
-					DefaultTableModel df = (DefaultTableModel) tabela.getModel();
-					df.removeRow(tabela.getSelectedRow());
-					break;
-				}
-			}			
-		}
-		else{
-			JOptionPane.showMessageDialog(null, "Nenhum funcionario selecionado");
-		}		
-	}
-
 
 	public JLabel getCpf() {
 		return cpf;

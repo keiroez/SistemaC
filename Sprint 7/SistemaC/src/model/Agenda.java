@@ -6,7 +6,7 @@ public class Agenda {
 	private String nome;
 	private String cpf;
 	private String horario;
-
+		
 	public Agenda(String dataConsulta, String nome, String cpf, String horario) {
 		super();
 
@@ -15,6 +15,8 @@ public class Agenda {
 		this.cpf = cpf;
 		this.horario = horario;
 	}
+	
+	
 
 	public String getDataConsulta() {
 		return dataConsulta;

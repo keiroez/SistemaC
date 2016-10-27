@@ -9,7 +9,6 @@ import java.text.ParseException;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -123,41 +122,6 @@ public class TelaCadastroPaciente extends TelaInternal {
 	}
 	
 	
-
-	public void cadastrarPaciente(String nome, String rg, String cpf, String telefone, Prontuario prontuario) {
-
-		if (cpf.equals("") || nome.equals("") || rg.equals("") || telefone.equals("")
-				|| campoEstado.getSelectedItem().toString().equals("...") || campoCidade.getSelectedItem().toString().equals("...") || campoRua.getText().equals("")
-				|| campoBairro.getText().equals("") || campoNumero.getText().equals("")) {
-
-			JOptionPane.showMessageDialog(null, "Campo não preenchido");
-		}
-
-		else {
-
-			boolean cpfIsCadastrado = false, rgIsCadastrado = false;
-
-			for (int i = 0; i < App.pacientes.size(); i++) {
-				if (App.pacientes.get(i).getCpf().equals(cpf)) {
-					JOptionPane.showMessageDialog(null, "CPF já cadastrado");
-					cpfIsCadastrado = true;
-				}
-
-				if (App.pacientes.get(i).getRg().equals(rg)) {
-					JOptionPane.showMessageDialog(null, "RG já cadastrado");
-					rgIsCadastrado = true;
-				}
-			}
-
-			if (!cpfIsCadastrado && !rgIsCadastrado) {
-				App.pacientes.add(new Paciente(nome, rg, cpf, telefone, prontuario,
-						new Endereco(campoEstado.getSelectedItem().toString(), campoCidade.getSelectedItem().toString(), campoRua.getText(),
-								campoBairro.getText(), Integer.parseInt(campoNumero.getText()))));
-				JOptionPane.showMessageDialog(null, "Cadastro efetuado com sucesso");
-			}
-		}
-	}
-
 	public JLabel getNome() {
 		return nome;
 	}
@@ -230,4 +194,55 @@ public class TelaCadastroPaciente extends TelaInternal {
 		this.cadastrar = cadastrar;
 	}
 
+
+	public JTextField getCampoRua() {
+		return campoRua;
+	}
+
+
+	public void setCampoRua(JTextField campoRua) {
+		this.campoRua = campoRua;
+	}
+
+
+	public JTextField getCampoBairro() {
+		return campoBairro;
+	}
+
+
+	public void setCampoBairro(JTextField campoBairro) {
+		this.campoBairro = campoBairro;
+	}
+
+
+	public JTextField getCampoNumero() {
+		return campoNumero;
+	}
+
+
+	public void setCampoNumero(JTextField campoNumero) {
+		this.campoNumero = campoNumero;
+	}
+
+
+	public JComboBox<String> getCampoEstado() {
+		return campoEstado;
+	}
+
+
+	public void setCampoEstado(JComboBox<String> campoEstado) {
+		this.campoEstado = campoEstado;
+	}
+
+
+	public JComboBox<String> getCampoCidade() {
+		return campoCidade;
+	}
+
+
+	public void setCampoCidade(JComboBox<String> campoCidade) {
+		this.campoCidade = campoCidade;
+	}
+
+	
 }
