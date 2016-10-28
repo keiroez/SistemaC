@@ -1,22 +1,19 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Agenda {
 
 	private String dataConsulta;
-	private String nome;
-	private String cpf;
-	private String horario;
-		
-	public Agenda(String dataConsulta, String nome, String cpf, String horario) {
-		super();
+	private ArrayList<DadosAgendamento> agend;
+
+	public Agenda(String dataConsulta, String nome, String cpf, String horario, Prontuario p) {
 
 		this.dataConsulta = dataConsulta;
-		this.nome = nome;
-		this.cpf = cpf;
-		this.horario = horario;
+		agend = new ArrayList<>();
+		agend.add(new DadosAgendamento(nome, cpf, horario, p));
+
 	}
-	
-	
 
 	public String getDataConsulta() {
 		return dataConsulta;
@@ -26,28 +23,12 @@ public class Agenda {
 		this.dataConsulta = dataConsulta;
 	}
 
-	public String getNome() {
-		return nome;
+	public ArrayList<DadosAgendamento> getAgend() {
+		return agend;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
-	public String getHorario() {
-		return horario;
-	}
-
-	public void setHorario(String horario) {
-		this.horario = horario;
+	public void setAgend(ArrayList<DadosAgendamento> agend) {
+		this.agend = agend;
 	}
 
 }

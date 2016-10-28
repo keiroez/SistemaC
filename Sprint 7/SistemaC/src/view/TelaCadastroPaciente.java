@@ -10,15 +10,11 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
-import app.App;
 import model.Dados;
-import model.Endereco;
-import model.Paciente;
-import model.Prontuario;
+
 
 public class TelaCadastroPaciente extends TelaInternal {
 

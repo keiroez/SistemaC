@@ -2,6 +2,8 @@ package control;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -10,7 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import app.App;
-import model.Agenda;
 import model.Funcionario;
 import view.TelaAgendamento;
 import view.TelaBuscaFuncionario;
@@ -19,30 +20,32 @@ import view.TelaCadastroFuncionario;
 import view.TelaCadastroPaciente;
 import view.TelaLogin;
 import view.TelaMenu;
+import view.TelaProntuario;
 
 
-public class Controller implements ActionListener {
+public class Controller implements ActionListener, KeyListener{
 
 	private TelaCadastroPaciente tPaciente;
 	private TelaCadastroFuncionario tFuncionario;
 	private TelaBuscaPaciente tBPaciente;
 	private TelaAgendamento tAgendamento;
 	private TelaBuscaFuncionario tBFuncionario;
+	private TelaProntuario tProntuario;
 	private TelaMenu tMenu;
 	private TelaLogin tl;
 	private Funcionario funcionario;
-	private boolean tfIsAtivo, tpIsAtivo, tbpIsAtivo, tbfIsAtivo, tAgendaIsAtivo, tlog;
+	private boolean tfIsAtivo, tpIsAtivo, tbpIsAtivo, tbfIsAtivo, tAgendaIsAtivo, tProntIsAtivo, tlog;
 
 	public Controller(TelaMenu tMenu, Funcionario f) {
 		this.tMenu = tMenu;
 		this.funcionario = f;
-
 	}
 
 	public Controller(TelaLogin tl) {
 		this.tl = tl;
-		tl.getEntrar().addActionListener(this);
-		tl.getSair().addActionListener(this);
+		this.tl.getEntrar().addActionListener(this);
+		this.tl.getSair().addActionListener(this);
+		this.tl.getCampoSenha().addKeyListener(this);
 		tlog = true;
 	}
 
@@ -94,9 +97,22 @@ public class Controller implements ActionListener {
 				tMenu.jdPane.add(tBFuncionario);
 				tbfIsAtivo = true;
 			}
+			
+			if (e.getSource() == tMenu.getJmBuscProntuario()) {
+				tProntuario = new TelaProntuario();
+				tProntuario.getSairButton().addActionListener(this);
+				tProntuario.getSalvarButton().addActionListener(this);
+				tProntuario.getEditarButton().addActionListener(this);
+				tProntuario.getPesquisar().addActionListener(this);
+				tProntuario.getComboData().addActionListener(this);
+				tProntuario.getComboHorario().addActionListener(this);
+				tMenu.jdPane.add(tProntuario);
+				tProntIsAtivo = true;
+			}
 
 			if (e.getSource() == tMenu.getJmAgendarConsulta()) {
 				tAgendamento = new TelaAgendamento();
+				tAgendamento.getCampoNomeFuncionario().setText(funcionario.getNome());
 				tAgendamento.setVisible(true);
 				tAgendamento.getAgendar().addActionListener(this);
 				tAgendamento.getBuscaP().addActionListener(this);
@@ -206,7 +222,7 @@ public class Controller implements ActionListener {
 							for (int i = 0; i < App.pacientes.size(); i++) {
 								if (tBPaciente.getCampoCpf().getText().equals(App.pacientes.get(i).getCpf())) {
 
-									if (funcionario.pacienteBuscado(tBPaciente.getTabela())) {
+									if (funcionario.pacienteBuscado(tBPaciente.getTabela(), tBPaciente.getCampoCpf().getText())) {
 
 									} else {
 										String[] dados = new String[] { App.pacientes.get(i).getNome(),
@@ -271,9 +287,8 @@ public class Controller implements ActionListener {
 					if (!tAgendamento.campoVazio()) {
 
 						DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-						App.agendamento.add(new Agenda(df.format(tAgendamento.getDataCalendario().getDate()),
-								tAgendamento.getCampoNomePaciente().getText(), tAgendamento.getCpfPaciente(),
-								tAgendamento.getItensHorario().getSelectedItem().toString()));
+							funcionario.agendarConsulta(tAgendamento.getCampoNomePaciente().getText(), tAgendamento.getCpfPaciente(),
+								df.format(tAgendamento.getDataCalendario().getDate()).toString(),tAgendamento.getItensHorario().getSelectedItem().toString());
 
 						JOptionPane.showMessageDialog(null, "Consulta agendada com sucesso");
 						tAgendamento.removerItemComboBox(df.format(tAgendamento.getDataCalendario().getDate()),
@@ -288,97 +303,61 @@ public class Controller implements ActionListener {
 					}
 
 				}
+				
+				if(tProntIsAtivo){
+					
+					if(e.getSource() == tProntuario.getPesquisar()){
+						funcionario.buscarProntuarioPorCpf(tProntuario.getComboData(), tProntuario.getCampoCpf());
+					}
+					
+					if(e.getSource() == tProntuario.getComboData()){
+						funcionario.preencherComboHorario(tProntuario.getComboHorario(), tProntuario.getComboData().getSelectedItem().toString());				
+					}
+					
+					if(e.getSource() == tProntuario.getComboHorario()){
+						funcionario.inserirProntuario(tProntuario.getCampoTextArea(), tProntuario.getComboData().getSelectedItem().toString(), tProntuario.getComboHorario().getSelectedItem().toString());						
+					}
+					
+					if(e.getSource() == tProntuario.getEditarButton()){
+												
+					}
+					
+					if(e.getSource() == tProntuario.getSairButton()){
+						tProntuario.dispose();				
+					}
+					if(e.getSource() == tProntuario.getSalvarButton()){
+												
+					}
+				}
 			}
 		}
-
 	}
 
-	public TelaCadastroPaciente gettPaciente() {
-		return tPaciente;
+	@SuppressWarnings("deprecation")
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(tlog){
+			if(e.getKeyCode() == KeyEvent.VK_ENTER){
+				App.validarLogin(tl.getCampoLogin().getText(), tl.getCampoSenha().getText(), tl, tlog);
+				
+			}
+		}
+		
 	}
 
-	public void settPaciente(TelaCadastroPaciente tPaciente) {
-		this.tPaciente = tPaciente;
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public TelaCadastroFuncionario gettFuncionario() {
-		return tFuncionario;
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
+	
 
-	public void settFuncionario(TelaCadastroFuncionario tFuncionario) {
-		this.tFuncionario = tFuncionario;
-	}
 
-	public TelaBuscaPaciente gettBPaciente() {
-		return tBPaciente;
-	}
-
-	public void settBPaciente(TelaBuscaPaciente tBPaciente) {
-		this.tBPaciente = tBPaciente;
-	}
-
-	public TelaAgendamento gettAgendamento() {
-		return tAgendamento;
-	}
-
-	public void settAgendamento(TelaAgendamento tAgendamento) {
-		this.tAgendamento = tAgendamento;
-	}
-
-	public TelaBuscaFuncionario gettBFuncionario() {
-		return tBFuncionario;
-	}
-
-	public void settBFuncionario(TelaBuscaFuncionario tBFuncionario) {
-		this.tBFuncionario = tBFuncionario;
-	}
-
-	public TelaMenu gettMenu() {
-		return tMenu;
-	}
-
-	public void settMenu(TelaMenu tMenu) {
-		this.tMenu = tMenu;
-	}
-
-	public boolean isTfIsAtivo() {
-		return tfIsAtivo;
-	}
-
-	public void setTfIsAtivo(boolean tfIsAtivo) {
-		this.tfIsAtivo = tfIsAtivo;
-	}
-
-	public boolean isTpIsAtivo() {
-		return tpIsAtivo;
-	}
-
-	public void setTpIsAtivo(boolean tpIsAtivo) {
-		this.tpIsAtivo = tpIsAtivo;
-	}
-
-	public boolean isTbpIsAtivo() {
-		return tbpIsAtivo;
-	}
-
-	public void setTbpIsAtivo(boolean tbpIsAtivo) {
-		this.tbpIsAtivo = tbpIsAtivo;
-	}
-
-	public boolean isTbfIsAtivo() {
-		return tbfIsAtivo;
-	}
-
-	public void setTbfIsAtivo(boolean tbfIsAtivo) {
-		this.tbfIsAtivo = tbfIsAtivo;
-	}
-
-	public boolean istAgendaIsAtivo() {
-		return tAgendaIsAtivo;
-	}
-
-	public void settAgendaIsAtivo(boolean tAgendaIsAtivo) {
-		this.tAgendaIsAtivo = tAgendaIsAtivo;
-	}
 
 }

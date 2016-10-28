@@ -265,8 +265,7 @@ public class TelaAgendamento extends TelaInternal implements Runnable{
 				for(int i = 0; i < d.getHorarios().size(); i++){
 					ItensHorario.addItem(d.getHorarios().get(i));
 				}
-			}
-			
+			}			
 					
 		}
 		

@@ -2,14 +2,19 @@ package view;
 
 import java.awt.Container;
 import java.awt.GridLayout;
+import java.text.ParseException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
+import javax.swing.text.MaskFormatter;
 
 
 public class TelaProntuario extends TelaInternal {
@@ -17,19 +22,67 @@ public class TelaProntuario extends TelaInternal {
 	private static final long serialVersionUID = 1L;
 	private JTextArea campoTextArea;
 	private JScrollPane scroll;
-	private JLabel campoLabel;
-	private JButton salvarButton, cancelarButton, sairButton;
+	private JLabel campoLabel, campoLabel1, cpf;
+	private JButton salvarButton, editarButton, sairButton;
+	private JLabel data, horario;
+	private JComboBox<String> comboData, comboHorario;
+	private JTextField campoCpf;
+	private JButton pesquisar;
+	private MaskFormatter m1;
 
 	public TelaProntuario() {
 
 		super("Prontuario");
+		
+		
+		try {
+			m1 = new MaskFormatter("###.###.###-##");
+			
+		} catch (ParseException e) {
 
-		this.campoLabel = new JLabel("Preencha o prontuário abaixo:");
+			e.printStackTrace();
+		}
+		
+		setSize(600, 400);
+		setLayout(null);
+		this.campoLabel = new JLabel("Prontuário selecionado:");
+		this.campoLabel1 = new JLabel("Informe a data e o horário do prontuário desejado:");
 		this.campoTextArea = new JTextArea();
-
 		this.scroll = new JScrollPane(campoTextArea);
-
-		this.campoTextArea.setEditable(true);
+		data = new JLabel("Data: ");
+		horario = new JLabel("Horário: ");
+		comboData = new JComboBox<>();
+		comboHorario = new JComboBox<>();
+		cpf = new JLabel("CPF: ");
+		campoCpf = new JFormattedTextField(m1);
+		pesquisar = new JButton("Pesquisar");
+		
+		cpf.setBounds(50, 30, 100, 20);
+		campoCpf.setBounds(150, 30, 150, 20);
+		pesquisar.setBounds(310, 30, 100, 20);
+		add(cpf);
+		add(campoCpf);
+		add(pesquisar);
+		
+		
+		comboData.addItem("...");
+		comboHorario.addItem("...");
+		data.setBounds(150, 80, 100, 20);
+		horario.setBounds(150, 100, 100, 20);
+		comboData.setBounds(220, 80, 150, 20);
+		comboHorario.setBounds(220, 100, 150, 20);
+		
+		campoLabel.setBounds(50, 130, 200, 20);
+		campoLabel1.setBounds(50, 60, 300, 20);
+		add(campoLabel);
+		add(campoLabel1);
+		
+		add(data);
+		add(horario);
+		add(comboData);
+		add(comboHorario);
+		
+		this.campoTextArea.setEditable(false);
 		this.campoTextArea.setLineWrap(true);
 
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -37,27 +90,28 @@ public class TelaProntuario extends TelaInternal {
 		scroll.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 
 		Container c = new Container();
-		c.setLayout(new GridLayout(7, 2));
-		c.setSize(500, 800);
-		c.setLocation(50, 20);
-		c.add(campoLabel);
+		c.setLayout(new GridLayout(1, 2));
+		c.setSize(500, 150);
+		c.setLocation(50, 150);
+		
 		c.add(scroll);
 		add(c);
 
 		this.salvarButton = new JButton("Salvar");
-		this.cancelarButton = new JButton("Cancelar");
+		this.editarButton = new JButton("Editar");
 		this.sairButton = new JButton("Sair");
 
-		salvarButton.setBounds(50, 300, 100, 50);
-		cancelarButton.setBounds(250, 300, 100, 50);
-		sairButton.setBounds(450, 300, 100, 50);
+		salvarButton.setBounds(50, 320, 100, 20);
+		editarButton.setBounds(250, 320, 100, 20);
+		sairButton.setBounds(450, 320, 100, 20);
 
 		add(salvarButton);
-		add(cancelarButton);
+		add(editarButton);
 		add(sairButton);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}
+	
 
 	
 	public JButton getSalvarButton() {
@@ -68,17 +122,49 @@ public class TelaProntuario extends TelaInternal {
 		this.salvarButton = salvarButton;
 	}
 
-	public JButton getCancelarButton() {
-		return cancelarButton;
-	}
-
-	public void setCancelarButton(JButton cancelarButton) {
-		this.cancelarButton = cancelarButton;
-	}
-
 	public JButton getSairButton() {
 		return sairButton;
 	}
+
+	public JLabel getCampoLabel1() {
+		return campoLabel1;
+	}
+
+
+	public void setCampoLabel1(JLabel campoLabel1) {
+		this.campoLabel1 = campoLabel1;
+	}
+
+
+	public JButton getEditarButton() {
+		return editarButton;
+	}
+
+
+	public void setEditarButton(JButton editarButton) {
+		this.editarButton = editarButton;
+	}
+
+
+	public JComboBox<String> getComboData() {
+		return comboData;
+	}
+
+
+	public void setComboData(JComboBox<String> comboData) {
+		this.comboData = comboData;
+	}
+
+
+	public JComboBox<String> getComboHorario() {
+		return comboHorario;
+	}
+
+
+	public void setComboHorario(JComboBox<String> comboHorario) {
+		this.comboHorario = comboHorario;
+	}
+
 
 	public void setSairButton(JButton sairButton) {
 		this.sairButton = sairButton;
@@ -108,4 +194,21 @@ public class TelaProntuario extends TelaInternal {
 		this.campoLabel = campoLabel;
 	}
 
+	public JTextField getCampoCpf() {
+		return campoCpf;
+	}
+
+	public void setCampoCpf(JTextField campoCpf) {
+		this.campoCpf = campoCpf;
+	}
+
+	public JButton getPesquisar() {
+		return pesquisar;
+	}
+
+	public void setPesquisar(JButton pesquisar) {
+		this.pesquisar = pesquisar;
+	}
+
+	
 }

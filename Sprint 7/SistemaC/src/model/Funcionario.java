@@ -1,7 +1,10 @@
 package model;
 
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import app.App;
@@ -16,6 +19,21 @@ public class Funcionario extends Pessoa {
 		this.login = login;
 		this.senha = senha;
 	}
+	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * CÓDIGOS DE CADASTRO DE FUNCIONÁRIOS
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	
+	
 
 	public void cadastrarFuncionario(String nome, String rg, String cpf, String telefone, String login, String senha,
 			String estado, String cidade, String rua, String bairro, String numero) {
@@ -53,8 +71,22 @@ public class Funcionario extends Pessoa {
 				JOptionPane.showMessageDialog(null, "Cadastro efetuado com sucesso");
 			}
 		}
-
 	}
+	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * CÓDIGOS DE CADASTRO DE PACIENTES
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	
+
 	public void cadastrarPaciente(String nome, String rg, String cpf, String telefone, String estado, String cidade,
 			String rua, String bairro, String numero) {
 
@@ -87,79 +119,92 @@ public class Funcionario extends Pessoa {
 			}
 		}
 	}
-	public boolean funcionarioIsCadastrado(String campoCpf){
-		
+
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * CÓDIGOS DE BUSCA E REMOÇÃO DE FUNCIONÁRIOS
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	
+	
+	public boolean funcionarioIsCadastrado(String campoCpf) {
+
 		for (int i = 0; i < App.funcionarios.size(); i++) {
 			if (campoCpf.equals(App.funcionarios.get(i).getCpf())) {
 				return true;
 			}
-		}		
+		}
 		return false;
 	}
-	
-	public void pesquisarFuncionario(String campoCpf, JTable tabela){
-		
-		if(!campoCpf.equals("   .   .   -  ")){
-			
-			if(funcionarioIsCadastrado(campoCpf)){
+
+	public void pesquisarFuncionario(String campoCpf, JTable tabela) {
+
+		if (!campoCpf.equals("   .   .   -  ")) {
+
+			if (funcionarioIsCadastrado(campoCpf)) {
 				for (int i = 0; i < App.funcionarios.size(); i++) {
 					if (campoCpf.equals(App.funcionarios.get(i).getCpf())) {
 
-						if (funcionarioBuscado(tabela, campoCpf)){
+						if (funcionarioBuscado(tabela, campoCpf)) {
 							JOptionPane.showMessageDialog(null, "Busca já foi realizada");
 						} else {
-							
+
 							for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
 								DefaultTableModel df = (DefaultTableModel) tabela.getModel();
 								df.removeRow(j);
 							}
-							
+
 							String[] dados = new String[] { App.funcionarios.get(i).getNome(),
-							App.funcionarios.get(i).getCpf(), App.funcionarios.get(i).getTelefone() };
+									App.funcionarios.get(i).getCpf(), App.funcionarios.get(i).getTelefone() };
 							DefaultTableModel df = (DefaultTableModel) tabela.getModel();
 							df.addRow(dados);
 							campoCpf = "";
 							break;
-						}					
-					}			
+						}
+					}
 				}
-			}else{
+			} else {
 				for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
 					DefaultTableModel df = (DefaultTableModel) tabela.getModel();
 					df.removeRow(j);
-				}				
-				JOptionPane.showMessageDialog(null, "Funcionario não encontrado");	
-				campoCpf = "";			
-			}			
+				}
+				JOptionPane.showMessageDialog(null, "Funcionario não encontrado");
+				campoCpf = "";
+			}
 		}
-			
-		else{
+
+		else {
 			for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
 				DefaultTableModel df = (DefaultTableModel) tabela.getModel();
 				df.removeRow(j);
 			}
-			
+
 			JOptionPane.showMessageDialog(null, "Campo cpf não preenchido");
 		}
-		
+
 	}
-	
-	
-	public boolean funcionarioSelecionado(JTable tabela){
-		for(int i = 0; i < tabela.getRowCount(); i++){
-			if(tabela.isRowSelected(i)){
+
+	public boolean funcionarioSelecionado(JTable tabela) {
+		for (int i = 0; i < tabela.getRowCount(); i++) {
+			if (tabela.isRowSelected(i)) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
-	
-	public void removerFuncionario(JTable tabela){
-		
-		if(funcionarioSelecionado(tabela)){
-			
+
+	public void removerFuncionario(JTable tabela) {
+
+		if (funcionarioSelecionado(tabela)) {
+
 			for (int i = 0; i < App.funcionarios.size(); i++) {
 				if (App.funcionarios.get(i).getCpf().equals(tabela.getValueAt(0, 1))) {
 					App.funcionarios.remove(i);
@@ -167,13 +212,11 @@ public class Funcionario extends Pessoa {
 					df.removeRow(tabela.getSelectedRow());
 					break;
 				}
-			}			
-		}
-		else{
+			}
+		} else {
 			JOptionPane.showMessageDialog(null, "Nenhum funcionario selecionado");
-		}		
+		}
 	}
-
 
 	public boolean funcionarioBuscado(JTable tabela, String campoCpf) {
 
@@ -187,117 +230,230 @@ public class Funcionario extends Pessoa {
 
 	}
 	
-	public boolean pacienteBuscado(JTable tabela) {
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * CÓDIGOS DE BUSCA, EDIÇÃO E REMOÇÃO DE PACIENTES
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	
+	
+
+	public boolean pacienteBuscado(JTable tabela, String campoCpf) {
 
 		for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
-			
-			for(Paciente p: App.pacientes){
-				if (tabela.getValueAt(j, 1).equals(p.getCpf())) {
-					return true;
-				}
+			if (tabela.getValueAt(j, 1).equals(campoCpf)) {
+				return true;
 			}
-			
 		}
 
 		return false;
 
 	}
 
-	
-	
-	public boolean pacienteIsCadastrado(String campoCpf){
-		
+	public boolean pacienteIsCadastrado(String campoCpf) {
+
 		for (int i = 0; i < App.pacientes.size(); i++) {
 			if (campoCpf.equals(App.pacientes.get(i).getCpf())) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
-	public void pesquisarPaciente(String campoCpf, JTable tabela){
-		
-		if(!campoCpf.equals("   .   .   -  ")){
-			
-			if(pacienteIsCadastrado(campoCpf)){
+
+	public void pesquisarPaciente(String campoCpf, JTable tabela) {
+
+		if (!campoCpf.equals("   .   .   -  ")) {
+
+			if (pacienteIsCadastrado(campoCpf)) {
 				for (int i = 0; i < App.pacientes.size(); i++) {
 					if (campoCpf.equals(App.pacientes.get(i).getCpf())) {
 
-						if (pacienteBuscado(tabela)){
+						if (pacienteBuscado(tabela, campoCpf)) {
 							JOptionPane.showMessageDialog(null, "Busca já foi realizada");
 						} else {
-							
+
 							for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
 								DefaultTableModel df = (DefaultTableModel) tabela.getModel();
 								df.removeRow(j);
 							}
-							
+
 							String[] dados = new String[] { App.pacientes.get(i).getNome(),
-							App.pacientes.get(i).getCpf(), App.pacientes.get(i).getTelefone() };
+									App.pacientes.get(i).getCpf(), App.pacientes.get(i).getTelefone() };
 							DefaultTableModel df = (DefaultTableModel) tabela.getModel();
 							df.addRow(dados);
 							campoCpf = "";
 							break;
-						}					
-					}			
+						}
+					}
 				}
-			}else{
+			} else {
 				for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
 					DefaultTableModel df = (DefaultTableModel) tabela.getModel();
 					df.removeRow(j);
-				}				
-				JOptionPane.showMessageDialog(null, "Paciente não encontrado");	
-				campoCpf = "";			
-			}			
+				}
+				JOptionPane.showMessageDialog(null, "Paciente não encontrado");
+				campoCpf = "";
+			}
 		}
-			
-		else{
+
+		else {
 			for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
 				DefaultTableModel df = (DefaultTableModel) tabela.getModel();
 				df.removeRow(j);
 			}
-			
+
 			JOptionPane.showMessageDialog(null, "Campo cpf não preenchido");
 		}
-		
+
 	}
-	
-	public boolean pacienteSelecionado(JTable tabela){
-		for(int i = 0; i < tabela.getRowCount(); i++){
-			if(tabela.isRowSelected(i)){
+
+	public boolean pacienteSelecionado(JTable tabela) {
+		for (int i = 0; i < tabela.getRowCount(); i++) {
+			if (tabela.isRowSelected(i)) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
-	public void removerPaciente(JTable tabela){
-		
-		if(pacienteSelecionado(tabela)){
-			
+
+	public void removerPaciente(JTable tabela) {
+
+		if (pacienteSelecionado(tabela)) {
+
 			for (int i = 0; i < App.pacientes.size(); i++) {
 				if (App.pacientes.get(i).getCpf().equals(tabela.getValueAt(0, 1))) {
 					String nome = App.pacientes.get(i).getNome();
 					App.pacientes.remove(i);
 					DefaultTableModel df = (DefaultTableModel) tabela.getModel();
 					df.removeRow(tabela.getSelectedRow());
-					JOptionPane.showMessageDialog(null, "Paciente "+nome+" removido com sucesso");
+					JOptionPane.showMessageDialog(null, "Paciente " + nome + " removido com sucesso");
 					break;
 				}
 			}
-			
-			
-		}
-		else{
+
+		} else {
 			JOptionPane.showMessageDialog(null, "Nenhum paciente selecionado");
 		}
+
+	}
+
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * CÓDIGOS DE AGENDAMENTO DE CONSULTA
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	
+	
+	public void agendarConsulta(String nome, String cpf, String data, String horario) {
+
+		if (dataTemHorarioAgendado(data)) {
+			for (Agenda a : App.agendamento) {
+				if (a.getDataConsulta().equals(data)) {
+					a.getAgend().add(new DadosAgendamento(nome, cpf, horario, new Prontuario("Consulta - "+data+"\n\nHorário: "+horario+"\nPaciente: "+nome+"\nFuncionário: "+this.getNome())));
+				}
+			}
+		} else {
+			App.agendamento.add(new Agenda(data, nome, cpf, horario, new Prontuario("Consulta - "+data+"\n\nHorário: "+horario+"\nPaciente: "+nome+"\nFuncionário: "+this.getNome())));
+		}
+
+	}
+
+	public boolean dataTemHorarioAgendado(String data) {
+
+		for (Agenda a : App.agendamento) {
+			if (a.getDataConsulta().equals(data)) {
+				return true;
+			}
+		}
+
+		return false;
+
+	}
+	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * CÓDIGOS DE BUSCA E EDIÇÃO DE PRONTUÁRIOS
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	public void buscarProntuarioPorCpf(JComboBox<String> comboData, JTextField campoCpf){
+		comboData.removeAllItems();
+		comboData.addItem("...");
+				
+		for(Agenda ag: App.agendamento){
+			for(DadosAgendamento da: ag.getAgend()){
+				if(da.getCpf().equals(campoCpf.getText())){
+					comboData.addItem(ag.getDataConsulta());
+				}
+			}
+		}	
+	}
+	
+	public void preencherComboHorario(JComboBox<String> comboHorario, String data){
+				
+		for(Agenda g: App.agendamento){
+			if(g.getDataConsulta().equals(data)){
+				comboHorario.removeAllItems();
+				comboHorario.addItem("...");
+				
+				for(DadosAgendamento da: g.getAgend()){
+					comboHorario.addItem(da.getHorario());
+				}
+			}
+		}		
+	}
+	
+	public void inserirProntuario(JTextArea jta, String data, String hora){
 		
+		for(Agenda a: App.agendamento){
+			if(a.getDataConsulta().equals(data)){
+				for(DadosAgendamento da: a.getAgend()){
+					if(da.getHorario().equals(hora)){
+						jta.setText(da.getProntuario().getHistorico());
+					}
+				}
+			}
+		}
 		
 	}
 	
 	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * ENCAPSULAMENTO
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	
+	
+
 	public String getLogin() {
 		return login;
 	}

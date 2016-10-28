@@ -2,6 +2,8 @@ package view;
 
 
 
+
+
 import javax.swing.JDesktopPane;
 
 import javax.swing.JMenu;
@@ -22,6 +24,7 @@ public class TelaMenu extends Tela{
 	private JMenuItem jmCadFuncionario = new JMenuItem("Cadastrar Funcionário");
 	private JMenuItem jmBuscPaciente = new JMenuItem("Buscar Paciente");
 	private JMenuItem jmBuscFuncionario = new JMenuItem("Buscar Funcionário");
+	private JMenuItem jmBuscProntuario = new JMenuItem("Buscar Prontuário");
 	private JMenuItem jmAgendarConsulta = new JMenuItem("Agendar consulta");
 	private JMenuItem jmConsultarAgendamento = new JMenuItem("Consultar Agendamentos");
 	public JDesktopPane jdPane = new JDesktopPane();
@@ -40,6 +43,7 @@ public class TelaMenu extends Tela{
 		jmCadastro.add(jmCadFuncionario);
 		jmBusca.add(jmBuscPaciente);
 		jmBusca.add(jmBuscFuncionario);
+		jmBusca.add(jmBuscProntuario);
 		jmAgenda.add(jmAgendarConsulta);
 		jmAgenda.add(jmConsultarAgendamento);
 		
@@ -51,8 +55,9 @@ public class TelaMenu extends Tela{
 		jmBuscFuncionario.addActionListener(controle);
 		jmAgendarConsulta.addActionListener(controle);
 		jmConsultarAgendamento.addActionListener(controle);
+		jmBuscProntuario.addActionListener(controle);
 		
-		
+	
 		setVisible(true);
 	}
 
@@ -151,4 +156,13 @@ public class TelaMenu extends Tela{
 	public void setJmConsultarAgendamento(JMenuItem jmConsultarAgendamento) {
 		this.jmConsultarAgendamento = jmConsultarAgendamento;
 	}
+
+	public JMenuItem getJmBuscProntuario() {
+		return jmBuscProntuario;
+	}
+
+	public void setJmBuscProntuario(JMenuItem jmBuscProntuario) {
+		this.jmBuscProntuario = jmBuscProntuario;
+	}
+	
 }
