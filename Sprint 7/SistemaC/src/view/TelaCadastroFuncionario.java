@@ -66,6 +66,11 @@ public class TelaCadastroFuncionario extends TelaInternal{
 		campoBairro = new JTextField(20);
 		campoNumero = new JTextField(20);
 		
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {  
+		     public void run() {  
+		         campoNome.requestFocusInWindow();  
+		     }  
+		 });
 		
 		campoEstado.addItem("...");
 

@@ -41,6 +41,11 @@ public class TelaBuscaFuncionario extends TelaInternal {
 
 		cpf = new JLabel("CPF: ");
 		campoCpf = new JFormattedTextField(m1);
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {  
+		     public void run() {  
+		         campoCpf.requestFocusInWindow();  
+		     }  
+		 });
 
 		pesquisar = new JButton("Pesquisar");
 		remover = new JButton("Remover");

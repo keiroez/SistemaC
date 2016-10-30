@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 
 import control.Controller;
 import model.Agenda;
+import modelDAO.Banco;
 import model.Disponibilidade;
 import model.Endereco;
 import model.Funcionario;
@@ -24,6 +25,19 @@ public class App {
 	public static ArrayList<Disponibilidade> disp = new ArrayList<>();
 
 	public static void main(String[] args) {
+		
+		Banco bancoDeDados = new Banco();
+		
+		bancoDeDados.conectar();
+		
+		//bancoDeDados.cadastrarFuncionario("José Diogo", "1111111", "111.111.111-11", "(111) 11111 - 1111", "admin", "admin", "Paraíba (PB)", "Princesa Isabel", "A", "B", 100);
+		//bancoDeDados.cadastrarPaciente("José Diogo", "1111111", "111.111.111-11", "(111) 11111 - 1111","Paraíba (PB)", "Princesa Isabel", "A", "B", 100);
+		
+		if(bancoDeDados.estaConectado()){
+					
+			bancoDeDados.desconectar();
+		}
+		
 		
 		TelaLogin tl = new TelaLogin();
 		
@@ -53,19 +67,30 @@ public class App {
 	
 	
 	public static void validarLogin (String login, String senha, TelaLogin tl, boolean tlog){
-		boolean logado = false;
-		for(int i = 0; i < funcionarios.size(); i++){
-			if(funcionarios.get(i).getLogin().equals(login) && funcionarios.get(i).getSenha().equals(senha)){
+		
+		Banco bancoDeDados = new Banco();
+		
+		bancoDeDados.conectar();
+		
+		if(bancoDeDados.estaConectado()){
+			
+			boolean logado = false;
+			
+			if(bancoDeDados.validarLogin(login, senha)){
 				tl.dispose();
 				tlog = false;
-				new TelaMenu(funcionarios.get(i));
-				
+				new TelaMenu(bancoDeDados.buscaFuncionarioPorLoginESenha(login, senha));
 				logado = true;
 			}
+			
+			if(!logado)
+				JOptionPane.showMessageDialog(null, "Login ou senha inválido");
+			
+			
+			bancoDeDados.desconectar();
+			
 		}
 		
-		if(!logado)
-			JOptionPane.showMessageDialog(null, "Login ou senha inválido");
 		
 	}
 	
