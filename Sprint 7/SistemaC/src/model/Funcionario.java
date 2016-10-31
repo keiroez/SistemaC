@@ -8,8 +8,6 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import app.App;
-import modelDAO.Banco;
-
 
 public class Funcionario extends Pessoa {
 
@@ -48,45 +46,30 @@ public class Funcionario extends Pessoa {
 		}
 
 		else {
-			
-			Banco bancoDeDados = new Banco();
-			
-			bancoDeDados.conectar();
-			
 			boolean cpfCad = false, loginCad = false, rgCad = false;
 
-			
-				if (bancoDeDados.cpfIsCadastro(cpf, "funcionario")) {
+			for (int i = 0; i < App.funcionarios.size(); i++) {
+				if (App.funcionarios.get(i).getCpf().equals(cpf)) {
 					JOptionPane.showMessageDialog(null, "Este CPF já está cadastrado no sistema");
 					cpfCad = true;
 				}
 
-				if (bancoDeDados.loginDisponivel(login)) {
+				if (App.funcionarios.get(i).getLogin().equals(login)) {
 					JOptionPane.showMessageDialog(null, "Login indisponível");
 					loginCad = true;
 				}
 
-				if (bancoDeDados.rgIsCadastro(rg, "funcionario")) {
+				if (App.funcionarios.get(i).getRg().equals(rg)) {
 					JOptionPane.showMessageDialog(null, "Este RG já está cadastrado no sistema");
 					rgCad = true;
-				
+				}
 			}
 
 			if (!cpfCad && !loginCad && !rgCad) {
-				
-				
-				
-				if(bancoDeDados.estaConectado()){
-					
-					bancoDeDados.cadastrarFuncionario(nome, rg, cpf, telefone, login, senha, estado, cidade, rua, bairro, Integer.parseInt(numero));
-					
-					
-					
-				}
+				App.funcionarios.add(new Funcionario(nome, rg, cpf, telefone, login, senha,
+						new Endereco(estado, cidade, rua, bairro, Integer.parseInt(numero))));
 				JOptionPane.showMessageDialog(null, "Cadastro efetuado com sucesso");
 			}
-			
-			bancoDeDados.desconectar();
 		}
 	}
 	
@@ -114,29 +97,26 @@ public class Funcionario extends Pessoa {
 		}
 
 		else {
-			
-			Banco bancoDeDados = new Banco();
-			
-			bancoDeDados.conectar();
+
 			boolean cpfIsCadastrado = false, rgIsCadastrado = false;
-		
-				if (bancoDeDados.cpfIsCadastro(cpf, "paciente")) {
+
+			for (int i = 0; i < App.pacientes.size(); i++) {
+				if (App.pacientes.get(i).getCpf().equals(cpf)) {
 					JOptionPane.showMessageDialog(null, "CPF já cadastrado");
 					cpfIsCadastrado = true;
 				}
 
-				if (bancoDeDados.rgIsCadastro(rg, "paciente")) {
+				if (App.pacientes.get(i).getRg().equals(rg)) {
 					JOptionPane.showMessageDialog(null, "RG já cadastrado");
 					rgIsCadastrado = true;
 				}
-			
+			}
 
 			if (!cpfIsCadastrado && !rgIsCadastrado) {
+				App.pacientes.add(new Paciente(nome, rg, cpf, telefone,
+						new Endereco(estado, cidade, rua, bairro, Integer.parseInt(numero))));
 				JOptionPane.showMessageDialog(null, "Cadastro efetuado com sucesso");
-				bancoDeDados.cadastrarPaciente(nome, rg, cpf, telefone, estado, cidade, rua, bairro, Integer.parseInt(numero));
 			}
-			
-			bancoDeDados.desconectar();
 		}
 	}
 
@@ -156,42 +136,38 @@ public class Funcionario extends Pessoa {
 	
 	public boolean funcionarioIsCadastrado(String campoCpf) {
 
-		Banco bancoDeDados = new Banco();
-		
-		bancoDeDados.conectar();
-		
-		if(bancoDeDados.cpfIsCadastro(campoCpf, "funcionario")){
-			bancoDeDados.desconectar();
-			return true;
+		for (int i = 0; i < App.funcionarios.size(); i++) {
+			if (campoCpf.equals(App.funcionarios.get(i).getCpf())) {
+				return true;
+			}
 		}
-		
 		return false;
 	}
 
 	public void pesquisarFuncionario(String campoCpf, JTable tabela) {
-		
-		Banco bancoDeDados = new Banco();
-		
-		bancoDeDados.conectar();
 
 		if (!campoCpf.equals("   .   .   -  ")) {
 
 			if (funcionarioIsCadastrado(campoCpf)) {
-				if (bancoDeDados.cpfIsCadastro(campoCpf, "funcionario")) {
+				for (int i = 0; i < App.funcionarios.size(); i++) {
+					if (campoCpf.equals(App.funcionarios.get(i).getCpf())) {
 
-					if (funcionarioBuscado(tabela, campoCpf)) {
-						JOptionPane.showMessageDialog(null, "Busca já foi realizada");
-					} else {
+						if (funcionarioBuscado(tabela, campoCpf)) {
+							JOptionPane.showMessageDialog(null, "Busca já foi realizada");
+						} else {
 
-						for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
+							for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
+								DefaultTableModel df = (DefaultTableModel) tabela.getModel();
+								df.removeRow(j);
+							}
+
+							String[] dados = new String[] { App.funcionarios.get(i).getNome(),
+									App.funcionarios.get(i).getCpf(), App.funcionarios.get(i).getTelefone() };
 							DefaultTableModel df = (DefaultTableModel) tabela.getModel();
-							df.removeRow(j);
+							df.addRow(dados);
+							campoCpf = "";
+							break;
 						}
-
-						String[] dados = bancoDeDados.BuscaFuncionario(campoCpf); 
-						DefaultTableModel df = (DefaultTableModel) tabela.getModel();
-						df.addRow(dados);
-						campoCpf = "";
 					}
 				}
 			} else {
@@ -201,7 +177,7 @@ public class Funcionario extends Pessoa {
 				}
 				JOptionPane.showMessageDialog(null, "Funcionario não encontrado");
 				campoCpf = "";
-			}			
+			}
 		}
 
 		else {
@@ -212,8 +188,6 @@ public class Funcionario extends Pessoa {
 
 			JOptionPane.showMessageDialog(null, "Campo cpf não preenchido");
 		}
-		
-		bancoDeDados.desconectar();
 
 	}
 
@@ -229,25 +203,19 @@ public class Funcionario extends Pessoa {
 
 	public void removerFuncionario(JTable tabela) {
 
-		Banco bancoDeDados = new Banco();
-		
-		bancoDeDados.conectar();
-		
-			if (funcionarioSelecionado(tabela)) {
-	
-				if (bancoDeDados.cpfIsCadastro(tabela.getValueAt(0, 1).toString(), "funcionario")) {
-					
-					bancoDeDados.removerUsuario(tabela.getValueAt(0, 1).toString(), "funcionario");
+		if (funcionarioSelecionado(tabela)) {
+
+			for (int i = 0; i < App.funcionarios.size(); i++) {
+				if (App.funcionarios.get(i).getCpf().equals(tabela.getValueAt(0, 1))) {
+					App.funcionarios.remove(i);
 					DefaultTableModel df = (DefaultTableModel) tabela.getModel();
 					df.removeRow(tabela.getSelectedRow());
-				
+					break;
 				}
 			}
-			else {
-				JOptionPane.showMessageDialog(null, "Nenhum funcionário selecionado");
-			}
-			
-			bancoDeDados.desconectar();
+		} else {
+			JOptionPane.showMessageDialog(null, "Nenhum funcionario selecionado");
+		}
 	}
 
 	public boolean funcionarioBuscado(JTable tabela, String campoCpf) {
@@ -291,28 +259,22 @@ public class Funcionario extends Pessoa {
 
 	public boolean pacienteIsCadastrado(String campoCpf) {
 
-		Banco bancoDeDados = new Banco();
-		bancoDeDados.conectar();
-		
-			if (bancoDeDados.cpfIsCadastro(campoCpf, "paciente")) {
-				bancoDeDados.desconectar();
+		for (int i = 0; i < App.pacientes.size(); i++) {
+			if (campoCpf.equals(App.pacientes.get(i).getCpf())) {
 				return true;
-			
 			}
+		}
 
 		return false;
 	}
 
 	public void pesquisarPaciente(String campoCpf, JTable tabela) {
-		
-		Banco bancoDeDados = new Banco();
-		bancoDeDados.conectar();
-		
+
 		if (!campoCpf.equals("   .   .   -  ")) {
 
 			if (pacienteIsCadastrado(campoCpf)) {
-				
-					if (bancoDeDados.cpfIsCadastro(campoCpf, "paciente")) {
+				for (int i = 0; i < App.pacientes.size(); i++) {
+					if (campoCpf.equals(App.pacientes.get(i).getCpf())) {
 
 						if (pacienteBuscado(tabela, campoCpf)) {
 							JOptionPane.showMessageDialog(null, "Busca já foi realizada");
@@ -323,14 +285,15 @@ public class Funcionario extends Pessoa {
 								df.removeRow(j);
 							}
 
-							String[] dados = bancoDeDados.BuscaPaciente(campoCpf);
+							String[] dados = new String[] { App.pacientes.get(i).getNome(),
+									App.pacientes.get(i).getCpf(), App.pacientes.get(i).getTelefone() };
 							DefaultTableModel df = (DefaultTableModel) tabela.getModel();
 							df.addRow(dados);
 							campoCpf = "";
-						
+							break;
 						}
 					}
-				
+				}
 			} else {
 				for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
 					DefaultTableModel df = (DefaultTableModel) tabela.getModel();
@@ -363,25 +326,23 @@ public class Funcionario extends Pessoa {
 	}
 
 	public void removerPaciente(JTable tabela) {
-		
-		Banco bancoDeDados = new Banco();
-		
-		bancoDeDados.conectar();
-		
-	
-			if (pacienteSelecionado(tabela)) {
-	
-				if (bancoDeDados.cpfIsCadastro(tabela.getValueAt(0, 1).toString(), "paciente")) {
-					
-					bancoDeDados.removerUsuario(tabela.getValueAt(0, 1).toString(), "paciente");
+
+		if (pacienteSelecionado(tabela)) {
+
+			for (int i = 0; i < App.pacientes.size(); i++) {
+				if (App.pacientes.get(i).getCpf().equals(tabela.getValueAt(0, 1))) {
+					String nome = App.pacientes.get(i).getNome();
+					App.pacientes.remove(i);
 					DefaultTableModel df = (DefaultTableModel) tabela.getModel();
 					df.removeRow(tabela.getSelectedRow());
-				
+					JOptionPane.showMessageDialog(null, "Paciente " + nome + " removido com sucesso");
+					break;
 				}
 			}
-			else {
-				JOptionPane.showMessageDialog(null, "Nenhum paciente selecionado");
-			}
+
+		} else {
+			JOptionPane.showMessageDialog(null, "Nenhum paciente selecionado");
+		}
 
 	}
 
@@ -399,15 +360,31 @@ public class Funcionario extends Pessoa {
 	
 	
 	public void agendarConsulta(String nome, String cpf, String data, String horario) {
-		/*Banco bancoDeDados = new Banco();
-		bancoDeDados.conectar();
-		bancoDeDados.inserirAgendamento(data, nome, cpf, horario);
-		bancoDeDados.desconectar();
-	*/
+
+		if (dataTemHorarioAgendado(data)) {
+			for (Agenda a : App.agendamento) {
+				if (a.getDataConsulta().equals(data)) {
+					a.getAgend().add(new DadosAgendamento(nome, cpf, horario, new Prontuario("Consulta - "+data+"\n\nHorário: "+horario+"\nPaciente: "+nome+"\nFuncionário: "+this.getNome())));
+				}
+			}
+		} else {
+			App.agendamento.add(new Agenda(data, nome, cpf, horario, new Prontuario("Consulta - "+data+"\n\nHorário: "+horario+"\nPaciente: "+nome+"\nFuncionário: "+this.getNome())));
+		}
+
 	}
 
-	
+	public boolean dataTemHorarioAgendado(String data) {
 
+		for (Agenda a : App.agendamento) {
+			if (a.getDataConsulta().equals(data)) {
+				return true;
+			}
+		}
+
+		return false;
+
+	}
+	
 	
 	/**
 	 * 

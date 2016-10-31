@@ -307,7 +307,7 @@ public class TelaAgendamento extends TelaInternal implements Runnable{
 		
 		while(rodando){
 			if(dataCalendario.getDate()!= null){
-				carregarComboBox(df.format(dataCalendario.getDate()));
+				carregarComboBox(df.format(dataCalendario.getDate()).toString());
 				rodando = false;					
 			}				
 		}

@@ -94,7 +94,6 @@ public class Controller implements ActionListener, KeyListener{
 				tBFuncionario = new TelaBuscaFuncionario();
 				tBFuncionario.setVisible(true);
 				tBFuncionario.getPesquisar().addActionListener(this);
-				tBFuncionario.getRemover().addActionListener(this);
 				tMenu.jdPane.add(tBFuncionario);
 				tbfIsAtivo = true;
 			}
@@ -153,7 +152,6 @@ public class Controller implements ActionListener, KeyListener{
 			}
 
 			if (tbpIsAtivo) {
-				
 				if (e.getSource() == tBPaciente.getPesquisar()) {
 
 					funcionario.pesquisarPaciente(tBPaciente.getCampoCpf().getText(), tBPaciente.getTabela());
@@ -289,7 +287,7 @@ public class Controller implements ActionListener, KeyListener{
 					if (!tAgendamento.campoVazio()) {
 
 						DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-							funcionario.agendarConsulta(tAgendamento.getCampoNomePaciente().getText(), tAgendamento.getCpfPaciente(),
+						funcionario.agendarConsulta(tAgendamento.getCampoNomePaciente().getText(), tAgendamento.getCpfPaciente(),
 								df.format(tAgendamento.getDataCalendario().getDate()).toString(),tAgendamento.getItensHorario().getSelectedItem().toString());
 
 						JOptionPane.showMessageDialog(null, "Consulta agendada com sucesso");
