@@ -33,33 +33,28 @@ CREATE TABLE FUNCIONARIO (
      PRIMARY KEY (CPF)
   );
   
-  CREATE TABLE DADOSAGENDAMENTO(
-	
-    NOMEPACIENTE VARCHAR(50),
-    CPFPACIENTE VARCHAR(20),
-    HORARIO VARCHAR(10),
-    DATAAGENDAMENTO VARCHAR(12),
+  
+
+create table agendamento (
+
+	dataConsulta Date,
+    horario varchar(15),
+    nomePaciente varchar(50),
+    nomeFuncionario varchar(50),
+    cpfPaciente varchar (15),
+    cpfFuncionario varchar(15),
+    primary key (dataConsulta, horario, nomePaciente, nomeFuncionario, cpfPaciente, cpfFuncionario),
+    foreign key (cpfPaciente) references paciente(cpf),
+    foreign key (cpfFuncionario) references funcionario(cpf)
+);
+
+
+create table prontuario(
+	cpfPaciente varchar(15),
+    historico varchar(500),
+    dataConsulta Date,
+    horario varchar(15),
     
-    PRIMARY KEY (DATAAGENDAMENTO, HORARIO)
-  
-  );
-  
-    
-  CREATE TABLE AGENDAMENTO(
-  
-	DATAAGENDAMENTO VARCHAR(12),
-    CPFPACIENTE VARCHAR (20),
-	PRIMARY KEY (DATAAGENDAMENTO, CPFPACIENTE)    
-  
-  );
-  
-  CREATE TABLE PRONTUARIO(
-  
-	HISTORICO VARCHAR(300),
-    CPFPACIENTE VARCHAR(20),
-    
-    PRIMARY KEY (CPFPACIENTE)
-  
-  );
-  
-  
+    primary key (cpfPaciente, dataConsulta, horario),
+    foreign key (cpfPaciente) references paciente (cpf)
+);
