@@ -47,7 +47,4 @@ public class DadosAgendamento {
 	public void setProntuario(Prontuario prontuario) {
 		this.prontuario = prontuario;
 	}
-	
-	
-
 }

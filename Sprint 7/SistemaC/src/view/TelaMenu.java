@@ -2,13 +2,12 @@ package view;
 
 
 
-
-
 import javax.swing.JDesktopPane;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 
 import control.Controller;
 import model.Funcionario;
@@ -20,6 +19,8 @@ public class TelaMenu extends Tela{
 	private JMenu jmCadastro = new JMenu("Cadastros");
 	private JMenu jmBusca = new JMenu("Busca");
 	private JMenu jmAgenda = new JMenu("Agenda");
+	private JMenu jmAtendimento = new JMenu("Atendimento");
+	private JMenuItem jmCriarPront = new JMenuItem("Prontuário");
 	private JMenuItem jmCadCliente = new JMenuItem("Cadastrar Paciente");
 	private JMenuItem jmCadFuncionario = new JMenuItem("Cadastrar Funcionário");
 	private JMenuItem jmBuscPaciente = new JMenuItem("Buscar Paciente");
@@ -29,16 +30,20 @@ public class TelaMenu extends Tela{
 	private JMenuItem jmConsultarAgendamento = new JMenuItem("Consultar Agendamentos");
 	public JDesktopPane jdPane = new JDesktopPane();
 	private Controller controle;
+	//private JPanel agendaPainel;
+	
 	
 	
 	public TelaMenu(Funcionario f) {
 		controle = new Controller(this, f);
 		getContentPane().add(jdPane);
 		
+		jmPrincipal.add(jmAtendimento);
 		jmPrincipal.add(jmCadastro);
 		jmPrincipal.add(jmBusca);
 		jmPrincipal.add(jmAgenda);
 		
+		jmAtendimento.add(jmCriarPront);
 		jmCadastro.add(jmCadCliente);
 		jmCadastro.add(jmCadFuncionario);
 		jmBusca.add(jmBuscPaciente);
@@ -57,7 +62,6 @@ public class TelaMenu extends Tela{
 		jmConsultarAgendamento.addActionListener(controle);
 		jmBuscProntuario.addActionListener(controle);
 		
-	
 		setVisible(true);
 	}
 

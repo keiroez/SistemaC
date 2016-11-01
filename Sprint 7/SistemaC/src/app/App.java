@@ -11,6 +11,8 @@ import model.Endereco;
 import model.Funcionario;
 import model.Paciente;
 import model.Prontuario;
+import view.TelaCadastroPaciente;
+import view.TelaConsultaAgenda;
 import view.TelaLogin;
 import view.TelaMenu;
 
@@ -58,7 +60,12 @@ public class App {
 			if(funcionarios.get(i).getLogin().equals(login) && funcionarios.get(i).getSenha().equals(senha)){
 				tl.dispose();
 				tlog = false;
-				new TelaMenu(funcionarios.get(i));
+				TelaMenu tM = new TelaMenu(funcionarios.get(i));
+				
+				TelaConsultaAgenda tAgd = new TelaConsultaAgenda();
+				//tAgd.setVisible(true);
+				
+				//tM.jdPane.add(tAgd);
 				
 				logado = true;
 			}

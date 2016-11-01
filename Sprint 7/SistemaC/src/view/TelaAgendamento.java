@@ -270,7 +270,7 @@ public class TelaAgendamento extends TelaInternal implements Runnable{
 		}
 		
 		else{
-			
+			ItensHorario.removeAllItems();
 			App.disp.add(new Disponibilidade(data));
 					
 			for(Disponibilidade d: App.disp){
@@ -301,7 +301,7 @@ public class TelaAgendamento extends TelaInternal implements Runnable{
 
 
 	@Override
-	public void run() {
+	public synchronized void run() {
 		boolean rodando = true;
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		
