@@ -1,6 +1,7 @@
 package view;
 
 import javax.swing.BorderFactory;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EtchedBorder;
@@ -10,7 +11,7 @@ import app.App;
 import model.Agenda;
 import model.DadosAgendamento;
 
-public class TelaConsultaAgenda{
+public class TelaConsultaAgenda extends JPanel{
 	private JTable tabela;
 	private JScrollPane barraRolagem;
 	
@@ -18,7 +19,9 @@ public class TelaConsultaAgenda{
 	public TelaConsultaAgenda() {
 		
 		preencherCabecalhoTabela();
-		
+		setSize(800,600);
+		setVisible(true);
+		add(barraRolagem);
 	}
 	
 	
@@ -49,9 +52,6 @@ public class TelaConsultaAgenda{
 			
 			
 		};
-//		tabela.setModel(new javax.swing.table.DefaultTableModel(new Object[][] {
-//
-//		}, new String[] { "Paciente", "Funcionario", "Data" }));
 
 		barraRolagem = new JScrollPane(barraRolagem);
 		barraRolagem.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);

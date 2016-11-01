@@ -30,7 +30,7 @@ public class TelaMenu extends Tela{
 	private JMenuItem jmConsultarAgendamento = new JMenuItem("Consultar Agendamentos");
 	public JDesktopPane jdPane = new JDesktopPane();
 	private Controller controle;
-	//private JPanel agendaPainel;
+	private TelaConsultaAgenda painelAgenda = new TelaConsultaAgenda();
 	
 	
 	
@@ -61,6 +61,8 @@ public class TelaMenu extends Tela{
 		jmAgendarConsulta.addActionListener(controle);
 		jmConsultarAgendamento.addActionListener(controle);
 		jmBuscProntuario.addActionListener(controle);
+		
+		jdPane.add(painelAgenda);
 		
 		setVisible(true);
 	}

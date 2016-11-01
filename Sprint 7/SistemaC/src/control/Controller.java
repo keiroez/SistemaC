@@ -70,6 +70,7 @@ public class Controller implements ActionListener, KeyListener{
 				tPaciente.getCadastrar().addActionListener(this);
 				tMenu.jdPane.add(tPaciente);
 				tpIsAtivo = true;
+				tPaciente.moveToFront();
 			}
 
 			if (e.getSource() == tMenu.getJmCadFuncionario()) {
@@ -78,6 +79,7 @@ public class Controller implements ActionListener, KeyListener{
 				tFuncionario.getCadastrar().addActionListener(this);
 				tMenu.jdPane.add(tFuncionario);
 				tfIsAtivo = true;
+				tFuncionario.moveToFront();
 			}
 
 			if (e.getSource() == tMenu.getJmBuscPaciente()) {
@@ -88,6 +90,7 @@ public class Controller implements ActionListener, KeyListener{
 				tBPaciente.getAbrir().addActionListener(this);
 				tMenu.jdPane.add(tBPaciente);
 				tbpIsAtivo = true;
+				tBPaciente.moveToFront();
 			}
 
 			if (e.getSource() == tMenu.getJmBuscFuncionario()) {
@@ -96,6 +99,7 @@ public class Controller implements ActionListener, KeyListener{
 				tBFuncionario.getPesquisar().addActionListener(this);
 				tMenu.jdPane.add(tBFuncionario);
 				tbfIsAtivo = true;
+				tBFuncionario.moveToFront();
 			}
 			
 			if (e.getSource() == tMenu.getJmBuscProntuario()) {
@@ -108,6 +112,7 @@ public class Controller implements ActionListener, KeyListener{
 				tProntuario.getComboHorario().addActionListener(this);
 				tMenu.jdPane.add(tProntuario);
 				tProntIsAtivo = true;
+				tProntuario.moveToFront();
 			}
 
 			if (e.getSource() == tMenu.getJmAgendarConsulta()) {
@@ -120,7 +125,7 @@ public class Controller implements ActionListener, KeyListener{
 				tMenu.jdPane.add(tAgendamento);
 				tAgendaIsAtivo = true;
 				new Thread(tAgendamento).start();
-
+				tAgendamento.moveToFront();
 			}
 
 			if (tfIsAtivo) {
