@@ -1,5 +1,9 @@
 package model;
 
+import java.sql.Date;
+import java.util.ArrayList;
+
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -359,30 +363,69 @@ public class Funcionario extends Pessoa {
 	 */
 	
 	
-	public void agendarConsulta(String nome, String cpf, String data, String horario) {
+	public void agendarConsulta(String nomePaciente, String cpfPaciente, String nomeFuncionario, String cpfFuncionario, Date data, String horario) {
 
-		if (dataTemHorarioAgendado(data)) {
-			for (Agenda a : App.agendamento) {
-				if (a.getDataConsulta().equals(data)) {
-					a.getAgend().add(new DadosAgendamento(nome, cpf, horario, new Prontuario("Consulta - "+data+"\n\nHorário: "+horario+"\nPaciente: "+nome+"\nFuncionário: "+this.getNome())));
-				}
-			}
-		} else {
-			App.agendamento.add(new Agenda(data, nome, cpf, horario, new Prontuario("Consulta - "+data+"\n\nHorário: "+horario+"\nPaciente: "+nome+"\nFuncionário: "+this.getNome())));
-		}
+		App.agendamento.add(new Agenda(data, nomePaciente, cpfPaciente, nomeFuncionario, cpfFuncionario, horario));
 
 	}
 
-	public boolean dataTemHorarioAgendado(String data) {
-
-		for (Agenda a : App.agendamento) {
-			if (a.getDataConsulta().equals(data)) {
+	public boolean dataTemHorarioAgendado(java.util.Date data){
+		
+		for(Agenda a: App.agendamento){
+			
+			
+			if(a.getDataConsulta().toString().equals(data.toString())){
 				return true;
 			}
 		}
+		
+		return false;		
+	}
+	
+	public ArrayList<String> horariosIndisponiveis(Date data){
+		
+		ArrayList<String> h = new ArrayList<>();
+		
+		for(Agenda a: App.agendamento){
+			if(a.getDataConsulta().toString().equals(data.toString())){
+				h.add(a.getHorario());
+			}
+		}
+		
+		return h;
+	}
+	
+	public void carregarComboBox(Date data, JComboBox<Object> ItensHorario, String [] horas){
+		
+		if(dataTemHorarioAgendado(data)){
+			
+			
+			ItensHorario.removeAllItems();
+			
+			for(String h: horas){
+				ItensHorario.addItem(h);
+			}
 
-		return false;
-
+			
+			for(String hr: horariosIndisponiveis(data)){
+				
+				for(int i = 0; i < ItensHorario.getItemCount(); i++){
+					
+					if(hr.equals(ItensHorario.getItemAt(i).toString())){
+						((DefaultComboBoxModel<Object>) ItensHorario.getModel()).removeElementAt(i);
+						
+					}					
+				}
+			}					
+		}
+		
+		else{
+			ItensHorario.removeAllItems();
+			
+			for(String h: horas){
+				ItensHorario.addItem(h);
+			}
+		}		
 	}
 	
 	
@@ -401,13 +444,9 @@ public class Funcionario extends Pessoa {
 		comboData.removeAllItems();
 		comboData.addItem("...");
 				
-		for(Agenda ag: App.agendamento){
-			for(DadosAgendamento da: ag.getAgend()){
-				if(da.getCpf().equals(campoCpf.getText())){
-					comboData.addItem(ag.getDataConsulta());
-				}
-			}
-		}	
+		//for(Agenda ag: App.agendamento){
+			
+		//}	
 	}
 	
 	public void preencherComboHorario(JComboBox<String> comboHorario, String data){
@@ -417,24 +456,16 @@ public class Funcionario extends Pessoa {
 				comboHorario.removeAllItems();
 				comboHorario.addItem("...");
 				
-				for(DadosAgendamento da: g.getAgend()){
-					comboHorario.addItem(da.getHorario());
-				}
+				
 			}
 		}		
 	}
 	
 	public void inserirProntuario(JTextArea jta, String data, String hora){
 		
-		for(Agenda a: App.agendamento){
-			if(a.getDataConsulta().equals(data)){
-				for(DadosAgendamento da: a.getAgend()){
-					if(da.getHorario().equals(hora)){
-						jta.setText(da.getProntuario().getHistorico());
-					}
-				}
-			}
-		}
+	//	for(Agenda a: App.agendamento){
+			
+		//}
 		
 	}
 	

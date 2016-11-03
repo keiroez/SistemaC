@@ -1,15 +1,26 @@
 package model;
 
+import java.sql.Date;
+
 public class Prontuario {
 
 	private String historico;
-	private Paciente paciente;
+	private String cpfPaciente;
+	private Date data;
+	private String horario;
+	
 
-	public Prontuario(String historico) {
+	
 
+	public Prontuario(String historico, String cpfPaciente, Date data, String horario) {
+	
 		this.historico = historico;
-
+		this.cpfPaciente = cpfPaciente;
+		this.data = data;
+		this.horario = horario;
 	}
+	
+	
 
 	public String getHistorico() {
 		return historico;
@@ -19,12 +30,30 @@ public class Prontuario {
 		this.historico = historico;
 	}
 
-	public Paciente getPaciente() {
-		return paciente;
+	public String getCpfPaciente() {
+		return cpfPaciente;
 	}
 
-	public void setPaciente(Paciente paciente) {
-		this.paciente = paciente;
+	public void setCpfPaciente(String cpfPaciente) {
+		this.cpfPaciente = cpfPaciente;
 	}
+
+	public Date getData() {
+		return data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
+	}
+
+	public String getHorario() {
+		return horario;
+	}
+
+	public void setHorario(String horario) {
+		this.horario = horario;
+	}
+
+	
 
 }

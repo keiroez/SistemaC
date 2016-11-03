@@ -18,6 +18,16 @@ public class Banco{
 	private ResultSet resultSet = null;
 	
 	
+	
+	/**
+	 * 
+	 * CONEXÃO
+	 * 
+	 * 
+	 */
+	
+	
+	
 	public void conectar(){
 				
 		String servidor = "jdbc:mysql://localhost:3306/banco_clinica";
@@ -45,6 +55,25 @@ public class Banco{
 		}
 	}
 	
+	public void desconectar(){
+		
+		try {			
+			this.connection.close();
+			
+		} catch (Exception e) {
+			System.out.println("Erro: "+e.getMessage());
+		}
+		
+	}
+	
+	
+	/**
+	 * 
+	 * 
+	 * VERIFICAÇÃO DE LOGIN
+	 * 
+	 * 
+	 */
 	
 	
 	public boolean validarLogin(String login, String senha){
@@ -70,54 +99,34 @@ public class Banco{
 			
 	}
 	
-	public Funcionario buscaFuncionarioPorLoginESenha(String login, String senha){
+	public boolean loginDisponivel(String login){
 		
 		
-		try {
-						
+		try {		
+			
 			String query = "SELECT * FROM funcionario WHERE login = '"+login+"';";
 			this.resultSet = this.statement.executeQuery(query);
-			
-			this.resultSet.next();
-		
-			if(this.resultSet.getString("senha").equals(senha)){
-				return new Funcionario(resultSet.getString("nome"), resultSet.getString("rg"), resultSet.getString("cpf"), resultSet.getString("telefone"), login, senha, new Endereco(resultSet.getString("estado"), resultSet.getString("cidade"), resultSet.getString("bairro"), resultSet.getString("rua"), resultSet.getInt("numero")));
+						
+			if(resultSet.next()){
+				return true;
 			}
 			
-			
+							
 		} catch (Exception e) {
 			System.out.println("Erro: "+e.getMessage());
 		}
 		
-		return null;
-			
+		return false;
 	}
 	
-	public void removerUsuario(String cpf, String usuario){
-		
-		try {			
-			String query = "DELETE FROM "+usuario+" WHERE cpf = '"+cpf+"';";
-			this.statement.executeUpdate(query);
-			
-			JOptionPane.showMessageDialog(null, "Usuário removido com sucesso");
-			
-						
-		} catch (Exception e) {
-			System.out.println("Erro: "+e.getMessage());
-		}		
-	}
 	
-	public void cadastrarPaciente(String nome, String rg, String cpf, String telefone, String estado, String cidade, String rua, String bairro, int numero){
-		
-		try {
-		
-			String query = "INSERT INTO paciente (nome, rg, cpf, telefone, estado, cidade, rua, bairro, numero) VALUES ('"+nome+"', '" + rg + "', '"+cpf+"', '"+telefone+"', '"+estado+"', '"+cidade+"', '"+rua+"', '"+bairro+"', '"+numero+"');";
-			this.statement.executeUpdate(query);
-			
-		} catch (Exception e) {
-			System.out.println("Erro: "+e.getMessage());
-		}	
-	}
+	/**
+	 * 
+	 * 
+	 * INSERÇÃO E BUSCA  DE FUNCIONÁRIO
+	 * 
+	 * 
+	 */
 	
 	public void cadastrarFuncionario(String nome, String rg, String cpf, String telefone, String login, String senha, String estado, String cidade, String rua, String bairro, int numero){
 		
@@ -162,6 +171,52 @@ public class Banco{
 		
 	}
 	
+	public Funcionario buscaFuncionarioPorLoginESenha(String login, String senha){
+		
+		
+		try {
+						
+			String query = "SELECT * FROM funcionario WHERE login = '"+login+"';";
+			this.resultSet = this.statement.executeQuery(query);
+			
+			this.resultSet.next();
+		
+			if(this.resultSet.getString("senha").equals(senha)){
+				return new Funcionario(resultSet.getString("nome"), resultSet.getString("rg"), resultSet.getString("cpf"), resultSet.getString("telefone"), login, senha, new Endereco(resultSet.getString("estado"), resultSet.getString("cidade"), resultSet.getString("bairro"), resultSet.getString("rua"), resultSet.getInt("numero")));
+			}
+			
+			
+		} catch (Exception e) {
+			System.out.println("Erro: "+e.getMessage());
+		}
+		
+		return null;
+			
+	}
+	
+	
+	/**
+	 * 
+	 * REMOÇÃO E CONSULTA DE FUNCIONÁRIO E PACIENTE
+	 * 
+	 * 
+	 */
+	
+	
+	public void removerUsuario(String cpf, String usuario){
+		
+		try {			
+			String query = "DELETE FROM "+usuario+" WHERE cpf = '"+cpf+"';";
+			this.statement.executeUpdate(query);
+			
+			JOptionPane.showMessageDialog(null, "Usuário removido com sucesso");
+			
+						
+		} catch (Exception e) {
+			System.out.println("Erro: "+e.getMessage());
+		}		
+	}
+	
 	public boolean cpfIsCadastro(String cpf, String pessoa){
 		
 		
@@ -202,26 +257,32 @@ public class Banco{
 		return false;
 	}
 	
-	public boolean loginDisponivel(String login){
+	
+	
+	
+	/**
+	 * 
+	 * 
+	 * INSERÇÃO E BUSCA DE PACIENTE
+	 * 
+	 * 
+	 */
+	
+	
+	
+	public void cadastrarPaciente(String nome, String rg, String cpf, String telefone, String estado, String cidade, String rua, String bairro, int numero){
 		
+		try {
 		
-		try {		
+			String query = "INSERT INTO paciente (nome, rg, cpf, telefone, estado, cidade, rua, bairro, numero) VALUES ('"+nome+"', '" + rg + "', '"+cpf+"', '"+telefone+"', '"+estado+"', '"+cidade+"', '"+rua+"', '"+bairro+"', '"+numero+"');";
+			this.statement.executeUpdate(query);
 			
-			String query = "SELECT * FROM funcionario WHERE login = '"+login+"';";
-			this.resultSet = this.statement.executeQuery(query);
-						
-			if(resultSet.next()){
-				return true;
-			}
-			
-							
 		} catch (Exception e) {
 			System.out.println("Erro: "+e.getMessage());
-		}
-		
-		return false;
+		}	
 	}
 	
+		
 	public String [] BuscaPaciente(String cpf){
 		
 		String nome = null, cpf1 = null, telefone = null;
@@ -252,15 +313,6 @@ public class Banco{
 	}
 	
 	
-	public void desconectar(){
-		
-		try {			
-			this.connection.close();
-			
-		} catch (Exception e) {
-			System.out.println("Erro: "+e.getMessage());
-		}
-		
-	}
+	
 
 }

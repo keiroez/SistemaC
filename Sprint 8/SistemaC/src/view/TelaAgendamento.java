@@ -2,8 +2,6 @@ package view;
 
 import java.awt.Container;
 import java.awt.GridLayout;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -13,23 +11,20 @@ import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
-import app.App;
-import model.Disponibilidade;
 
 
-
-public class TelaAgendamento extends TelaInternal implements Runnable{
+public class TelaAgendamento extends TelaInternal{
 
 	private static final long serialVersionUID = 1L;
 	private JLabel nomePaciente, nomeFuncionario, data, horario;
 	private JTextField campoNomePaciente, campoNomeFuncionario;
-	private JButton agendar;
+	private JButton agendar, carregarHorarios;
 	private JComboBox<Object> ItensHorario;
 	private JDateChooser dataCalendario;
 	private ImageIcon image;
 	private JButton buscaP, buscaF;
 	private String cpfPaciente, cpfFuncionario;
-	
+	private String [] horas = {"09:00", "09:20", "09:40", "10:00", "10:20", "10:40", "11:00", "11:20", "11:40", "12:00", "12:20", "12:40", "13:00", "13:20", "13:40", "14:00", "14:20", "14:40", "15:00"};
 	
 	
 	public TelaAgendamento() {
@@ -55,6 +50,7 @@ public class TelaAgendamento extends TelaInternal implements Runnable{
 		buscaF = new JButton(image);
 		
 		agendar = new JButton("Agendar");
+		carregarHorarios = new JButton("Carregar horários");
 
 		Container c = new Container();
 		c.setLayout(new GridLayout(3, 2));
@@ -65,16 +61,19 @@ public class TelaAgendamento extends TelaInternal implements Runnable{
 		c.add(nomeFuncionario);
 		c.add(campoNomeFuncionario);
 		c.add(data);
-		c.add(dataCalendario);
 		
 		
 		add(c);
-		
+		dataCalendario.setBounds(300, 90, 220, 20);
+		add(dataCalendario);
 		ItensHorario.setBounds(300, 110, 70, 20);
 		add(ItensHorario);
+		carregarHorarios.setBounds(380, 110, 140, 20);
+		add(carregarHorarios);
+		
 		data.setBounds(100, 50, 100, 100);
 		
-		agendar.setBounds(250, 340, 100, 20);
+		agendar.setBounds(250, 320, 100, 20);
 		add(agendar);
 		horario.setBounds(100, 70, 100, 100);
 		add(horario);
@@ -83,6 +82,8 @@ public class TelaAgendamento extends TelaInternal implements Runnable{
 		add(buscaP);
 		buscaF.setBounds(500, 70, 20, 20);
 		add(buscaF);
+		
+		
 		
 		setVisible(true);
 		
@@ -241,82 +242,29 @@ public class TelaAgendamento extends TelaInternal implements Runnable{
 		ItensHorario = itensHorario;
 	}
 
-
-		
-	public boolean dataTemHorarioAgendado(String data){
-				
-		for(Disponibilidade d: App.disp){
-			if(d.getData().equals(data)){
-				return true;
-			}
-		}
-		
-		return false;
-		
-		
-	}
 	
-	public void carregarComboBox(String data){
 		
-		if(dataTemHorarioAgendado(data)){
-			
-			ItensHorario.removeAllItems();
-			for(Disponibilidade d: App.disp){
-				for(int i = 0; i < d.getHorarios().size(); i++){
-					ItensHorario.addItem(d.getHorarios().get(i));
-				}
-			}			
-					
-		}
-		
-		else{
-			ItensHorario.removeAllItems();
-			App.disp.add(new Disponibilidade(data));
-					
-			for(Disponibilidade d: App.disp){
-				if(d.getData().equals(data)){
-					ItensHorario.removeAllItems();
-					for(int i = 0; i < d.getHorarios().size(); i++){
-						
-						ItensHorario.addItem(d.getHorarios().get(i));
-					}
-				}
-			}	
-		}		
+	public JButton getCarregarHorarios() {
+		return carregarHorarios;
 	}
+
+
+	public void setCarregarHorarios(JButton carregarHorarios) {
+		this.carregarHorarios = carregarHorarios;
+	}
+
+
+	public String[] getHoras() {
+		return horas;
+	}
+
+
+	public void setHoras(String[] horas) {
+		this.horas = horas;
+	}
+
 	
-	public void removerItemComboBox(String data, String item){
-		
-		for(Disponibilidade d: App.disp){
-			if(data.equals(d.getData())){
-				for(int i = 0; i < d.getHorarios().size(); i++){
-					if(d.getHorarios().get(i).equals(item)){
-						d.getHorarios().remove(i);
-					}
-				}
-			}
-		}		
-	}
 
-
-
-	@Override
-	public synchronized void run() {
-		boolean rodando = true;
-		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-		
-		while(rodando){
-			if(dataCalendario.getDate()!= null){
-				carregarComboBox(df.format(dataCalendario.getDate()).toString());
-				rodando = false;					
-			}				
-		}
-		
-	}
-
-	public void limparCampoData(){
-		dataCalendario.setDate(null);
-	}
 	
 
 	

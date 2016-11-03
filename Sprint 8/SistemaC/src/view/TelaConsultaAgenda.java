@@ -1,17 +1,20 @@
 package view;
 
+
+
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EtchedBorder;
-import javax.xml.ws.soap.Addressing;
 
 import app.App;
 import model.Agenda;
-import model.DadosAgendamento;
+
 
 public class TelaConsultaAgenda extends JPanel{
+	
+	private static final long serialVersionUID = 1L;
 	private JTable tabela;
 	private JScrollPane barraRolagem;
 	
@@ -20,8 +23,9 @@ public class TelaConsultaAgenda extends JPanel{
 		
 		preencherCabecalhoTabela();
 		setSize(800,600);
-		setVisible(true);
 		add(barraRolagem);
+		setVisible(true);
+		
 	}
 	
 	
@@ -32,15 +36,14 @@ public class TelaConsultaAgenda extends JPanel{
 		Object [][] dados = new Object[App.agendamento.size()][4];
 		int i=0;
 		for(Agenda agd:App.agendamento){
-			for(DadosAgendamento dAgd: agd.getAgend()){
-			dados[i][0]=dAgd.getNome();
-			dados[i][1] = dAgd.getHorario();  
+			
+			dados[i][0]=agd.getNomePaciente();
+			dados[i][1] = agd.getHorario();  
 			dados[i][2]=agd.getDataConsulta();
-			dados[i][3]="";
-			}
+			dados[i][3]= agd.getNomeFuncionario();
 			i++;
 		}
-		
+				
 		tabela = new JTable(dados, colunas){
 			
 			private static final long serialVersionUID = 1L;
@@ -59,7 +62,6 @@ public class TelaConsultaAgenda extends JPanel{
 		barraRolagem = new JScrollPane(tabela);
 		barraRolagem.setBounds(10, 40, 575, 280);
 	}
-
 
 	public JTable getTabela() {
 		return tabela;

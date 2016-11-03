@@ -1,18 +1,16 @@
 package view;
 
-
-
 import javax.swing.JDesktopPane;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
+
 
 import control.Controller;
 import model.Funcionario;
 
-public class TelaMenu extends Tela{
+public class TelaMenu extends Tela {
 
 	private static final long serialVersionUID = 1L;
 	private JMenuBar jmPrincipal = new JMenuBar();
@@ -31,18 +29,15 @@ public class TelaMenu extends Tela{
 	public JDesktopPane jdPane = new JDesktopPane();
 	private Controller controle;
 	private TelaConsultaAgenda painelAgenda = new TelaConsultaAgenda();
-	
-	
-	
+
 	public TelaMenu(Funcionario f) {
 		controle = new Controller(this, f);
 		getContentPane().add(jdPane);
-		
 		jmPrincipal.add(jmAtendimento);
 		jmPrincipal.add(jmCadastro);
 		jmPrincipal.add(jmBusca);
 		jmPrincipal.add(jmAgenda);
-		
+
 		jmAtendimento.add(jmCriarPront);
 		jmCadastro.add(jmCadCliente);
 		jmCadastro.add(jmCadFuncionario);
@@ -50,10 +45,10 @@ public class TelaMenu extends Tela{
 		jmBusca.add(jmBuscFuncionario);
 		jmBusca.add(jmBuscProntuario);
 		jmAgenda.add(jmAgendarConsulta);
-		jmAgenda.add(jmConsultarAgendamento);
-		
+		// jmAgenda.add(jmConsultarAgendamento);
+
 		setJMenuBar(jmPrincipal);
-		
+
 		jmCadCliente.addActionListener(controle);
 		jmCadFuncionario.addActionListener(controle);
 		jmBuscPaciente.addActionListener(controle);
@@ -61,9 +56,9 @@ public class TelaMenu extends Tela{
 		jmAgendarConsulta.addActionListener(controle);
 		jmConsultarAgendamento.addActionListener(controle);
 		jmBuscProntuario.addActionListener(controle);
-		
+
 		jdPane.add(painelAgenda);
-		
+
 		setVisible(true);
 	}
 
@@ -170,5 +165,30 @@ public class TelaMenu extends Tela{
 	public void setJmBuscProntuario(JMenuItem jmBuscProntuario) {
 		this.jmBuscProntuario = jmBuscProntuario;
 	}
+
+	public JMenu getJmAtendimento() {
+		return jmAtendimento;
+	}
+
+	public void setJmAtendimento(JMenu jmAtendimento) {
+		this.jmAtendimento = jmAtendimento;
+	}
+
+	public JMenuItem getJmCriarPront() {
+		return jmCriarPront;
+	}
+
+	public void setJmCriarPront(JMenuItem jmCriarPront) {
+		this.jmCriarPront = jmCriarPront;
+	}
+
+	public TelaConsultaAgenda getPainelAgenda() {
+		return painelAgenda;
+	}
+
+	public void setPainelAgenda(TelaConsultaAgenda painelAgenda) {
+		this.painelAgenda = painelAgenda;
+	}
 	
+
 }

@@ -4,11 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.sql.Date;
 
 import javax.swing.JOptionPane;
-
 import javax.swing.table.DefaultTableModel;
 
 import app.App;
@@ -122,10 +120,13 @@ public class Controller implements ActionListener, KeyListener{
 				tAgendamento.getAgendar().addActionListener(this);
 				tAgendamento.getBuscaP().addActionListener(this);
 				tAgendamento.getBuscaF().addActionListener(this);
+				tAgendamento.getCarregarHorarios().addActionListener(this);
+			
+				
 				tMenu.jdPane.add(tAgendamento);
 				tAgendaIsAtivo = true;
-				new Thread(tAgendamento).start();
 				tAgendamento.moveToFront();
+				tMenu.getPainelAgenda().setVisible(false);
 			}
 
 			if (tfIsAtivo) {
@@ -186,6 +187,10 @@ public class Controller implements ActionListener, KeyListener{
 			}
 
 			if (tAgendaIsAtivo) {
+				
+				if(e.getSource() == tAgendamento.getDataCalendario().getCalendarButton()){
+					System.out.println("evt");
+				}
 
 				if (e.getSource() == tAgendamento.getBuscaP()) {
 
@@ -286,20 +291,25 @@ public class Controller implements ActionListener, KeyListener{
 					});
 
 				}
+				
+				if (e.getSource() == tAgendamento.getCarregarHorarios() && tAgendamento.getDataCalendario().getDate() != null){
+					
+					funcionario.carregarComboBox(new Date(tAgendamento.getDataCalendario().getDate().getTime()), tAgendamento.getItensHorario(), tAgendamento.getHoras());
+					
+					
+				}
 
 				if (e.getSource() == tAgendamento.getAgendar()) {
 
 					if (!tAgendamento.campoVazio()) {
 
-						DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-						funcionario.agendarConsulta(tAgendamento.getCampoNomePaciente().getText(), tAgendamento.getCpfPaciente(),
-								df.format(tAgendamento.getDataCalendario().getDate()).toString(),tAgendamento.getItensHorario().getSelectedItem().toString());
-
+						funcionario.agendarConsulta(tAgendamento.getCampoNomePaciente().getText(), tAgendamento.getCpfPaciente(), funcionario.getNome(), funcionario.getCpf(),
+						new java.sql.Date(tAgendamento.getDataCalendario().getDate().getTime()),tAgendamento.getItensHorario().getSelectedItem().toString());
+						tAgendamento.getDataCalendario().setDate(null);
+						tAgendamento.getItensHorario().removeAllItems();
 						JOptionPane.showMessageDialog(null, "Consulta agendada com sucesso");
-						tAgendamento.removerItemComboBox(df.format(tAgendamento.getDataCalendario().getDate()),
-								tAgendamento.getItensHorario().getSelectedItem().toString());
-						tAgendamento.limparCampoData();
-						new Thread(tAgendamento).start();
+					
+
 
 					}
 
@@ -361,8 +371,6 @@ public class Controller implements ActionListener, KeyListener{
 		// TODO Auto-generated method stub
 		
 	}
+
 	
-
-
-
 }

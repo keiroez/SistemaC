@@ -1,20 +1,19 @@
 package app;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
 import control.Controller;
 import model.Agenda;
-import model.Disponibilidade;
 import model.Endereco;
 import model.Funcionario;
 import model.Paciente;
-import model.Prontuario;
-import view.TelaCadastroPaciente;
-import view.TelaConsultaAgenda;
+
 import view.TelaLogin;
 import view.TelaMenu;
+
 
 
 
@@ -23,7 +22,6 @@ public class App {
 	public static ArrayList<Paciente> pacientes = new ArrayList<Paciente>();
 	public static ArrayList<Funcionario> funcionarios = new ArrayList<Funcionario>();
 	public static ArrayList<Agenda> agendamento = new ArrayList<Agenda>();
-	public static ArrayList<Disponibilidade> disp = new ArrayList<>();
 
 	public static void main(String[] args) {
 		
@@ -41,45 +39,15 @@ public class App {
 		funcionarios.add(new Funcionario("Ivo", "222222", "222.222.222-22", "(222) 22222 - 2222", "ivosouza", "admin", new Endereco("Pernambuco (PE)", "Triunfo", "C", "D", 200)));
 		funcionarios.add(new Funcionario("Izaquiel", "3333333", "333.333.333-33", "(333) 33333 - 3333", "izaquiel", "admin", new Endereco("Pernambuco (PE)", "Flores", "E", "F", 300)));
 		
-		agendamento.add(new Agenda("28/10/2016", "José Diogo", "111.111.111-11", "09:20", new Prontuario("Consulta - 28/10/2016\n\nHorário: 09:20\nPaciente: José Diogo\nFuncionário: Ivo")));
-		agendamento.add(new Agenda("01/11/2016", "José Diogo", "111.111.111-11", "11:20", new Prontuario("Consulta - 01/11/2016\n\nHorário: 11:40\nPaciente: José Diogo\nFuncionário: Izaquiel")));
-		agendamento.add(new Agenda("23/12/2016", "José Diogo", "111.111.111-11", "14:40", new Prontuario("Consulta - 23/12/2016\n\nHorário: 14:40\nPaciente: José Diogo\nFuncionário: Ivo")));
-		agendamento.add(new Agenda("15/11/2016", "Ivo", "222.222.222-22", "10:20", new Prontuario("Consulta - 15/11/2016\n\nHorário: 10:20\nPaciente: Ivo\nFuncionário: Izaquiel")));
-		agendamento.add(new Agenda("12/12/2016", "Ivo", "222.222.222-22", "12:40", new Prontuario("Consulta - 12/12/2016\n\nHorário: 12:40\nPaciente: Ivo\nFuncionário: Izaquiel")));
-		agendamento.add(new Agenda("21/11/2016", "Ivo", "222.222.222-22", "13:00", new Prontuario("Consulta - 21/11/2016\n\nHorário: 13:00\nPaciente: Ivo\nFuncionário: José Diogo")));
-		agendamento.add(new Agenda("28/11/2016", "Izaquiel", "333.333.333-33", "14:20", new Prontuario("Consulta - 28/11/2016\n\nHorário: 14:20\nPaciente: Izaquiel\nFuncionário: Ivo")));
-		agendamento.add(new Agenda("05/12/2016", "Izaquiel", "333.333.333-33", "09:20", new Prontuario("Consulta - 05/12/2016\n\nHorário: 09:20\nPaciente: Izaquiel\nFuncionário: José Diogo")));
-		agendamento.add(new Agenda("29/10/2016", "Izaquiel", "333.333.333-33", "12:40", new Prontuario("Consulta - 29/10/2016\n\nHorário: 12:40\nPaciente: Izaquiel\nFuncionário: José Diogo")));
-		
-		agendamento.add(new Agenda("28/10/2016", "José Diogo", "111.111.111-11", "09:20", new Prontuario("Consulta - 28/10/2016\n\nHorário: 09:20\nPaciente: José Diogo\nFuncionário: Ivo")));
-		agendamento.add(new Agenda("01/11/2016", "José Diogo", "111.111.111-11", "11:20", new Prontuario("Consulta - 01/11/2016\n\nHorário: 11:40\nPaciente: José Diogo\nFuncionário: Izaquiel")));
-		agendamento.add(new Agenda("23/12/2016", "José Diogo", "111.111.111-11", "14:40", new Prontuario("Consulta - 23/12/2016\n\nHorário: 14:40\nPaciente: José Diogo\nFuncionário: Ivo")));
-		agendamento.add(new Agenda("15/11/2016", "Ivo", "222.222.222-22", "10:20", new Prontuario("Consulta - 15/11/2016\n\nHorário: 10:20\nPaciente: Ivo\nFuncionário: Izaquiel")));
-		agendamento.add(new Agenda("12/12/2016", "Ivo", "222.222.222-22", "12:40", new Prontuario("Consulta - 12/12/2016\n\nHorário: 12:40\nPaciente: Ivo\nFuncionário: Izaquiel")));
-		agendamento.add(new Agenda("21/11/2016", "Ivo", "222.222.222-22", "13:00", new Prontuario("Consulta - 21/11/2016\n\nHorário: 13:00\nPaciente: Ivo\nFuncionário: José Diogo")));
-		agendamento.add(new Agenda("28/11/2016", "Izaquiel", "333.333.333-33", "14:20", new Prontuario("Consulta - 28/11/2016\n\nHorário: 14:20\nPaciente: Izaquiel\nFuncionário: Ivo")));
-		agendamento.add(new Agenda("05/12/2016", "Izaquiel", "333.333.333-33", "09:20", new Prontuario("Consulta - 05/12/2016\n\nHorário: 09:20\nPaciente: Izaquiel\nFuncionário: José Diogo")));
-		agendamento.add(new Agenda("29/10/2016", "Izaquiel", "333.333.333-33", "12:40", new Prontuario("Consulta - 29/10/2016\n\nHorário: 12:40\nPaciente: Izaquiel\nFuncionário: José Diogo")));
-		
-		agendamento.add(new Agenda("28/10/2016", "José Diogo", "111.111.111-11", "09:20", new Prontuario("Consulta - 28/10/2016\n\nHorário: 09:20\nPaciente: José Diogo\nFuncionário: Ivo")));
-		agendamento.add(new Agenda("01/11/2016", "José Diogo", "111.111.111-11", "11:20", new Prontuario("Consulta - 01/11/2016\n\nHorário: 11:40\nPaciente: José Diogo\nFuncionário: Izaquiel")));
-		agendamento.add(new Agenda("23/12/2016", "José Diogo", "111.111.111-11", "14:40", new Prontuario("Consulta - 23/12/2016\n\nHorário: 14:40\nPaciente: José Diogo\nFuncionário: Ivo")));
-		agendamento.add(new Agenda("15/11/2016", "Ivo", "222.222.222-22", "10:20", new Prontuario("Consulta - 15/11/2016\n\nHorário: 10:20\nPaciente: Ivo\nFuncionário: Izaquiel")));
-		agendamento.add(new Agenda("12/12/2016", "Ivo", "222.222.222-22", "12:40", new Prontuario("Consulta - 12/12/2016\n\nHorário: 12:40\nPaciente: Ivo\nFuncionário: Izaquiel")));
-		agendamento.add(new Agenda("21/11/2016", "Ivo", "222.222.222-22", "13:00", new Prontuario("Consulta - 21/11/2016\n\nHorário: 13:00\nPaciente: Ivo\nFuncionário: José Diogo")));
-		agendamento.add(new Agenda("28/11/2016", "Izaquiel", "333.333.333-33", "14:20", new Prontuario("Consulta - 28/11/2016\n\nHorário: 14:20\nPaciente: Izaquiel\nFuncionário: Ivo")));
-		agendamento.add(new Agenda("05/12/2016", "Izaquiel", "333.333.333-33", "09:20", new Prontuario("Consulta - 05/12/2016\n\nHorário: 09:20\nPaciente: Izaquiel\nFuncionário: José Diogo")));
-		agendamento.add(new Agenda("29/10/2016", "Izaquiel", "333.333.333-33", "12:40", new Prontuario("Consulta - 29/10/2016\n\nHorário: 12:40\nPaciente: Izaquiel\nFuncionário: José Diogo")));
-		
-		agendamento.add(new Agenda("28/10/2016", "José Diogo", "111.111.111-11", "09:20", new Prontuario("Consulta - 28/10/2016\n\nHorário: 09:20\nPaciente: José Diogo\nFuncionário: Ivo")));
-		agendamento.add(new Agenda("01/11/2016", "José Diogo", "111.111.111-11", "11:20", new Prontuario("Consulta - 01/11/2016\n\nHorário: 11:40\nPaciente: José Diogo\nFuncionário: Izaquiel")));
-		agendamento.add(new Agenda("23/12/2016", "José Diogo", "111.111.111-11", "14:40", new Prontuario("Consulta - 23/12/2016\n\nHorário: 14:40\nPaciente: José Diogo\nFuncionário: Ivo")));
-		agendamento.add(new Agenda("15/11/2016", "Ivo", "222.222.222-22", "10:20", new Prontuario("Consulta - 15/11/2016\n\nHorário: 10:20\nPaciente: Ivo\nFuncionário: Izaquiel")));
-		agendamento.add(new Agenda("12/12/2016", "Ivo", "222.222.222-22", "12:40", new Prontuario("Consulta - 12/12/2016\n\nHorário: 12:40\nPaciente: Ivo\nFuncionário: Izaquiel")));
-		agendamento.add(new Agenda("21/11/2016", "Ivo", "222.222.222-22", "13:00", new Prontuario("Consulta - 21/11/2016\n\nHorário: 13:00\nPaciente: Ivo\nFuncionário: José Diogo")));
-		agendamento.add(new Agenda("28/11/2016", "Izaquiel", "333.333.333-33", "14:20", new Prontuario("Consulta - 28/11/2016\n\nHorário: 14:20\nPaciente: Izaquiel\nFuncionário: Ivo")));
-		agendamento.add(new Agenda("05/12/2016", "Izaquiel", "333.333.333-33", "09:20", new Prontuario("Consulta - 05/12/2016\n\nHorário: 09:20\nPaciente: Izaquiel\nFuncionário: José Diogo")));
-		agendamento.add(new Agenda("29/10/2016", "Izaquiel", "333.333.333-33", "12:40", new Prontuario("Consulta - 29/10/2016\n\nHorário: 12:40\nPaciente: Izaquiel\nFuncionário: José Diogo")));
+		agendamento.add(new Agenda(new Date(2016-10-28), "José Diogo", "111.111.111-11", "José Diogo", "111.111.111-11", "09:20"));
+		agendamento.add(new Agenda(new Date(2016-11-01), "José Diogo", "111.111.111-11", "Izaquiel", "333.333.333-33", "11:20"));
+		agendamento.add(new Agenda(new Date(2016-12-23), "José Diogo", "111.111.111-11", "Ivo", "222.222.222-22", "14:40"));
+		agendamento.add(new Agenda(new Date(2016-11-15), "Ivo", "222.222.222-22", "José Diogo", "111.111.111-11", "10:20"));
+		agendamento.add(new Agenda(new Date(2016-12-12), "Ivo", "222.222.222-22", "Izaquiel", "333.333.333-33", "12:40"));
+		agendamento.add(new Agenda(new Date(2016-11-21), "Ivo", "222.222.222-22", "Izaquiel", "333.333.333-33", "13:00"));
+		agendamento.add(new Agenda(new Date(2016-11-28), "Izaquiel", "333.333.333-33", "José Diogo", "111.111.111-11", "14:20"));
+		agendamento.add(new Agenda(new Date(2016-12-05), "Izaquiel", "333.333.333-33", "Ivo", "222.222.222-22", "09:20"));
+		agendamento.add(new Agenda(new Date(2016-10-29), "Izaquiel", "333.333.333-33", "José Diogo", "111.111.111-11", "12:40"));
 		
 	}
 	
@@ -90,9 +58,9 @@ public class App {
 			if(funcionarios.get(i).getLogin().equals(login) && funcionarios.get(i).getSenha().equals(senha)){
 				tl.dispose();
 				tlog = false;
-				TelaMenu tM = new TelaMenu(funcionarios.get(i));
 				
-				TelaConsultaAgenda tAgd = new TelaConsultaAgenda();
+				new TelaMenu(funcionarios.get(i));
+				
 				//tAgd.setVisible(true);
 				
 				//tM.jdPane.add(tAgd);
