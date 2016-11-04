@@ -26,9 +26,10 @@ public class TelaMenu extends Tela {
 	private JMenuItem jmBuscProntuario = new JMenuItem("Buscar Prontuário");
 	private JMenuItem jmAgendarConsulta = new JMenuItem("Agendar consulta");
 	private JMenuItem jmConsultarAgendamento = new JMenuItem("Consultar Agendamentos");
+	private JMenuItem jmAgBus = new JMenuItem("Buscar Agendamentos");
 	public JDesktopPane jdPane = new JDesktopPane();
 	private Controller controle;
-	private TelaConsultaAgenda painelAgenda = new TelaConsultaAgenda();
+	
 
 	public TelaMenu(Funcionario f) {
 		controle = new Controller(this, f);
@@ -44,8 +45,9 @@ public class TelaMenu extends Tela {
 		jmBusca.add(jmBuscPaciente);
 		jmBusca.add(jmBuscFuncionario);
 		jmBusca.add(jmBuscProntuario);
+		jmBusca.add(jmAgBus);
 		jmAgenda.add(jmAgendarConsulta);
-		// jmAgenda.add(jmConsultarAgendamento);
+		jmAgenda.add(jmConsultarAgendamento);
 
 		setJMenuBar(jmPrincipal);
 
@@ -56,11 +58,25 @@ public class TelaMenu extends Tela {
 		jmAgendarConsulta.addActionListener(controle);
 		jmConsultarAgendamento.addActionListener(controle);
 		jmBuscProntuario.addActionListener(controle);
-
-		jdPane.add(painelAgenda);
+		jmConsultarAgendamento.addActionListener(controle);
+		jmAgBus.addActionListener(controle);
 
 		setVisible(true);
 	}
+
+	
+	
+	public JMenuItem getJmAgBus() {
+		return jmAgBus;
+	}
+
+
+
+	public void setJmAgBus(JMenuItem jmAgBus) {
+		this.jmAgBus = jmAgBus;
+	}
+
+
 
 	public JMenuBar getJmPrincipal() {
 		return jmPrincipal;
@@ -181,14 +197,5 @@ public class TelaMenu extends Tela {
 	public void setJmCriarPront(JMenuItem jmCriarPront) {
 		this.jmCriarPront = jmCriarPront;
 	}
-
-	public TelaConsultaAgenda getPainelAgenda() {
-		return painelAgenda;
-	}
-
-	public void setPainelAgenda(TelaConsultaAgenda painelAgenda) {
-		this.painelAgenda = painelAgenda;
-	}
-	
 
 }

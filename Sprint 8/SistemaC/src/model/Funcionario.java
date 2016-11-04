@@ -429,6 +429,40 @@ public class Funcionario extends Pessoa {
 	}
 	
 	
+	public void preencherTabelaAgendamentos(JTable tabela, String data) {
+		
+		for(Agenda a:App.agendamento){
+			
+			if(data.equals(a.getDataConsulta().toString())){
+				if(dataBuscado(tabela, data, a.getHorario())){
+					
+				}
+				else{
+					for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
+						DefaultTableModel df = (DefaultTableModel) tabela.getModel();
+						df.removeRow(j);
+					}
+					String[] dados = new String[] { a.getNomePaciente(),
+							a.getHorario(), a.getDataConsulta().toString(), a.getNomeFuncionario()};
+					DefaultTableModel df = (DefaultTableModel) tabela.getModel();
+					df.addRow(dados);
+				}
+			}
+		}		
+	}
+	
+	public boolean dataBuscado(JTable tabela, String data, String hora) {
+
+		for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
+			if (tabela.getValueAt(j, 2).equals(data) && tabela.getValueAt(j, 1).equals(hora)) {
+				return true;
+			}
+		}
+
+		return false;
+
+	}
+	
 	/**
 	 * 
 	 * 
@@ -443,30 +477,49 @@ public class Funcionario extends Pessoa {
 	public void buscarProntuarioPorCpf(JComboBox<String> comboData, JTextField campoCpf){
 		comboData.removeAllItems();
 		comboData.addItem("...");
+		
 				
-		//for(Agenda ag: App.agendamento){
-			
-		//}	
+		for(Paciente p: App.pacientes){
+			if(p.getCpf().equals(campoCpf.getText())){
+				for(Prontuario pront: p.getProtuario()){
+					comboData.addItem(pront.getData().toString());
+				}
+			}
+		}
 	}
 	
-	public void preencherComboHorario(JComboBox<String> comboHorario, String data){
-				
+	public void preencherComboHorario(JComboBox<String> comboHorario, String data, int indice){
+		
+		comboHorario.removeAllItems();
+		comboHorario.addItem("...");
+			
 		for(Agenda g: App.agendamento){
-			if(g.getDataConsulta().equals(data)){
-				comboHorario.removeAllItems();
-				comboHorario.addItem("...");
-				
-				
+			if(g.getDataConsulta().toString().equals(data)){
+				comboHorario.addItem(g.getHorario());				
 			}
 		}		
 	}
 	
-	public void inserirProntuario(JTextArea jta, String data, String hora){
+	public void inserirProntuario(JTextArea jta, String data, String hora, String cpf){
+		jta.setText("");
 		
-	//	for(Agenda a: App.agendamento){
-			
-		//}
-		
+		for(Paciente p: App.pacientes){
+			for(Prontuario pr: p.getProtuario()){
+				if(pr.getCpfPaciente().equals(cpf) && pr.getData().toString().equals(data) && pr.getHorario().equals(hora)){
+					jta.setText(pr.getHistorico());
+				}
+			}
+		}		
+	}
+	
+	public void editarProtuario(String texto, String data, String hora, String cpf){
+		for(Paciente p: App.pacientes){
+			for(Prontuario pr: p.getProtuario()){
+				if(pr.getCpfPaciente().equals(cpf) && pr.getData().toString().equals(data) && pr.getHorario().equals(hora)){
+					pr.setHistorico(texto);
+				}
+			}
+		}	
 	}
 	
 	

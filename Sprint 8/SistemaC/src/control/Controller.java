@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import app.App;
 import model.Funcionario;
 import view.TelaAgendamento;
+import view.TelaBuscaAgendamentos;
 import view.TelaBuscaFuncionario;
 import view.TelaBuscaPaciente;
 import view.TelaCadastroFuncionario;
@@ -29,12 +30,15 @@ public class Controller implements ActionListener, KeyListener{
 	private TelaAgendamento tAgendamento;
 	private TelaBuscaFuncionario tBFuncionario;
 	private TelaProntuario tProntuario;
+	private TelaBuscaAgendamentos tba;
 	private TelaMenu tMenu;
 	private TelaLogin tl;
 	private Funcionario funcionario;
-	private boolean tfIsAtivo, tpIsAtivo, tbpIsAtivo, tbfIsAtivo, tAgendaIsAtivo, tProntIsAtivo, tlog;
+	private boolean tfIsAtivo, tpIsAtivo, tbpIsAtivo, tbfIsAtivo, tAgendaIsAtivo, tProntIsAtivo, tlog, tbaIsAtivo;
+
 
 	public Controller(TelaMenu tMenu, Funcionario f) {
+		
 		this.tMenu = tMenu;
 		this.funcionario = f;
 	}
@@ -126,9 +130,19 @@ public class Controller implements ActionListener, KeyListener{
 				tMenu.jdPane.add(tAgendamento);
 				tAgendaIsAtivo = true;
 				tAgendamento.moveToFront();
-				tMenu.getPainelAgenda().setVisible(false);
+				
 			}
-
+			
+			if(e.getSource() == tMenu.getJmAgBus()){
+				tba = new TelaBuscaAgendamentos();
+				tba.setVisible(true);
+				tMenu.jdPane.add(tba);
+				tba.moveToFront();
+				tba.getBuscar().addActionListener(this);
+				tbaIsAtivo = true;
+			}
+			
+			
 			if (tfIsAtivo) {
 
 				if (e.getSource() == tFuncionario.getCadastrar()) {
@@ -185,11 +199,55 @@ public class Controller implements ActionListener, KeyListener{
 					funcionario.removerFuncionario(tBFuncionario.getTabela());
 				}
 			}
+			
+
+			if(tbaIsAtivo){
+				if(e.getSource() == tba.getBuscar()){
+					
+					funcionario.preencherTabelaAgendamentos(tba.getTabela(), tba.getCampoData().getText());
+				}
+			}
+			
+			if(tProntIsAtivo){
+				
+				if(e.getSource() == tProntuario.getPesquisar()){
+					funcionario.buscarProntuarioPorCpf(tProntuario.getComboData(), tProntuario.getCampoCpf());
+				}
+				
+				if(e.getSource() == tProntuario.getComboData()){
+					
+					if(tProntuario.getComboData().getSelectedIndex() > 0){
+						funcionario.preencherComboHorario(tProntuario.getComboHorario(), tProntuario.getComboData().getSelectedItem().toString(), tProntuario.getComboData().getSelectedIndex());
+					}										
+				}
+				
+				if(e.getSource() == tProntuario.getComboHorario()){
+					if(tProntuario.getComboHorario().getSelectedIndex() > 0){
+						funcionario.inserirProntuario(tProntuario.getCampoTextArea(), tProntuario.getComboData().getSelectedItem().toString(), tProntuario.getComboHorario().getSelectedItem().toString(), tProntuario.getCampoCpf().getText());
+					}
+				}
+				
+				if(e.getSource() == tProntuario.getEditarButton()){
+					tProntuario.getCampoTextArea().setEditable(true);
+				}
+				
+				if(e.getSource() == tProntuario.getSalvarButton()){
+					funcionario.editarProtuario(tProntuario.getCampoTextArea().getText(), tProntuario.getComboData().getSelectedItem().toString(), tProntuario.getComboHorario().getSelectedItem().toString(), tProntuario.getCampoCpf().getText());
+				}
+				
+				if(e.getSource() == tProntuario.getSairButton()){
+					tProntuario.dispose();				
+				}
+				
+				if(e.getSource() == tProntuario.getSalvarButton()){
+											
+				}
+			}
 
 			if (tAgendaIsAtivo) {
 				
 				if(e.getSource() == tAgendamento.getDataCalendario().getCalendarButton()){
-					System.out.println("evt");
+					
 				}
 
 				if (e.getSource() == tAgendamento.getBuscaP()) {
@@ -317,33 +375,7 @@ public class Controller implements ActionListener, KeyListener{
 						JOptionPane.showMessageDialog(null, "Campo não preenchido");
 					}
 
-				}
-				
-				if(tProntIsAtivo){
-					
-					if(e.getSource() == tProntuario.getPesquisar()){
-						funcionario.buscarProntuarioPorCpf(tProntuario.getComboData(), tProntuario.getCampoCpf());
-					}
-					
-					if(e.getSource() == tProntuario.getComboData()){
-						funcionario.preencherComboHorario(tProntuario.getComboHorario(), tProntuario.getComboData().getSelectedItem().toString());				
-					}
-					
-					if(e.getSource() == tProntuario.getComboHorario()){
-						funcionario.inserirProntuario(tProntuario.getCampoTextArea(), tProntuario.getComboData().getSelectedItem().toString(), tProntuario.getComboHorario().getSelectedItem().toString());						
-					}
-					
-					if(e.getSource() == tProntuario.getEditarButton()){
-												
-					}
-					
-					if(e.getSource() == tProntuario.getSairButton()){
-						tProntuario.dispose();				
-					}
-					if(e.getSource() == tProntuario.getSalvarButton()){
-												
-					}
-				}
+				}		
 			}
 		}
 	}
