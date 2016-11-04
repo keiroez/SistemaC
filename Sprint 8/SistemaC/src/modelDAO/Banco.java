@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 
 import model.Endereco;
 import model.Funcionario;
+import model.Paciente;
 
 
 public class Banco{
@@ -123,17 +124,21 @@ public class Banco{
 	/**
 	 * 
 	 * 
-	 * INSERÇÃO E BUSCA  DE FUNCIONÁRIO
+	 * INSERÇÃO, BUSCA E ALTERAÇÃO  DE FUNCIONÁRIO
 	 * 
 	 * 
 	 */
 	
-	public void cadastrarFuncionario(String nome, String rg, String cpf, String telefone, String login, String senha, String estado, String cidade, String rua, String bairro, int numero){
+	public void cadastrarFuncionario(Funcionario func){
 		
 		try {
 		
-			String query = "INSERT INTO funcionario (nome, rg, cpf, telefone, login, senha, estado, cidade, rua, bairro, numero) VALUES ('"+nome+"', '" + rg + "', '"+cpf+"', '"+telefone+"', '"+login+"', '"+senha+"', '"+estado+"', '"+cidade+"', '"+rua+"', '"+bairro+"', '"+numero+"');";
+			String query = "INSERT INTO funcionario (nome, rg, cpf, telefone, login, senha, estado, cidade, rua, bairro, numeroEnd) VALUES"
+					+ " ('"+func.getNome()+"', '" + func.getRg() + "', '"+func.getCpf()+"', '"+func.getTelefone()+"', '"+func.getLogin()+"', "
+					+ "'"+func.getSenha()+"', '"+func.getEndereco().getEstado()+"', '"+func.getEndereco().getCidade()+"', '"+func.getEndereco().getRua()+"', '"
+					+func.getEndereco().getBairro()+"', '"+func.getEndereco().getNumero()+"');";
 			this.statement.executeUpdate(query);
+			JOptionPane.showMessageDialog(null, "Cadastro realizado");
 			
 		} catch (Exception e) {
 			System.out.println("Erro: "+e.getMessage());
@@ -142,9 +147,9 @@ public class Banco{
 	
 	
 	
-	public String [] BuscaFuncionario(String cpf){
+	public Funcionario BuscaFuncionario(String cpf){
 		
-		String nome = null, cpf1 = null, telefone = null;
+		Funcionario func = null;
 		
 		try {		
 			
@@ -152,9 +157,10 @@ public class Banco{
 			this.resultSet = this.statement.executeQuery(query);
 						
 			if(resultSet.next()){
-				nome = this.resultSet.getString("nome");
-				cpf1 = this.resultSet.getString("cpf");
-				telefone = this.resultSet.getString("telefone");
+				func = new Funcionario(this.resultSet.getString("nome"), this.resultSet.getString("rg"), 
+						this.resultSet.getString("cpf"), this.resultSet.getString("telefone"), this.resultSet.getString("login"), 
+						this.resultSet.getString("senha"), new Endereco(this.resultSet.getString("estado"), this.resultSet.getString("cidade"), 
+						this.resultSet.getString("bairro"), this.resultSet.getString("rua"), this.resultSet.getInt("numeroEnd")));
 			}
 			
 			else{
@@ -167,8 +173,24 @@ public class Banco{
 			System.out.println("Erro: "+e.getMessage());
 		}
 		
-		return new String[]{nome, cpf1, telefone};
+		return func;
 		
+	}
+	
+	public void alterarFuncionario(Funcionario func){
+		try {
+			
+			String query = "UPDATE funcionario Set nome = '"+func.getNome()+"', rg = '"+func.getRg()+"', cpf = '"+func.getCpf()+"', "
+					+ "telefone = '"+func.getTelefone()+"', login = '"+func.getLogin()+"', senha = '"+func.getSenha()+"', "
+					+ "estado = '"+func.getEndereco().getEstado()+"', cidade = '"+func.getEndereco().getCidade()+"', "
+					+ "rua = '"+func.getEndereco().getRua()+"', bairro = '"+func.getEndereco().getBairro()+"', "
+					+ "numeroEnd = '"+func.getEndereco().getNumero()+"' ;";
+			this.statement.executeUpdate(query);
+			JOptionPane.showMessageDialog(null, "Atualização realizada");
+			
+		} catch (Exception e) {
+			System.out.println("Erro: "+e.getMessage());
+		}
 	}
 	
 	public Funcionario buscaFuncionarioPorLoginESenha(String login, String senha){
@@ -263,19 +285,23 @@ public class Banco{
 	/**
 	 * 
 	 * 
-	 * INSERÇÃO E BUSCA DE PACIENTE
+	 * INSERÇÃO, BUSCA E ALTERAÇÃO DE PACIENTE
 	 * 
 	 * 
 	 */
 	
 	
 	
-	public void cadastrarPaciente(String nome, String rg, String cpf, String telefone, String estado, String cidade, String rua, String bairro, int numero){
+	public void cadastrarPaciente(Paciente pac){
 		
 		try {
-		
-			String query = "INSERT INTO paciente (nome, rg, cpf, telefone, estado, cidade, rua, bairro, numero) VALUES ('"+nome+"', '" + rg + "', '"+cpf+"', '"+telefone+"', '"+estado+"', '"+cidade+"', '"+rua+"', '"+bairro+"', '"+numero+"');";
+			
+			String query = "INSERT INTO paciente (nome, rg, cpf, telefone, estado, cidade, rua, bairro, numeroEnd) VALUES"
+					+ " ('"+pac.getNome()+"', '" + pac.getRg() + "', '"+pac.getCpf()+"', '"+pac.getTelefone()+"', "
+					+ "'"+pac.getEndereco().getEstado()+"', '"+pac.getEndereco().getCidade()+"', '"+pac.getEndereco().getRua()+"', '"
+					+pac.getEndereco().getBairro()+"', '"+pac.getEndereco().getNumero()+"');";
 			this.statement.executeUpdate(query);
+			JOptionPane.showMessageDialog(null, "Cadastro realizado");
 			
 		} catch (Exception e) {
 			System.out.println("Erro: "+e.getMessage());
@@ -283,9 +309,9 @@ public class Banco{
 	}
 	
 		
-	public String [] BuscaPaciente(String cpf){
+	public Paciente BuscaPaciente(String cpf){
 		
-		String nome = null, cpf1 = null, telefone = null;
+		Paciente pac = null;
 		
 		try {		
 			
@@ -293,9 +319,10 @@ public class Banco{
 			this.resultSet = this.statement.executeQuery(query);
 						
 			if(resultSet.next()){
-				nome = this.resultSet.getString("nome");
-				cpf1 = this.resultSet.getString("cpf");
-				telefone = this.resultSet.getString("telefone");
+				pac = new Paciente(this.resultSet.getString("nome"), this.resultSet.getString("rg"), 
+						this.resultSet.getString("cpf"), this.resultSet.getString("telefone"), 
+						new Endereco(this.resultSet.getString("estado"), this.resultSet.getString("cidade"), 
+						this.resultSet.getString("bairro"), this.resultSet.getString("rua"), this.resultSet.getInt("numeroEnd")));
 			}
 			
 			else{
@@ -308,11 +335,26 @@ public class Banco{
 			System.out.println("Erro: "+e.getMessage());
 		}
 		
-		return new String[]{nome, cpf1, telefone};
+		return pac;
 		
 	}
 	
 	
+	public void alterarPaciente(Paciente pac){
+		try {
+			
+			String query = "UPDATE paciente Set nome = '"+pac.getNome()+"', rg = '"+pac.getRg()+"', cpf = '"+pac.getCpf()+"', "
+					+ "telefone = '"+pac.getTelefone()+"', login = '"+"', "
+					+ "estado = '"+pac.getEndereco().getEstado()+"', cidade = '"+pac.getEndereco().getCidade()+"', "
+					+ "rua = '"+pac.getEndereco().getRua()+"', bairro = '"+pac.getEndereco().getBairro()+"', "
+					+ "numeroEnd = '"+pac.getEndereco().getNumero()+"' ;";
+			JOptionPane.showMessageDialog(null, "Atualização realizada");
+			this.statement.executeUpdate(query);
+			
+		} catch (Exception e) {
+			System.out.println("Erro: "+e.getMessage());
+		}
+	}
 	
 
 }

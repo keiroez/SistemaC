@@ -13,6 +13,7 @@ import model.Endereco;
 import model.Funcionario;
 import model.Paciente;
 import model.Prontuario;
+import modelDAO.Banco;
 import view.TelaLogin;
 import view.TelaMenu;
 
@@ -30,6 +31,7 @@ public class App {
 	
 		
 	public static void main(String[] args){
+		
 		
 		TelaLogin tl = new TelaLogin();
 		
@@ -85,5 +87,81 @@ public class App {
 		
 	}
 	
+	
+	/**
+	 * 
+	 * 
+	 * Métodos abaixo para teste de inserção no banco e consulta
+	 * 
+	 * 
+	 */
+	
+	public static void cadastrarFuncTeste(){
+		Funcionario func1 = new Funcionario("José Diogo", "1111111", "111.111.111-11", "(111) 11111 - 1111", "diogosousa", "admin", new Endereco("Paraíba (PB)", "Princesa Isabel", "A", "B", 100));
+		Funcionario func2 =new Funcionario("Izaquiel", "3333333", "333.333.333-33", "(333) 33333 - 3333", "izaquiel", "admin", new Endereco("Pernambuco (PE)", "Flores", "E", "F", 300));
+		
+		Banco bancoDeDados = new Banco();
+
+		bancoDeDados.conectar();
+
+		if(bancoDeDados.estaConectado()){
+				bancoDeDados.cadastrarFuncionario(func1);
+				bancoDeDados.cadastrarFuncionario(func2);
+			}
+		
+		bancoDeDados.desconectar();
+	}
+	
+	public static void consultarFuncTeste(){
+		Banco bancoDeDados = new Banco();
+
+		bancoDeDados.conectar();
+
+		if(bancoDeDados.estaConectado()){
+				Funcionario func = bancoDeDados.BuscaFuncionario("111.111.111-11");
+				Funcionario func2 = bancoDeDados.BuscaFuncionario("333.333.333-33");
+				System.out.println("Funcionarios");
+				System.out.println(func.getNome()+"  "+func.getCpf());
+				System.out.println(func2.getNome()+"  "+func2.getCpf());
+			}
+		
+		bancoDeDados.desconectar();
+	}
+	
+	
+	public static void cadastrarPacTeste(){
+		
+		Paciente pac1 = new Paciente("José Diogo", "1111111", "111.111.111-11", "(111) 11111 - 1111", new Endereco("Paraíba (PB)", "Princesa Isabel", "A", "B", 100));
+		Paciente pac2 =new Paciente("Ivo", "222222", "222.222.222-22", "(222) 22222 - 2222", new Endereco("Pernambuco (PE)", "Triunfo", "C", "D", 200));
+		Paciente pac3 =new Paciente("Izaquiel", "3333333", "333.333.333-33", "(333) 33333 - 3333", new Endereco("Pernambuco (PE)", "Flores", "E", "F", 300));
+		
+		Banco bancoDeDados = new Banco();
+
+		bancoDeDados.conectar();
+
+		if(bancoDeDados.estaConectado()){
+				bancoDeDados.cadastrarPaciente(pac1);
+				bancoDeDados.cadastrarPaciente(pac2);
+				bancoDeDados.cadastrarPaciente(pac3);
+			}
+		
+		bancoDeDados.desconectar();
+	}
+	
+	public static void consultarPacTeste(){
+		Banco bancoDeDados = new Banco();
+
+		bancoDeDados.conectar();
+
+		if(bancoDeDados.estaConectado()){
+				Paciente pac = bancoDeDados.BuscaPaciente("111.111.111-11");
+				Paciente pac2 = bancoDeDados.BuscaPaciente("333.333.333-33");
+				System.out.println("Paciente BD");
+				System.out.println(pac.getNome()+"  "+pac.getCpf());
+				System.out.println(pac2.getNome()+"  "+pac2.getCpf());
+			}
+		
+		bancoDeDados.desconectar();
+	}
 	
 }
