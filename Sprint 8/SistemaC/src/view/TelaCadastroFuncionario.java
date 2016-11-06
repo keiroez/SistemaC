@@ -2,8 +2,6 @@ package view;
 
 import java.awt.Container;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.ParseException;
 
 import javax.swing.JButton;
@@ -14,8 +12,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
-
-import model.Dados;
 
 
 public class TelaCadastroFuncionario extends TelaInternal{
@@ -76,19 +72,6 @@ public class TelaCadastroFuncionario extends TelaInternal{
 		
 		campoEstado.addItem("...");
 
-		for (String e : Dados.estados) {
-			campoEstado.addItem(e);
-		}
-		
-		campoEstado.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				addCidades(campoEstado.getSelectedIndex());
-			}
-		});
-		
-		
-		
 		cadastrar = new JButton("Cadastrar");
 
 		Container c = new Container();
@@ -124,18 +107,7 @@ public class TelaCadastroFuncionario extends TelaInternal{
 	}
 	
 	
-	public void addCidades(int indice) {
 
-		campoCidade.removeAllItems();
-
-		if (indice != 0) {
-			campoCidade.addItem("...");
-			for (String cidad : Dados.cidades[indice-1]) {
-				campoCidade.addItem(cidad);
-			}
-		}
-
-	}
 
 	
 

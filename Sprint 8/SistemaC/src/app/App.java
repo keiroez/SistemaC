@@ -12,7 +12,6 @@ import model.Agenda;
 import model.Endereco;
 import model.Funcionario;
 import model.Paciente;
-import model.Prontuario;
 import modelDAO.Banco;
 import view.TelaLogin;
 import view.TelaMenu;
@@ -62,8 +61,8 @@ public class App {
 		//agendamento.add(new Agenda(new Date(dt.get(7).getTime()), "Izaquiel", "333.333.333-33", "Ivo", "222.222.222-22", "09:20"));
 		//agendamento.add(new Agenda(new Date(dt.get(8).getTime()), "Izaquiel", "333.333.333-33", "José Diogo", "111.111.111-11", "12:40"));
 		
-		pacientes.get(0).getProtuario().add(new Prontuario("Consulta realizada às 09:20\n\n\nResultado: ******", "111.111.111-11", new Date(dt.get(0).getTime()), "09:20"));
-		pacientes.get(0).getProtuario().add(new Prontuario("Consulta realizada às 11:20\n\n\nResultado: ******", "111.111.111-11", new Date(dt.get(1).getTime()), "11:20"));
+		//pacientes.get(0).getProtuario().add(new Prontuario("Consulta realizada às 09:20\n\n\nResultado: ******", "111.111.111-11", new Date(dt.get(0).getTime()), "09:20"));
+		//pacientes.get(0).getProtuario().add(new Prontuario("Consulta realizada às 11:20\n\n\nResultado: ******", "111.111.111-11", new Date(dt.get(1).getTime()), "11:20"));
 
 		
 	}

@@ -38,7 +38,26 @@ public class Funcionario extends Pessoa {
 	 * 
 	 */
 	
+	public void addCidades(int indice, JComboBox<String> campoCidade) {
+
+		campoCidade.removeAllItems();
+
+		if (indice != 0) {
+			campoCidade.addItem("...");
+			for (String cidad : Dados.cidades[indice-1]) {
+				campoCidade.addItem(cidad);
+			}
+		}
+
+	}
 	
+	public void addEstados(JComboBox<String> campoEstado){
+		
+		for(String est: Dados.estados){
+			campoEstado.addItem(est);
+		}
+		
+	}
 
 	public void cadastrarFuncionario(String nome, String rg, String cpf, String telefone, String login, String senha,
 			String estado, String cidade, String rua, String bairro, String numero) {
@@ -510,6 +529,8 @@ public class Funcionario extends Pessoa {
 	 * 
 	 */
 	public void buscarProntuarioPorCpf(JComboBox<String> comboData, JTextField campoCpf){
+		
+		/*
 		comboData.removeAllItems();
 		comboData.addItem("...");
 		
@@ -520,7 +541,7 @@ public class Funcionario extends Pessoa {
 					comboData.addItem(pront.getData().toString());
 				}
 			}
-		}
+		}*/
 	}
 	
 	public void preencherComboHorario(JComboBox<String> comboHorario, String data, int indice){
@@ -537,24 +558,25 @@ public class Funcionario extends Pessoa {
 	
 	public void inserirProntuario(JTextArea jta, String data, String hora, String cpf){
 		jta.setText("");
-		
+		/*
 		for(Paciente p: App.pacientes){
 			for(Prontuario pr: p.getProtuario()){
 				if(pr.getCpfPaciente().equals(cpf) && pr.getData().toString().equals(data) && pr.getHorario().equals(hora)){
 					jta.setText(pr.getHistorico());
 				}
 			}
-		}		
+		}*/		
 	}
 	
 	public void editarProtuario(String texto, String data, String hora, String cpf){
+		/*
 		for(Paciente p: App.pacientes){
 			for(Prontuario pr: p.getProtuario()){
 				if(pr.getCpfPaciente().equals(cpf) && pr.getData().toString().equals(data) && pr.getHorario().equals(hora)){
 					pr.setHistorico(texto);
 				}
 			}
-		}	
+		}*/	
 	}
 	
 	

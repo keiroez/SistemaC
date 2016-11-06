@@ -2,8 +2,6 @@ package view;
 
 import java.awt.Container;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.ParseException;
 
 import javax.swing.JButton;
@@ -13,7 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
-import model.Dados;
 
 
 public class TelaCadastroPaciente extends TelaInternal {
@@ -68,17 +65,6 @@ public class TelaCadastroPaciente extends TelaInternal {
 		
 		campoEstado.addItem("...");
 
-		for (String e : Dados.estados) {
-			campoEstado.addItem(e);
-		}
-		
-		campoEstado.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				addCidades(campoEstado.getSelectedIndex());
-			}
-		});
-		
 		cadastrar = new JButton("Cadastrar");
 
 		Container c = new Container();
@@ -107,20 +93,6 @@ public class TelaCadastroPaciente extends TelaInternal {
 		cadastrar.setBounds(250, 250, 100, 20);
 		add(cadastrar);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-
-	}
-	
-	
-	public void addCidades(int indice) {
-
-		campoCidade.removeAllItems();
-
-		if (indice != 0) {
-			campoCidade.addItem("...");
-			for (String cidad : Dados.cidades[indice-1]) {
-				campoCidade.addItem(cidad);
-			}
-		}
 
 	}
 	

@@ -67,8 +67,10 @@ public class Controller implements ActionListener, KeyListener {
 		else {
 			if (e.getSource() == tMenu.getJmCadCliente()) {
 				tPaciente = new TelaCadastroPaciente();
+				funcionario.addEstados(tPaciente.getCampoEstado());
 				tPaciente.setVisible(true);
 				tPaciente.getCadastrar().addActionListener(this);
+				tPaciente.getCampoEstado().addActionListener(this);
 				tMenu.jdPane.add(tPaciente);
 				tpIsAtivo = true;
 				tPaciente.moveToFront();
@@ -76,8 +78,10 @@ public class Controller implements ActionListener, KeyListener {
 
 			if (e.getSource() == tMenu.getJmCadFuncionario()) {
 				tFuncionario = new TelaCadastroFuncionario();
+				funcionario.addEstados(tFuncionario.getCampoEstado());
 				tFuncionario.setVisible(true);
 				tFuncionario.getCadastrar().addActionListener(this);
+				tFuncionario.getCampoEstado().addActionListener(this);
 				tMenu.jdPane.add(tFuncionario);
 				tfIsAtivo = true;
 				tFuncionario.moveToFront();
@@ -155,6 +159,10 @@ public class Controller implements ActionListener, KeyListener {
 							tFuncionario.getCampoRua().getText(), tFuncionario.getCampoBairro().getText(),
 							tFuncionario.getCampoNumero().getText());
 				}
+				
+				if(e.getSource() == tFuncionario.getCampoEstado()){
+					funcionario.addCidades(tFuncionario.getCampoEstado().getSelectedIndex(), tFuncionario.getCampoCidade());
+				}
 			}
 
 			if (tpIsAtivo) {
@@ -167,6 +175,10 @@ public class Controller implements ActionListener, KeyListener {
 							tPaciente.getCampoCidade().getSelectedItem().toString(), tPaciente.getCampoRua().getText(),
 							tPaciente.getCampoBairro().getText(), tPaciente.getCampoNumero().getText());
 
+				}
+				
+				if(e.getSource() == tPaciente.getCampoEstado()){
+					funcionario.addCidades(tPaciente.getCampoEstado().getSelectedIndex(), tPaciente.getCampoCidade());
 				}
 			}
 
