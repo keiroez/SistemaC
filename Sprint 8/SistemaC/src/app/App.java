@@ -32,7 +32,6 @@ public class App {
 		
 	public static void main(String[] args){
 		
-		
 		TelaLogin tl = new TelaLogin();
 		
 		new Controller(tl);
@@ -53,15 +52,15 @@ public class App {
 		funcionarios.add(new Funcionario("Ivo", "222222", "222.222.222-22", "(222) 22222 - 2222", "ivosouza", "admin", new Endereco("Pernambuco (PE)", "Triunfo", "C", "D", 200)));
 		funcionarios.add(new Funcionario("Izaquiel", "3333333", "333.333.333-33", "(333) 33333 - 3333", "izaquiel", "admin", new Endereco("Pernambuco (PE)", "Flores", "E", "F", 300)));
 		
-		agendamento.add(new Agenda(new Date(dt.get(0).getTime()), "José Diogo", "111.111.111-11", "José Diogo", "111.111.111-11", "09:20"));
-		agendamento.add(new Agenda(new Date(dt.get(1).getTime()), "José Diogo", "111.111.111-11", "Izaquiel", "333.333.333-33", "11:20"));
-		agendamento.add(new Agenda(new Date(dt.get(2).getTime()), "José Diogo", "111.111.111-11", "Ivo", "222.222.222-22", "14:40"));
-		agendamento.add(new Agenda(new Date(dt.get(3).getTime()), "Ivo", "222.222.222-22", "José Diogo", "111.111.111-11", "10:20"));
-		agendamento.add(new Agenda(new Date(dt.get(4).getTime()), "Ivo", "222.222.222-22", "Izaquiel", "333.333.333-33", "12:40"));
-		agendamento.add(new Agenda(new Date(dt.get(5).getTime()), "Ivo", "222.222.222-22", "Izaquiel", "333.333.333-33", "13:00"));
-		agendamento.add(new Agenda(new Date(dt.get(6).getTime()), "Izaquiel", "333.333.333-33", "José Diogo", "111.111.111-11", "14:20"));
-		agendamento.add(new Agenda(new Date(dt.get(7).getTime()), "Izaquiel", "333.333.333-33", "Ivo", "222.222.222-22", "09:20"));
-		agendamento.add(new Agenda(new Date(dt.get(8).getTime()), "Izaquiel", "333.333.333-33", "José Diogo", "111.111.111-11", "12:40"));
+		agendamento.add(new Agenda(new Date(dt.get(0).getTime()), "09:20", new Paciente("José Diogo", "1111111", "111.111.111-11", "(111) 11111 - 1111", new Endereco("Paraíba (PB)", "Princesa Isabel", "A", "B", 100)), new Funcionario("José Diogo", "1111111", "111.111.111-11", "(111) 11111 - 1111", "diogosousa", "admin", new Endereco("Paraíba (PB)", "Princesa Isabel", "A", "B", 100))));
+		//agendamento.add(new Agenda(new Date(dt.get(1).getTime()), "José Diogo", "111.111.111-11", "Izaquiel", "333.333.333-33", "11:20"));
+		//agendamento.add(new Agenda(new Date(dt.get(2).getTime()), "José Diogo", "111.111.111-11", "Ivo", "222.222.222-22", "14:40"));
+		///agendamento.add(new Agenda(new Date(dt.get(3).getTime()), "Ivo", "222.222.222-22", "José Diogo", "111.111.111-11", "10:20"));
+		//agendamento.add(new Agenda(new Date(dt.get(4).getTime()), "Ivo", "222.222.222-22", "Izaquiel", "333.333.333-33", "12:40"));
+		//agendamento.add(new Agenda(new Date(dt.get(5).getTime()), "Ivo", "222.222.222-22", "Izaquiel", "333.333.333-33", "13:00"));
+		//agendamento.add(new Agenda(new Date(dt.get(6).getTime()), "Izaquiel", "333.333.333-33", "José Diogo", "111.111.111-11", "14:20"));
+		//agendamento.add(new Agenda(new Date(dt.get(7).getTime()), "Izaquiel", "333.333.333-33", "Ivo", "222.222.222-22", "09:20"));
+		//agendamento.add(new Agenda(new Date(dt.get(8).getTime()), "Izaquiel", "333.333.333-33", "José Diogo", "111.111.111-11", "12:40"));
 		
 		pacientes.get(0).getProtuario().add(new Prontuario("Consulta realizada às 09:20\n\n\nResultado: ******", "111.111.111-11", new Date(dt.get(0).getTime()), "09:20"));
 		pacientes.get(0).getProtuario().add(new Prontuario("Consulta realizada às 11:20\n\n\nResultado: ******", "111.111.111-11", new Date(dt.get(1).getTime()), "11:20"));
@@ -86,7 +85,6 @@ public class App {
 			JOptionPane.showMessageDialog(null, "Login ou senha inválido");
 		
 	}
-	
 	
 	/**
 	 * 
@@ -163,5 +161,7 @@ public class App {
 		
 		bancoDeDados.desconectar();
 	}
+	
+
 	
 }

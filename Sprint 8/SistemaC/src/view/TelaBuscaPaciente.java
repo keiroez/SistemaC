@@ -31,6 +31,7 @@ public class TelaBuscaPaciente extends TelaInternal {
 
 		try {
 			m1 = new MaskFormatter("###.###.###-##");
+			
 
 		} catch (ParseException e) {
 

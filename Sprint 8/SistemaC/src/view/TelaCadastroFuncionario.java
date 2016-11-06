@@ -26,7 +26,7 @@ public class TelaCadastroFuncionario extends TelaInternal{
 	private JTextField campoNome, campoCpf, campoRg, campoTelefone, campoLogin, campoRua, campoBairro, campoNumero;
 	private JButton cadastrar;
 	private JPasswordField campoSenha;
-	private MaskFormatter m1, m2;
+	private MaskFormatter m1, m2, m3;
 	private JComboBox<String> campoEstado;
 	private JComboBox<String> campoCidade;
 	public TelaCadastroFuncionario() {
@@ -37,6 +37,7 @@ public class TelaCadastroFuncionario extends TelaInternal{
 		try {
 			m1 = new MaskFormatter("###.###.###-##");
 			m2 = new MaskFormatter("(###) ##### - ####");
+			m3 = new MaskFormatter("########");
 		} catch (ParseException e) {
 
 			e.printStackTrace();
@@ -55,7 +56,7 @@ public class TelaCadastroFuncionario extends TelaInternal{
 		numero = new JLabel("Número: ");
 
 		campoNome = new JTextField(20);
-		campoRg = new JTextField(20);
+		campoRg = new JFormattedTextField(m3);
 		campoCpf = new JFormattedTextField(m1);
 		campoTelefone = new JFormattedTextField(m2);
 		campoLogin = new JTextField(20);
@@ -65,6 +66,8 @@ public class TelaCadastroFuncionario extends TelaInternal{
 		campoRua = new JTextField(20);
 		campoBairro = new JTextField(20);
 		campoNumero = new JTextField(20);
+		
+		
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {  
 		     public void run() {  
 		         campoNome.requestFocusInWindow();  

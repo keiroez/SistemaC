@@ -5,19 +5,17 @@ import java.sql.Date;
 
 public class Agenda {
 
+	private int id;
 	private Date dataConsulta;
-	private String nomePaciente, nomeFuncionario;
-	private String cpfPaciente, cpfFuncionario;
 	private String horario;
+	private Paciente paciente;
+	private Funcionario funcionario;
 	
-	public Agenda(Date dataConsulta, String nomePaciente, String cpfPaciente, String nomeFuncionario, String cpfFuncionario, String horario) {
-		super();
+	public Agenda(Date dataConsulta, String horario, Paciente paciente, Funcionario funcionario) {
 		this.dataConsulta = dataConsulta;
-		this.nomePaciente = nomePaciente;
-		this.cpfPaciente = cpfPaciente;
-		this.nomeFuncionario = nomeFuncionario;
-		this.cpfFuncionario = cpfFuncionario;
 		this.horario = horario;
+		this.paciente = paciente;
+		this.funcionario = funcionario;
 	}
 
 	public Date getDataConsulta() {
@@ -28,37 +26,29 @@ public class Agenda {
 		this.dataConsulta = dataConsulta;
 	}
 
-	
-	public String getNomePaciente() {
-		return nomePaciente;
+
+	public int getId() {
+		return id;
 	}
 
-	public void setNomePaciente(String nomePaciente) {
-		this.nomePaciente = nomePaciente;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public String getNomeFuncionario() {
-		return nomeFuncionario;
+	public Paciente getPaciente() {
+		return paciente;
 	}
 
-	public void setNomeFuncionario(String nomeFuncionario) {
-		this.nomeFuncionario = nomeFuncionario;
+	public void setPaciente(Paciente paciente) {
+		this.paciente = paciente;
 	}
 
-	public String getCpfPaciente() {
-		return cpfPaciente;
+	public Funcionario getFuncionario() {
+		return funcionario;
 	}
 
-	public void setCpfPaciente(String cpfPaciente) {
-		this.cpfPaciente = cpfPaciente;
-	}
-
-	public String getCpfFuncionario() {
-		return cpfFuncionario;
-	}
-
-	public void setCpfFuncionario(String cpfFuncionario) {
-		this.cpfFuncionario = cpfFuncionario;
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
 	}
 
 	public String getHorario() {

@@ -22,7 +22,7 @@ public class TelaCadastroPaciente extends TelaInternal {
 	private JLabel nome, rg, cpf, telefone, estado, cidade, rua, bairro, numero;
 	private JTextField campoNome, campoCpf, campoRg, campoTelefone, campoRua, campoBairro, campoNumero;
 	private JButton cadastrar;
-	private MaskFormatter m1, m2;
+	private MaskFormatter m1, m2, m3;
 	private JComboBox<String> campoEstado;
 	private JComboBox<String> campoCidade;
 
@@ -34,6 +34,7 @@ public class TelaCadastroPaciente extends TelaInternal {
 		try {
 			m1 = new MaskFormatter("###.###.###-##");
 			m2 = new MaskFormatter("(###) ##### - ####");
+			m3 = new MaskFormatter("########");
 		} catch (ParseException e) {
 
 			e.printStackTrace();
@@ -50,7 +51,7 @@ public class TelaCadastroPaciente extends TelaInternal {
 		numero = new JLabel("Número: ");
 
 		campoNome = new JTextField(20);
-		campoRg = new JTextField(20);
+		campoRg = new JFormattedTextField(m3);
 		campoCpf = new JFormattedTextField(m1);
 		campoTelefone = new JFormattedTextField(m2);
 		campoEstado = new JComboBox<>();

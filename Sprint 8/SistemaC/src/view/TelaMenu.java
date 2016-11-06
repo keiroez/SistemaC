@@ -1,5 +1,7 @@
 package view;
 
+import java.awt.Color;
+
 import javax.swing.JDesktopPane;
 
 import javax.swing.JMenu;
@@ -25,7 +27,6 @@ public class TelaMenu extends Tela {
 	private JMenuItem jmBuscFuncionario = new JMenuItem("Buscar Funcionário");
 	private JMenuItem jmBuscProntuario = new JMenuItem("Buscar Prontuário");
 	private JMenuItem jmAgendarConsulta = new JMenuItem("Agendar consulta");
-	private JMenuItem jmConsultarAgendamento = new JMenuItem("Consultar Agendamentos");
 	private JMenuItem jmAgBus = new JMenuItem("Buscar Agendamentos");
 	public JDesktopPane jdPane = new JDesktopPane();
 	private Controller controle;
@@ -34,6 +35,7 @@ public class TelaMenu extends Tela {
 	public TelaMenu(Funcionario f) {
 		controle = new Controller(this, f);
 		getContentPane().add(jdPane);
+		jdPane.setBackground(Color.BLACK);
 		jmPrincipal.add(jmAtendimento);
 		jmPrincipal.add(jmCadastro);
 		jmPrincipal.add(jmBusca);
@@ -47,7 +49,7 @@ public class TelaMenu extends Tela {
 		jmBusca.add(jmBuscProntuario);
 		jmBusca.add(jmAgBus);
 		jmAgenda.add(jmAgendarConsulta);
-		jmAgenda.add(jmConsultarAgendamento);
+		
 
 		setJMenuBar(jmPrincipal);
 
@@ -56,9 +58,7 @@ public class TelaMenu extends Tela {
 		jmBuscPaciente.addActionListener(controle);
 		jmBuscFuncionario.addActionListener(controle);
 		jmAgendarConsulta.addActionListener(controle);
-		jmConsultarAgendamento.addActionListener(controle);
 		jmBuscProntuario.addActionListener(controle);
-		jmConsultarAgendamento.addActionListener(controle);
 		jmAgBus.addActionListener(controle);
 
 		setVisible(true);
@@ -164,14 +164,6 @@ public class TelaMenu extends Tela {
 
 	public void setJmAgendarConsulta(JMenuItem jmAgendarConsulta) {
 		this.jmAgendarConsulta = jmAgendarConsulta;
-	}
-
-	public JMenuItem getJmConsultarAgendamento() {
-		return jmConsultarAgendamento;
-	}
-
-	public void setJmConsultarAgendamento(JMenuItem jmConsultarAgendamento) {
-		this.jmConsultarAgendamento = jmConsultarAgendamento;
 	}
 
 	public JMenuItem getJmBuscProntuario() {

@@ -100,7 +100,7 @@ public class Banco{
 			
 	}
 	
-	public boolean loginDisponivel(String login){
+	public boolean loginIndisponivel(String login){
 		
 		
 		try {		
