@@ -6,25 +6,34 @@ import java.sql.Date;
 public class Agenda {
 
 	private int id;
-	private Date dataConsulta;
+	private String dataConsulta;
 	private String horario;
 	private Paciente paciente;
 	private Funcionario funcionario;
+	private String prontuario;
 	
-	public Agenda(Date dataConsulta, String horario, Paciente paciente, Funcionario funcionario) {
+	public Agenda(String dataConsulta, String horario, Paciente paciente, Funcionario funcionario) {
 		this.dataConsulta = dataConsulta;
 		this.horario = horario;
 		this.paciente = paciente;
 		this.funcionario = funcionario;
 	}
 
-	public Date getDataConsulta() {
+	
+
+
+	public String getDataConsulta() {
 		return dataConsulta;
 	}
 
-	public void setDataConsulta(Date dataConsulta) {
+
+
+
+	public void setDataConsulta(String dataConsulta) {
 		this.dataConsulta = dataConsulta;
 	}
+
+
 
 
 	public int getId() {

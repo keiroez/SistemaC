@@ -391,7 +391,7 @@ public class Funcionario extends Pessoa {
 	 */
 	
 	
-	public void agendarConsulta(String cpfPaciente, String cpfFuncionario, Date data, String horario) {
+	public void agendarConsulta(String cpfPaciente, String cpfFuncionario, String data, String horario) {
 		
 		Banco banco = new Banco();
 		banco.conectar();

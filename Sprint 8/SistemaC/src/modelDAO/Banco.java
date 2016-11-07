@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 
 import javax.swing.JOptionPane;
 
+import model.Agenda;
 import model.Endereco;
 import model.Funcionario;
 import model.Paciente;
@@ -357,4 +358,77 @@ public class Banco{
 	}
 	
 
+	/**
+	 * 
+	 * 
+	 * INSERÇÃO, BUSCA E ALTERAÇÃO DE AGENDA
+	 * 
+	 * Transformar data em String
+	 */
+	
+	public void cadastrarAgenda(Agenda agd){
+		
+		try {
+			
+			String query = "INSERT INTO agenda (cpfPaciente, cpfFuncionario, dataAgendamento, hora) VALUES"
+					+ " ('"+agd.getPaciente().getCpf()+"', '" + agd.getFuncionario().getCpf()+"', '" + agd.getDataConsulta()+
+					"', '" + agd.getHorario()+"');";
+			this.statement.executeUpdate(query);
+			JOptionPane.showMessageDialog(null, "Agendamento realizado");
+			
+		} catch (Exception e) {
+			System.out.println("Erro: "+e.getMessage());
+		}	
+	}
+
+	public Agenda BuscaAgenda(String cpf){
+		
+		Agenda agd = null;
+		
+		try {		
+			
+			String query = "SELECT * FROM agenda "
+					+ "inner join paciente on agenda.cpfPaciente = paciente.cpf "
+					+ "inner join funcionario on agenda.cpfFuncionario = funcionario.cpf "
+					+ "WHERE agenda.cpfPaciente = '"+cpf+"';";
+			this.resultSet = this.statement.executeQuery(query);
+						
+			if(resultSet.next()){
+				agd = new Agenda(this.resultSet.getString("dataAgendamento"),this.resultSet.getString("hora"),
+						new Paciente(this.resultSet.getString("paciente.nome"),this.resultSet.getString("paciente.rg"),
+								this.resultSet.getString("paciente.cpf"),this.resultSet.getString("paciente.telefone"),
+								new Endereco(this.resultSet.getString("paciente.estado"), this.resultSet.getString("paciente.cidade"), 
+										this.resultSet.getString("paciente.bairro"), this.resultSet.getString("paciente.rua"), this.resultSet.getInt("paciente.numeroEnd"))),
+						new Funcionario(this.resultSet.getString("funcionario.nome"),this.resultSet.getString("funcionario.rg"),
+								this.resultSet.getString("funcionario.cpf"),this.resultSet.getString("funcionario.telefone"),this.resultSet.getString("funcionario.login"),this.resultSet.getString("senha"),
+								new Endereco(this.resultSet.getString("funcionario.estado"), this.resultSet.getString("funcionario.cidade"), 
+										this.resultSet.getString("funcionario.bairro"), this.resultSet.getString("funcionario.rua"), this.resultSet.getInt("funcionario.numeroEnd"))));
+			}
+			
+			else{
+				JOptionPane.showMessageDialog(null, "Cpf não cadastrado");
+			}
+			
+			
+					
+		} catch (Exception e) {
+			System.out.println("Erro: "+e.getMessage());
+		}
+		
+		return agd;
+		
+	}
+	
+	public void alterarAgenda(Agenda agd){
+		try {
+			
+			String query = "UPDATE agenda Set cpfPaciente = '"+agd.getPaciente().getCpf()+"', cpfFuncionario= '"+agd.getFuncionario().getCpf()+
+					"', dataAgendamento = '"+agd.getDataConsulta()+"', hora = '"+agd.getHorario()+"' ;";
+			JOptionPane.showMessageDialog(null, "Atualização realizada");
+			this.statement.executeUpdate(query);
+			
+		} catch (Exception e) {
+			System.out.println("Erro: "+e.getMessage());
+		}
+	}
 }

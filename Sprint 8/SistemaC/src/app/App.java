@@ -51,7 +51,7 @@ public class App {
 		funcionarios.add(new Funcionario("Ivo", "222222", "222.222.222-22", "(222) 22222 - 2222", "ivosouza", "admin", new Endereco("Pernambuco (PE)", "Triunfo", "C", "D", 200)));
 		funcionarios.add(new Funcionario("Izaquiel", "3333333", "333.333.333-33", "(333) 33333 - 3333", "izaquiel", "admin", new Endereco("Pernambuco (PE)", "Flores", "E", "F", 300)));
 		
-		agendamento.add(new Agenda(new Date(dt.get(0).getTime()), "09:20", new Paciente("José Diogo", "1111111", "111.111.111-11", "(111) 11111 - 1111", new Endereco("Paraíba (PB)", "Princesa Isabel", "A", "B", 100)), new Funcionario("José Diogo", "1111111", "111.111.111-11", "(111) 11111 - 1111", "diogosousa", "admin", new Endereco("Paraíba (PB)", "Princesa Isabel", "A", "B", 100))));
+		//agendamento.add(new Agenda(new Date(dt.get(0).getTime()), "09:20", new Paciente("José Diogo", "1111111", "111.111.111-11", "(111) 11111 - 1111", new Endereco("Paraíba (PB)", "Princesa Isabel", "A", "B", 100)), new Funcionario("José Diogo", "1111111", "111.111.111-11", "(111) 11111 - 1111", "diogosousa", "admin", new Endereco("Paraíba (PB)", "Princesa Isabel", "A", "B", 100))));
 		//agendamento.add(new Agenda(new Date(dt.get(1).getTime()), "José Diogo", "111.111.111-11", "Izaquiel", "333.333.333-33", "11:20"));
 		//agendamento.add(new Agenda(new Date(dt.get(2).getTime()), "José Diogo", "111.111.111-11", "Ivo", "222.222.222-22", "14:40"));
 		///agendamento.add(new Agenda(new Date(dt.get(3).getTime()), "Ivo", "222.222.222-22", "José Diogo", "111.111.111-11", "10:20"));
@@ -109,20 +109,22 @@ public class App {
 		bancoDeDados.desconectar();
 	}
 	
-	public static void consultarFuncTeste(){
+	public static Funcionario consultarFuncTeste(){
 		Banco bancoDeDados = new Banco();
-
+		Funcionario func=null;
+		
 		bancoDeDados.conectar();
 
 		if(bancoDeDados.estaConectado()){
-				Funcionario func = bancoDeDados.BuscaFuncionario("111.111.111-11");
+				func = bancoDeDados.BuscaFuncionario("111.111.111-11");
 				Funcionario func2 = bancoDeDados.BuscaFuncionario("333.333.333-33");
-				System.out.println("Funcionarios");
-				System.out.println(func.getNome()+"  "+func.getCpf());
-				System.out.println(func2.getNome()+"  "+func2.getCpf());
+//				System.out.println("Funcionarios");
+//				System.out.println(func.getNome()+"  "+func.getCpf());
+//				System.out.println(func2.getNome()+"  "+func2.getCpf());
 			}
 		
 		bancoDeDados.desconectar();
+		return func;
 	}
 	
 	
@@ -145,22 +147,60 @@ public class App {
 		bancoDeDados.desconectar();
 	}
 	
-	public static void consultarPacTeste(){
+	public static Paciente consultarPacTeste(){
+		Banco bancoDeDados = new Banco();
+		Paciente pac=null;
+		Paciente pac2=null;
+
+		bancoDeDados.conectar();
+
+		if(bancoDeDados.estaConectado()){
+				pac = bancoDeDados.BuscaPaciente("111.111.111-11");
+				pac2 = bancoDeDados.BuscaPaciente("333.333.333-33");
+//				System.out.println("Paciente BD");
+//				System.out.println(pac.getNome()+"  "+pac.getCpf());
+//				System.out.println(pac2.getNome()+"  "+pac2.getCpf());
+			}
+		
+		bancoDeDados.desconectar();
+		return pac;
+	}
+	
+
+	public static void cadastrarAgenda(){
+		
+		Agenda agd1 = new Agenda("22/07/2016", "08:00", consultarPacTeste(), consultarFuncTeste());
+		
 		Banco bancoDeDados = new Banco();
 
 		bancoDeDados.conectar();
 
 		if(bancoDeDados.estaConectado()){
-				Paciente pac = bancoDeDados.BuscaPaciente("111.111.111-11");
-				Paciente pac2 = bancoDeDados.BuscaPaciente("333.333.333-33");
-				System.out.println("Paciente BD");
-				System.out.println(pac.getNome()+"  "+pac.getCpf());
-				System.out.println(pac2.getNome()+"  "+pac2.getCpf());
+				bancoDeDados.cadastrarAgenda(agd1);
+				
 			}
 		
 		bancoDeDados.desconectar();
 	}
-	
 
+	public static void consultaAgenda(){
+		Banco bancoDeDados = new Banco();
+		Agenda agd=null;
 	
+		bancoDeDados.conectar();
+	
+		if(bancoDeDados.estaConectado()){
+				agd = bancoDeDados.BuscaAgenda("333.333.333-33");
+	
+				System.out.println("Agenda BD");
+				System.out.println(agd.getPaciente().getNome());
+				System.out.println(agd.getFuncionario().getNome());
+				System.out.println(agd.getDataConsulta());
+				System.out.println(agd.getHorario());
+		
+		bancoDeDados.desconectar();
+		}
+	}
+
+
 }

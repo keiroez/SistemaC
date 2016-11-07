@@ -361,10 +361,11 @@ public class Controller implements ActionListener, KeyListener {
 				if (e.getSource() == tAgendamento.getAgendar()) {
 
 					if (!tAgendamento.campoVazio()) {
-
-						funcionario.agendarConsulta(tAgendamento.getCpfPaciente(), funcionario.getCpf(),
-								new java.sql.Date(tAgendamento.getDataCalendario().getDate().getTime()),
-								tAgendamento.getItensHorario().getSelectedItem().toString());
+						
+						//VERIFICAR O AGENDAMENTO
+//						funcionario.agendarConsulta(tAgendamento.getCpfPaciente(), funcionario.getCpf(),
+//								new java.sql.Date(tAgendamento.getDataCalendario().getDate().getTime()),
+//								tAgendamento.getItensHorario().getSelectedItem().toString());
 						tAgendamento.getDataCalendario().setDate(null);
 						tAgendamento.getItensHorario().removeAllItems();
 
