@@ -394,7 +394,7 @@ public class Banco{
 			this.resultSet = this.statement.executeQuery(query);
 						
 			if(resultSet.next()){
-				agd = new Agenda(this.resultSet.getString("dataAgendamento"),this.resultSet.getString("hora"),
+				agd = new Agenda(this.resultSet.getDate("dataAgendamento"),this.resultSet.getString("hora"),
 						new Paciente(this.resultSet.getString("paciente.nome"),this.resultSet.getString("paciente.rg"),
 								this.resultSet.getString("paciente.cpf"),this.resultSet.getString("paciente.telefone"),
 								new Endereco(this.resultSet.getString("paciente.estado"), this.resultSet.getString("paciente.cidade"), 

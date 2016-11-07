@@ -169,7 +169,15 @@ public class App {
 
 	public static void cadastrarAgenda(){
 		
-		Agenda agd1 = new Agenda("22/07/2016", "08:00", consultarPacTeste(), consultarFuncTeste());
+		for(String d: dat){
+			try {
+				dt.add(df.parse(d));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		Agenda agd1 = new Agenda(new Date(dt.get(3).getTime()), "08:00", consultarPacTeste(), consultarFuncTeste());
 		
 		Banco bancoDeDados = new Banco();
 
