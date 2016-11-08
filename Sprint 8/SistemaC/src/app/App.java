@@ -35,6 +35,8 @@ public class App {
 		
 		new Controller(tl);
 		
+		
+		
 		for(String d: dat){
 			try {
 				dt.add(df.parse(d));
@@ -117,7 +119,7 @@ public class App {
 
 		if(bancoDeDados.estaConectado()){
 				func = bancoDeDados.BuscaFuncionario("111.111.111-11");
-				Funcionario func2 = bancoDeDados.BuscaFuncionario("333.333.333-33");
+				//Funcionario func2 = bancoDeDados.BuscaFuncionario("333.333.333-33");
 //				System.out.println("Funcionarios");
 //				System.out.println(func.getNome()+"  "+func.getCpf());
 //				System.out.println(func2.getNome()+"  "+func2.getCpf());
@@ -150,13 +152,13 @@ public class App {
 	public static Paciente consultarPacTeste(){
 		Banco bancoDeDados = new Banco();
 		Paciente pac=null;
-		Paciente pac2=null;
+		//Paciente pac2=null;
 
 		bancoDeDados.conectar();
 
 		if(bancoDeDados.estaConectado()){
 				pac = bancoDeDados.BuscaPaciente("111.111.111-11");
-				pac2 = bancoDeDados.BuscaPaciente("333.333.333-33");
+				//pac2 = bancoDeDados.BuscaPaciente("333.333.333-33");
 //				System.out.println("Paciente BD");
 //				System.out.println(pac.getNome()+"  "+pac.getCpf());
 //				System.out.println(pac2.getNome()+"  "+pac2.getCpf());
@@ -177,7 +179,7 @@ public class App {
 			}
 		}
 		
-		Agenda agd1 = new Agenda(new Date(dt.get(3).getTime()), "08:00", consultarPacTeste(), consultarFuncTeste());
+		Agenda agd1 = new Agenda(new Date(dt.get(3).getTime()), Funcionario.convercaoStringEmTime("08:00"), consultarPacTeste(), consultarFuncTeste());
 		
 		Banco bancoDeDados = new Banco();
 

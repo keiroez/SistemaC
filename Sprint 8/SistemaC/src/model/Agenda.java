@@ -1,18 +1,19 @@
 package model;
 
 import java.sql.Date;
+import java.sql.Time;
 
 
 public class Agenda {
 
 	private int id;
 	private Date dataConsulta;
-	private String horario;
+	private Time horario;
 	private Paciente paciente;
 	private Funcionario funcionario;
 	private String prontuario;
 	
-	public Agenda(Date dataConsulta, String horario, Paciente paciente, Funcionario funcionario) {
+	public Agenda(Date dataConsulta, Time horario, Paciente paciente, Funcionario funcionario) {
 		this.dataConsulta = dataConsulta;
 		this.horario = horario;
 		this.paciente = paciente;
@@ -60,15 +61,17 @@ public class Agenda {
 		this.funcionario = funcionario;
 	}
 
-	public String getHorario() {
+
+	public Time getHorario() {
 		return horario;
 	}
 
-	public void setHorario(String horario) {
+
+	public void setHorario(Time horario) {
 		this.horario = horario;
 	}
 
-	
+		
 	
 	
 }

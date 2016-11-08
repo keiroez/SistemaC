@@ -2,8 +2,11 @@ package modelDAO;
 
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
@@ -394,7 +397,7 @@ public class Banco{
 			this.resultSet = this.statement.executeQuery(query);
 						
 			if(resultSet.next()){
-				agd = new Agenda(this.resultSet.getDate("dataAgendamento"),this.resultSet.getString("hora"),
+				agd = new Agenda(this.resultSet.getDate("dataAgendamento"),this.resultSet.getTime("hora"),
 						new Paciente(this.resultSet.getString("paciente.nome"),this.resultSet.getString("paciente.rg"),
 								this.resultSet.getString("paciente.cpf"),this.resultSet.getString("paciente.telefone"),
 								new Endereco(this.resultSet.getString("paciente.estado"), this.resultSet.getString("paciente.cidade"), 
@@ -419,6 +422,45 @@ public class Banco{
 		
 	}
 	
+	public boolean possuiAgendamentoNestaData(Date data){
+		
+		try {		
+			
+			String query = "SELECT DATAAGENDAMENTO FROM AGENDA WHERE DATAAGENDAMENTO = '"+data+"';";
+			this.resultSet = this.statement.executeQuery(query);
+						
+			if(resultSet.next()){
+				return true;
+			}
+			
+					
+		} catch (Exception e) {
+			System.out.println("Erro: "+e.getMessage());
+		}
+		
+		return false;
+	}
+	
+	public ArrayList<String> buscarHorariosAgendados(Date data){
+		
+		ArrayList<String> horarios = new ArrayList<>();
+		
+		try {
+		
+			String query = "SELECT * FROM AGENDA WHERE DATAAGENDAMENTO = '"+data+"';";
+			this.resultSet = this.statement.executeQuery(query);
+			
+			while(resultSet.next()){
+				horarios.add(resultSet.getTime("HORA").toString());
+			}
+			
+		} catch (Exception e) {
+			System.out.println("Erro: "+e.getMessage());
+		}
+		
+		return horarios;
+	}
+	
 	public void alterarAgenda(Agenda agd){
 		try {
 			
@@ -430,5 +472,32 @@ public class Banco{
 		} catch (Exception e) {
 			System.out.println("Erro: "+e.getMessage());
 		}
+	}
+	
+	
+	public ArrayList<String []> buscarAgendamentosPorData(Date data){
+		
+		ArrayList<String []> agendamentos = new ArrayList<>();
+		
+		try {
+		
+			String query = "SELECT * FROM agenda "
+					+ "inner join paciente on agenda.cpfPaciente = paciente.cpf "
+					+ "inner join funcionario on agenda.cpfFuncionario = funcionario.cpf "
+					+ "WHERE agenda.DATAAGENDAMENTO = '"+data+"' ORDER BY agenda.HORA;";
+			this.resultSet = this.statement.executeQuery(query);
+			
+			SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+			
+			while(resultSet.next()){
+				String [] dados = {resultSet.getString("paciente.nome"), resultSet.getTime("HORA").toString(), df.format(resultSet.getDate("DATAAGENDAMENTO")).toString(), resultSet.getString("funcionario.nome")};
+				agendamentos.add(dados);
+			}
+			
+		} catch (Exception e) {
+			System.out.println("Erro: "+e.getMessage());
+		}
+		
+		return agendamentos;
 	}
 }

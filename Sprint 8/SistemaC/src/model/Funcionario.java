@@ -1,6 +1,7 @@
 package model;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
@@ -400,97 +401,111 @@ public class Funcionario extends Pessoa {
 			
 			Paciente paciente = banco.BuscaPaciente(cpfPaciente);
 			Funcionario funcionario = banco.BuscaFuncionario(cpfFuncionario);
-			App.agendamento.add(new Agenda(data, horario, paciente, funcionario));
-			JOptionPane.showMessageDialog(null, "Consulta agendada com sucesso");			
-			
+			banco.cadastrarAgenda(new Agenda(data, convercaoStringEmTime(horario), paciente, funcionario));
+						
 			banco.desconectar();
 			
 		}
-		
-		
-
 	}
 
-	public boolean dataTemHorarioAgendado(java.util.Date data){
 		
-		for(Agenda a: App.agendamento){
-			
-			
-			if(a.getDataConsulta().toString().equals(data.toString())){
-				return true;
-			}
-		}
-		
-		return false;		
-	}
-	
-	public ArrayList<String> horariosIndisponiveis(Date data){
-		
-		ArrayList<String> h = new ArrayList<>();
-		
-		for(Agenda a: App.agendamento){
-			if(a.getDataConsulta().toString().equals(data.toString())){
-				h.add(a.getHorario());
-			}
-		}
-		
-		return h;
-	}
-	
 	public void carregarComboBox(Date data, JComboBox<Object> ItensHorario, String [] horas){
 		
-		if(dataTemHorarioAgendado(data)){
+		Banco banco = new Banco();
+		banco.conectar();
+		
+		if(banco.estaConectado()){
 			
 			
-			ItensHorario.removeAllItems();
-			
-			for(String h: horas){
-				ItensHorario.addItem(h);
-			}
-
-			
-			for(String hr: horariosIndisponiveis(data)){
+			if(banco.possuiAgendamentoNestaData(data)){
+							
+				ItensHorario.removeAllItems();
 				
-				for(int i = 0; i < ItensHorario.getItemCount(); i++){
-					
-					if(hr.equals(ItensHorario.getItemAt(i).toString())){
-						((DefaultComboBoxModel<Object>) ItensHorario.getModel()).removeElementAt(i);
-						
-					}					
+				for(String h: horas){
+					ItensHorario.addItem(h);
 				}
-			}					
+				
+				for(String hr: banco.buscarHorariosAgendados(data)){
+					
+					for(int i = 0; i < ItensHorario.getItemCount(); i++){
+						
+						if(hr.equals(ItensHorario.getItemAt(i).toString())){
+							((DefaultComboBoxModel<Object>) ItensHorario.getModel()).removeElementAt(i);
+							
+						}					
+					}
+				}		
+			}
+		
+			else{
+				ItensHorario.removeAllItems();
+			
+				for(String h: horas){
+					ItensHorario.addItem(h);
+				}
+			}
 		}
 		
-		else{
-			ItensHorario.removeAllItems();
+		banco.desconectar();		
+				
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static Time convercaoStringEmTime(String horario){
+		
+		String tempH = "", tempM = "", tempS = "";
+		
+		int hora, minuto, segundo;
+		
+		for(int i = 0; i < horario.length(); i++){
 			
-			for(String h: horas){
-				ItensHorario.addItem(h);
-			}
-		}		
+			if(horario.charAt(i) != ':'){
+				if(i<2){
+					tempH += horario.charAt(i);
+				}
+				if(i>2 && i <5){
+					tempM += horario.charAt(i);
+				}
+				if(i > 5 && i <8){
+					tempS += horario.charAt(i);
+				}
+				
+			}			
+		}
+			
+		hora = Integer.parseInt(tempH);
+		minuto = Integer.parseInt(tempM);
+		segundo = Integer.parseInt(tempS);
+				
+		return new Time(hora, minuto, segundo);
+		
 	}
 	
 	
-	public void preencherTabelaAgendamentosPorData(JTable tabela, String data) {
+	public void preencherTabelaAgendamentosPorData(JTable tabela, Date data) {
 		
-		/*for(Agenda a:App.agendamento){
+		Banco banco = new Banco();
+		banco.conectar();
+		
+		if(banco.estaConectado()){
 			
-			if(data.equals(a.getDataConsulta().toString())){
-				if(dataBuscado(tabela, data, a.getHorario())){
-					
-				}
-				else{
-					for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
-						DefaultTableModel df = (DefaultTableModel) tabela.getModel();
-						df.removeRow(j);
-					}
-					String[] dados = new String[] { a.getNomePaciente(),
-							a.getHorario(), a.getDataConsulta().toString(), a.getNomeFuncionario()};
-					DefaultTableModel df = (DefaultTableModel) tabela.getModel();
-					df.addRow(dados);
-				}
+			for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
+				DefaultTableModel df = (DefaultTableModel) tabela.getModel();
+				df.removeRow(j);
 			}
-		}	*/	
+			ArrayList<String[]> dados = banco.buscarAgendamentosPorData(data);
+			
+			
+			for(String[] d: dados){
+				DefaultTableModel df = (DefaultTableModel) tabela.getModel();
+				df.addRow(d);
+			}
+			
+			
+		}
+		
+		banco.desconectar();
+		
 	}
 	
 	public void preencherTabelaAgendamentos(JTable tabela, String cpf){
@@ -498,7 +513,7 @@ public class Funcionario extends Pessoa {
 		for(Agenda a: App.agendamento){
 			if(a.getPaciente().getCpf().equals(cpf)){
 				String[] dados = new String[] { a.getPaciente().getNome(),
-						a.getHorario(), a.getDataConsulta().toString(), a.getFuncionario().getNome()};
+						a.getHorario().toString(), a.getDataConsulta().toString(), a.getFuncionario().getNome()};
 				DefaultTableModel df = (DefaultTableModel) tabela.getModel();
 				df.addRow(dados);
 			}
@@ -551,7 +566,7 @@ public class Funcionario extends Pessoa {
 			
 		for(Agenda g: App.agendamento){
 			if(g.getDataConsulta().toString().equals(data)){
-				comboHorario.addItem(g.getHorario());				
+				comboHorario.addItem(g.getHorario().toString());				
 			}
 		}		
 	}

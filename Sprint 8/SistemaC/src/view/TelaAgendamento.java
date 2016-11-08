@@ -24,7 +24,7 @@ public class TelaAgendamento extends TelaInternal{
 	private ImageIcon image;
 	private JButton buscaP, buscaF;
 	private String cpfPaciente, cpfFuncionario;
-	private String [] horas = {"09:00", "09:20", "09:40", "10:00", "10:20", "10:40", "11:00", "11:20", "11:40", "12:00", "12:20", "12:40", "13:00", "13:20", "13:40", "14:00", "14:20", "14:40", "15:00"};
+	private String [] horas = {"09:00:00", "09:20:00", "09:40:00", "10:00:00", "10:20:00", "10:40:00", "11:00:00", "11:20:00", "11:40:00", "12:00:00", "12:20:00", "12:40:00", "13:00:00", "13:20:00", "13:40:00", "14:00:00", "14:20:00", "14:40:00", "15:00:00"};
 	
 	
 	public TelaAgendamento() {

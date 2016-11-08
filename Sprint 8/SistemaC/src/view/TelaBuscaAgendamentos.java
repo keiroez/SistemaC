@@ -27,7 +27,7 @@ public class TelaBuscaAgendamentos extends TelaInternal {
 		super("Busca de Agendamentos");
 		
 		try {
-			m1 = new MaskFormatter("####-##-##");
+			m1 = new MaskFormatter("##/##/####");
 
 		} catch (ParseException e) {
 
@@ -65,7 +65,7 @@ public class TelaBuscaAgendamentos extends TelaInternal {
 
 		tabela.setModel(new javax.swing.table.DefaultTableModel(new Object[][] {
 
-		}, new String[] { "Nome", "Horário", "Data", "Funcionário"}));
+		}, new String[] { "Paciente", "Horário", "Data", "Funcionário"}));
 		barraRolagem = new JScrollPane(barraRolagem);
 		barraRolagem.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		barraRolagem.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));

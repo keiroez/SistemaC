@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import javax.swing.JOptionPane;
 
@@ -159,9 +161,10 @@ public class Controller implements ActionListener, KeyListener {
 							tFuncionario.getCampoRua().getText(), tFuncionario.getCampoBairro().getText(),
 							tFuncionario.getCampoNumero().getText());
 				}
-				
-				if(e.getSource() == tFuncionario.getCampoEstado()){
-					funcionario.addCidades(tFuncionario.getCampoEstado().getSelectedIndex(), tFuncionario.getCampoCidade());
+
+				if (e.getSource() == tFuncionario.getCampoEstado()) {
+					funcionario.addCidades(tFuncionario.getCampoEstado().getSelectedIndex(),
+							tFuncionario.getCampoCidade());
 				}
 			}
 
@@ -176,8 +179,8 @@ public class Controller implements ActionListener, KeyListener {
 							tPaciente.getCampoBairro().getText(), tPaciente.getCampoNumero().getText());
 
 				}
-				
-				if(e.getSource() == tPaciente.getCampoEstado()){
+
+				if (e.getSource() == tPaciente.getCampoEstado()) {
 					funcionario.addCidades(tPaciente.getCampoEstado().getSelectedIndex(), tPaciente.getCampoCidade());
 				}
 			}
@@ -215,9 +218,17 @@ public class Controller implements ActionListener, KeyListener {
 
 			if (tbaIsAtivo) {
 				if (e.getSource() == tba.getBuscar()) {
-
-					funcionario.preencherTabelaAgendamentosPorData(tba.getTabela(), tba.getCampoData().getText());
+					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 					
+					try {
+						java.util.Date data = df.parse(tba.getCampoData().getText());
+						funcionario.preencherTabelaAgendamentosPorData(tba.getTabela(), new Date(data.getTime()) );
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+
 				}
 			}
 
@@ -286,12 +297,22 @@ public class Controller implements ActionListener, KeyListener {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							tAgendamento.getCampoNomePaciente()
+							
+							if (funcionario.pacienteBuscado(tBPaciente.getTabela(),
+									tBPaciente.getCampoCpf().getText())) {
+								if (funcionario.pacienteSelecionado(tBPaciente.getTabela())) {
+									tAgendamento.getCampoNomePaciente()
 									.setText((String) tBPaciente.getTabela().getValueAt(0, 0));
-							tAgendamento.setCpfPaciente((String) tBPaciente.getTabela().getValueAt(0, 1));
-							tAgendamento.setVisible(true);
-							tBPaciente.setVisible(false);
-
+									tAgendamento.setCpfPaciente((String) tBPaciente.getTabela().getValueAt(0, 1));
+									tAgendamento.setVisible(true);
+									tBPaciente.setVisible(false);
+								} else {
+									JOptionPane.showMessageDialog(null, "Nenhum paciente selecionado");
+								}
+							} else {
+								JOptionPane.showMessageDialog(null, "Busca não realizada");
+							}
+							
 						}
 					});
 
@@ -326,14 +347,26 @@ public class Controller implements ActionListener, KeyListener {
 					tAgendamento.setVisible(false);
 
 					tBFuncionario.getRemover().setText("Selecionar");
+
 					tBFuncionario.getRemover().addActionListener(new ActionListener() {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							tAgendamento.getCampoNomeFuncionario()
-									.setText((String) tBFuncionario.getTabela().getValueAt(0, 0));
-							tAgendamento.setVisible(true);
-							tBFuncionario.dispose();
+
+							if (funcionario.funcionarioBuscado(tBFuncionario.getTabela(),
+									tBFuncionario.getCampoCpf().getText())) {
+								if (funcionario.funcionarioSelecionado(tBFuncionario.getTabela())) {
+									tAgendamento.getCampoNomeFuncionario()
+											.setText((String) tBFuncionario.getTabela().getValueAt(0, 0));
+									tAgendamento.setVisible(true);
+									tBFuncionario.dispose();
+								} else {
+									JOptionPane.showMessageDialog(null, "Nenhum funcionário selecionado");
+								}
+							} else {
+								JOptionPane.showMessageDialog(null, "Busca não realizada");
+							}
+							
 						}
 					});
 
@@ -361,11 +394,8 @@ public class Controller implements ActionListener, KeyListener {
 				if (e.getSource() == tAgendamento.getAgendar()) {
 
 					if (!tAgendamento.campoVazio()) {
-						
-						//VERIFICAR O AGENDAMENTO
-//						funcionario.agendarConsulta(tAgendamento.getCpfPaciente(), funcionario.getCpf(),
-//								new java.sql.Date(tAgendamento.getDataCalendario().getDate().getTime()),
-//								tAgendamento.getItensHorario().getSelectedItem().toString());
+
+						funcionario.agendarConsulta(tAgendamento.getCpfPaciente(), funcionario.getCpf(), new java.sql.Date(tAgendamento.getDataCalendario().getDate().getTime()), tAgendamento.getItensHorario().getSelectedItem().toString());
 						tAgendamento.getDataCalendario().setDate(null);
 						tAgendamento.getItensHorario().removeAllItems();
 
