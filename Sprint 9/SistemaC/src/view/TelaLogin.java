@@ -11,20 +11,18 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class TelaLogin extends JFrame{
-	
-	
+public class TelaLogin extends JFrame {
+
 	private static final long serialVersionUID = 1L;
 	private JLabel login, senha;
 	private JTextField campoLogin;
 	private JPasswordField campoSenha;
 	private JButton entrar, sair;
 	private JLabel logo;
-	
+
 	public TelaLogin() {
 		setSize(600, 400);
-		
-		
+
 		login = new JLabel("Login: ");
 		login.setForeground(Color.WHITE);
 		senha = new JLabel("Senha: ");
@@ -34,27 +32,28 @@ public class TelaLogin extends JFrame{
 		logo = new JLabel(new ImageIcon("resource/logo.png"));
 		entrar = new JButton("Entrar");
 		sair = new JButton("Sair");
+
 		setLayout(null);
 		Container c = new Container();
 		c.setSize(200, 40);
-		c.setLocation(200, 280);
+		c.setLocation(200, 270);
+
 		c.setLayout(new GridLayout(2, 2));
 		c.add(login);
 		c.add(campoLogin);
 		c.add(senha);
 		c.add(campoSenha);
-		
-		logo.setBounds(0, 0, 600, 400);
-		
-		
+
 		add(c);
-		
+
 		sair.setBounds(190, 350, 100, 20);
 		entrar.setBounds(310, 350, 100, 20);
-		
+		logo.setBounds(0, 0, 600, 400);
+
 		add(sair);
 		add(entrar);
 		add(logo);
+
 		setLocationRelativeTo(null);
 		setUndecorated(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -109,7 +108,4 @@ public class TelaLogin extends JFrame{
 		this.sair = sair;
 	}
 
-	
-	
-	
 }

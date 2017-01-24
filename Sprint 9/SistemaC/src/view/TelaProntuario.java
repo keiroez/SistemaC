@@ -65,8 +65,8 @@ public class TelaProntuario extends TelaInternal {
 		add(pesquisar);
 		
 		
-		comboData.addItem("...");
-		comboHorario.addItem("...");
+		comboData.addItem("Selecione");
+		comboHorario.addItem("Selecione");
 		data.setBounds(150, 80, 100, 20);
 		horario.setBounds(150, 100, 100, 20);
 		comboData.setBounds(220, 80, 150, 20);

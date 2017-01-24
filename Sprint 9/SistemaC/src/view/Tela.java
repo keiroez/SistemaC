@@ -8,6 +8,7 @@ public abstract class Tela extends JFrame {
 
 	public Tela() {
 		setSize(800, 600);
+		this.getContentPane().setLayout(null);
 		
 		setLocationRelativeTo(null);
 		setResizable(false);

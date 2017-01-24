@@ -46,7 +46,7 @@ public class Funcionario extends Pessoa {
 		campoCidade.removeAllItems();
 
 		if (indice != 0) {
-			campoCidade.addItem("...");
+			campoCidade.addItem("Selecione");
 			for (String cidad : Dados.cidades[indice-1]) {
 				campoCidade.addItem(cidad);
 			}
@@ -63,7 +63,7 @@ public class Funcionario extends Pessoa {
 	}
 
 	public void cadastrarFuncionario(String nome, String rg, String cpf, String telefone, String login, String senha,
-			String estado, String cidade, String rua, String bairro, String numero) {
+			String estado, String cidade, String rua, String bairro, String numero, int id) {
 
 		if (cpf.equals("") || nome.equals("") || rg.equals("") || telefone.equals("") || login.equals("")
 				|| senha.equals("") || estado.equals("") || cidade.equals("") || rua.equals("") || bairro.equals("")
@@ -93,12 +93,30 @@ public class Funcionario extends Pessoa {
 				
 				if (!cpfCad && !loginCad && !rgCad) {
 					banco.cadastrarFuncionario(new Funcionario(nome, rg, cpf, telefone, login, senha,
-							new Endereco(estado, cidade, rua, bairro, Integer.parseInt(numero))));					
+							new Endereco(estado, cidade, rua, bairro, Integer.parseInt(numero))), id);	
+					JOptionPane.showMessageDialog(null, "Cadastro realizado");
 				}				
 				
 				banco.desconectar();
 			}		
 		}
+	}
+	
+	public void carregarMedicosDisponiveis(JComboBox<String> medicos){
+		
+		Banco banco = new Banco();
+		banco.conectar();
+		
+		if(banco.estaConectado()){
+			
+			for(Funcionario f : banco.BuscaMedico()){
+				medicos.addItem(f.getNome());
+			}
+						
+			banco.desconectar();
+		}
+		
+		
 	}
 	
 	
@@ -394,15 +412,15 @@ public class Funcionario extends Pessoa {
 	 */
 	
 	
-	public void agendarConsulta(String cpfPaciente, String cpfFuncionario, Date data, String horario) {
+	public void agendarConsulta(String nomePaciente, String nomeFuncionario, Date data, String horario) {
 		
 		Banco banco = new Banco();
 		banco.conectar();
 		
 		if(banco.estaConectado()){
 			
-			Paciente paciente = banco.BuscaPaciente(cpfPaciente);
-			Funcionario funcionario = banco.BuscaFuncionario(cpfFuncionario);
+			Paciente paciente = banco.BuscaPacientePorNome(nomePaciente);
+			Funcionario funcionario = banco.BuscaFuncionarioPorNome(nomeFuncionario);
 			banco.cadastrarAgenda(new Agenda(data, convercaoStringEmTime(horario), paciente, funcionario));
 						
 			banco.desconectar();
@@ -411,7 +429,7 @@ public class Funcionario extends Pessoa {
 	}
 
 		
-	public void carregarComboBox(Date data, JComboBox<Object> ItensHorario, String [] horas){
+	public void carregarComboBox(Date data, JComboBox<Object> ItensHorario, String [] horas, String nomeFuncionario){
 		
 		Banco banco = new Banco();
 		banco.conectar();
@@ -427,16 +445,16 @@ public class Funcionario extends Pessoa {
 					ItensHorario.addItem(h);
 				}
 				
-				for(String hr: banco.buscarHorariosAgendados(data)){
-					
-					for(int i = 0; i < ItensHorario.getItemCount(); i++){
-						
-						if(hr.equals(ItensHorario.getItemAt(i).toString())){
-							((DefaultComboBoxModel<Object>) ItensHorario.getModel()).removeElementAt(i);
-							
-						}					
+				ArrayList<Agenda> agd = banco.BuscaAgendamentos(banco.BuscaFuncionarioPorNome(nomeFuncionario).getCpf());
+				ArrayList<String> horarios =  banco.buscarHorariosAgendados(data);
+				
+				for(Agenda agendamentos: agd){
+					for(String horario: horarios){
+						if(horario.equals(agendamentos.getHorario().toString())){
+								removerHorariosIndisponiveis(ItensHorario, horario);
+						}
 					}
-				}		
+				}				
 			}
 		
 			else{
@@ -448,9 +466,22 @@ public class Funcionario extends Pessoa {
 			}
 		}
 		
-		banco.desconectar();		
+		banco.desconectar();	
+					
 				
 	}
+	
+	
+	public void removerHorariosIndisponiveis(JComboBox<Object> ItensHorario, String hora){
+		
+		for(int i = 0; i < ItensHorario.getItemCount(); i++){
+			if(ItensHorario.getItemAt(i).toString().equals(hora)){
+				((DefaultComboBoxModel<Object>) ItensHorario.getModel()).removeElementAt(i);
+			}
+		}		
+		
+	}
+	
 	
 	@SuppressWarnings("deprecation")
 	public static Time convercaoStringEmTime(String horario){
@@ -549,6 +580,56 @@ public class Funcionario extends Pessoa {
 
 	}
 	
+	public void buscarAgendamentosPorData(JTable tabela){
+		
+		Date data = new Date(System.currentTimeMillis());
+						
+		Banco banco = new Banco();
+		banco.conectar();
+		
+		if(banco.estaConectado()){
+			
+									
+			ArrayList<String[]> ag = banco.buscarAgendamentosPorData(new Date(data.getTime()));
+			
+			for(int i = 0; i < ag.size(); i++){
+				DefaultTableModel d = (DefaultTableModel) tabela.getModel();
+				d.addRow(ag.get(i));			
+			}
+			
+			banco.desconectar();
+		}
+		
+	}
+	
+	
+	
+	
+	public void buscarAgendamentosPorMedico(JTable tabela){
+		Date data = new Date(System.currentTimeMillis());
+						
+		Banco banco = new Banco();
+		banco.conectar();
+		
+		if(banco.estaConectado()){
+			
+			for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
+				DefaultTableModel df = (DefaultTableModel) tabela.getModel();
+				df.removeRow(j);
+			}
+			
+			ArrayList<String[]> ag = banco.buscarConsultasDoDia(new Date(data.getTime()), this.getCpf());
+			
+			for(String [] agd : ag){
+				DefaultTableModel d = (DefaultTableModel) tabela.getModel();
+				d.addRow(agd);			
+			}
+			
+			banco.desconectar();
+		}
+		
+	}
+	
 	/**
 	 * 
 	 * 
@@ -638,13 +719,14 @@ public class Funcionario extends Pessoa {
 		
 		if(banco.estaConectado()){
 			
-			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 			java.util.Date dt = null;
 			
 			try {
-				dt = df.parse(data);
+					
+					dt = df.parse(data);
 				
-			} catch (ParseException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
@@ -665,7 +747,7 @@ public class Funcionario extends Pessoa {
 		
 		if(banco.estaConectado()){
 			
-			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 			java.util.Date dt = null;
 			
 			try {

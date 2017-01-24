@@ -4,11 +4,13 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.text.ParseException;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
@@ -25,6 +27,10 @@ public class TelaCadastroFuncionario extends TelaInternal{
 	private MaskFormatter m1, m2, m3;
 	private JComboBox<String> campoEstado;
 	private JComboBox<String> campoCidade;
+	private ButtonGroup grupo;
+	private JRadioButton atendente, medico;
+	
+	
 	public TelaCadastroFuncionario() {
 		super("Funcionario");
 
@@ -38,6 +44,18 @@ public class TelaCadastroFuncionario extends TelaInternal{
 
 			e.printStackTrace();
 		}
+		
+		
+		atendente = new JRadioButton("Atendente", false);
+		medico = new JRadioButton("Medico", false);
+		
+				
+		grupo = new ButtonGroup();
+		
+		grupo.add(atendente);
+		grupo.add(medico);
+		
+		
 
 		nome = new JLabel("Nome: ");
 		rg = new JLabel("RG: ");
@@ -70,7 +88,7 @@ public class TelaCadastroFuncionario extends TelaInternal{
 		     }  
 		 });
 		
-		campoEstado.addItem("...");
+		campoEstado.addItem("Selecione");
 
 		cadastrar = new JButton("Cadastrar");
 
@@ -101,15 +119,38 @@ public class TelaCadastroFuncionario extends TelaInternal{
 		c.add(senha);
 		c.add(campoSenha);
 
+		
+		atendente.setBounds(200, 270, 100, 20);
+		medico.setBounds(300, 270, 100, 20);
+		add(atendente);
+		add(medico);
+		
+
 		add(c);
-		cadastrar.setBounds(250, 250, 100, 20);
+		cadastrar.setBounds(250, 300, 100, 20);
 		add(cadastrar);
 	}
 	
 	
 
-
 	
+	
+
+	public JRadioButton getAtendente() {
+		return atendente;
+	}
+
+	public void setAtendente(JRadioButton atendente) {
+		this.atendente = atendente;
+	}
+
+	public JRadioButton getMedico() {
+		return medico;
+	}
+
+	public void setMedico(JRadioButton medico) {
+		this.medico = medico;
+	}
 
 	public JLabel getNome() {
 		return nome;

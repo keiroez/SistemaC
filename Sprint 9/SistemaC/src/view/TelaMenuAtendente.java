@@ -1,82 +1,123 @@
 package view;
 
-import java.awt.Color;
 
+import java.awt.Font;
+
+import javax.swing.BorderFactory;
 import javax.swing.JDesktopPane;
-
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.border.EtchedBorder;
+import javax.swing.table.DefaultTableModel;
 
 import control.Controller;
 import model.Funcionario;
 
-public class TelaMenu extends Tela {
+public class TelaMenuAtendente extends Tela {
 
 	private static final long serialVersionUID = 1L;
 	private JMenuBar jmPrincipal = new JMenuBar();
 	private JMenu jmCadastro = new JMenu("Cadastros");
 	private JMenu jmBusca = new JMenu("Busca");
 	private JMenu jmAgenda = new JMenu("Agenda");
-	private JMenu jmAtendimento = new JMenu("Atendimento");
-	private JMenuItem jmCriarPront = new JMenuItem("Prontuário");
+	private JMenu jmOpcoes = new JMenu("Opções");
 	private JMenuItem jmCadCliente = new JMenuItem("Cadastrar Paciente");
 	private JMenuItem jmCadFuncionario = new JMenuItem("Cadastrar Funcionário");
-	private JMenuItem jmBuscPaciente = new JMenuItem("Buscar Paciente");
-	private JMenuItem jmBuscFuncionario = new JMenuItem("Buscar Funcionário");
-	private JMenuItem jmBuscProntuario = new JMenuItem("Buscar Prontuário");
 	private JMenuItem jmAgendarConsulta = new JMenuItem("Agendar consulta");
 	private JMenuItem jmAgBus = new JMenuItem("Buscar Agendamentos");
+	private JMenuItem jmSair = new JMenuItem("Sair");
+	private JPanel jp = new JPanel();
+	private JTable tabela;
+	private JScrollPane barraRolagem;
+	private JLabel titulo;
+
 	public JDesktopPane jdPane = new JDesktopPane();
 	private Controller controle;
-	
 
-	public TelaMenu(Funcionario f) {
+	public TelaMenuAtendente(Funcionario f) {
+		preencherCabecalhoTabela();
 		controle = new Controller(this, f);
 		getContentPane().add(jdPane);
-		jdPane.setBackground(Color.BLACK);
-		jmPrincipal.add(jmAtendimento);
+		jmPrincipal.add(jmOpcoes);
 		jmPrincipal.add(jmCadastro);
 		jmPrincipal.add(jmBusca);
 		jmPrincipal.add(jmAgenda);
+		jdPane.setBounds(0, 0, this.getWidth(), this.getHeight());
 
-		jmAtendimento.add(jmCriarPront);
+		titulo = new JLabel("Consultas do dia");
+		titulo.setBounds(35, 0, 300, 40);
+		titulo.setFont(new Font("Serif", 30, 30));
+		barraRolagem.setBounds(0, 40, 300, this.getHeight()-40);
+		jp.setLayout(null);
+		jp.setBounds(this.getWidth() - 300, 0, 300, this.getHeight());
+		jp.add(titulo);
+		jp.add(barraRolagem);
+		
+		jdPane.add(jp);
+		
 		jmCadastro.add(jmCadCliente);
 		jmCadastro.add(jmCadFuncionario);
-		jmBusca.add(jmBuscPaciente);
-		jmBusca.add(jmBuscFuncionario);
-		jmBusca.add(jmBuscProntuario);
 		jmBusca.add(jmAgBus);
 		jmAgenda.add(jmAgendarConsulta);
-		
+		jmOpcoes.add(jmSair);
 
 		setJMenuBar(jmPrincipal);
 
 		jmCadCliente.addActionListener(controle);
 		jmCadFuncionario.addActionListener(controle);
-		jmBuscPaciente.addActionListener(controle);
-		jmBuscFuncionario.addActionListener(controle);
 		jmAgendarConsulta.addActionListener(controle);
-		jmBuscProntuario.addActionListener(controle);
 		jmAgBus.addActionListener(controle);
-
+		jmSair.addActionListener(controle);
 		setVisible(true);
 	}
 
+	public void preencherCabecalhoTabela() {
+
+		tabela = new JTable() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+
+		};
+
+		
+		tabela.setModel(new javax.swing.table.DefaultTableModel(new Object[][] {
+
+		}, new String[] { "Paciente", "Horário", "Médico" }));
+		barraRolagem = new JScrollPane(barraRolagem);
+		barraRolagem.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		barraRolagem.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		barraRolagem = new JScrollPane(tabela);
+		barraRolagem.setBounds(10, 70, 575, 280);
+	}
 	
-	
+	public void limparTabela(){
+		for (int j = 0; j < tabela.getModel().getRowCount(); j++) {
+			DefaultTableModel df = (DefaultTableModel) tabela.getModel();
+			df.removeRow(j);
+		}
+		preencherCabecalhoTabela();	
+		jp.remove(barraRolagem);
+		barraRolagem.setBounds(0, 40, 300, this.getHeight()-40);
+		jp.add(barraRolagem);
+	}
+
 	public JMenuItem getJmAgBus() {
 		return jmAgBus;
 	}
 
-
-
 	public void setJmAgBus(JMenuItem jmAgBus) {
 		this.jmAgBus = jmAgBus;
 	}
-
-
 
 	public JMenuBar getJmPrincipal() {
 		return jmPrincipal;
@@ -126,22 +167,6 @@ public class TelaMenu extends Tela {
 		this.jmBusca = jmBusca;
 	}
 
-	public JMenuItem getJmBuscPaciente() {
-		return jmBuscPaciente;
-	}
-
-	public void setJmBuscPaciente(JMenuItem jmBuscPaciente) {
-		this.jmBuscPaciente = jmBuscPaciente;
-	}
-
-	public JMenuItem getJmBuscFuncionario() {
-		return jmBuscFuncionario;
-	}
-
-	public void setJmBuscFuncionario(JMenuItem jmBuscFuncionario) {
-		this.jmBuscFuncionario = jmBuscFuncionario;
-	}
-
 	public Controller getControle() {
 		return controle;
 	}
@@ -166,28 +191,44 @@ public class TelaMenu extends Tela {
 		this.jmAgendarConsulta = jmAgendarConsulta;
 	}
 
-	public JMenuItem getJmBuscProntuario() {
-		return jmBuscProntuario;
+	public JMenu getJmOpcoes() {
+		return jmOpcoes;
 	}
 
-	public void setJmBuscProntuario(JMenuItem jmBuscProntuario) {
-		this.jmBuscProntuario = jmBuscProntuario;
+	public void setJmOpcoes(JMenu jmOpcoes) {
+		this.jmOpcoes = jmOpcoes;
 	}
 
-	public JMenu getJmAtendimento() {
-		return jmAtendimento;
+	public JMenuItem getJmSair() {
+		return jmSair;
 	}
 
-	public void setJmAtendimento(JMenu jmAtendimento) {
-		this.jmAtendimento = jmAtendimento;
+	public void setJmSair(JMenuItem jmSair) {
+		this.jmSair = jmSair;
 	}
 
-	public JMenuItem getJmCriarPront() {
-		return jmCriarPront;
+	public JPanel getJp() {
+		return jp;
 	}
 
-	public void setJmCriarPront(JMenuItem jmCriarPront) {
-		this.jmCriarPront = jmCriarPront;
+	public void setJp(JPanel jp) {
+		this.jp = jp;
+	}
+
+	public JTable getTabela() {
+		return tabela;
+	}
+
+	public void setTabela(JTable tabela) {
+		this.tabela = tabela;
+	}
+
+	public JScrollPane getBarraRolagem() {
+		return barraRolagem;
+	}
+
+	public void setBarraRolagem(JScrollPane barraRolagem) {
+		this.barraRolagem = barraRolagem;
 	}
 
 }
